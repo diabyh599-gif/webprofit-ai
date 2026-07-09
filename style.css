@@ -71,3 +71,49 @@ font-weight:bold;
 .ai{
 color:#0f172a;
 }
+.products{
+margin-top:60px;
+}
+
+.products h2{
+margin-bottom:20px;
+}
+
+.product-grid{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.product-card{
+background:white;
+color:black;
+padding:15px;
+border-radius:20px;
+}
+
+.product-card img{
+width:100%;
+border-radius:15px;
+margin-bottom:10px;
+}
+
+.product-card h3{
+margin-bottom:10px;
+}
+
+.product-card p{
+margin-bottom:10px;
+color:#555;
+}
+
+.product-card span{
+display:block;
+font-weight:bold;
+margin-bottom:10px;
+color:#f97316;
+}
+
+.product-card button{
+width:100%;
+}
