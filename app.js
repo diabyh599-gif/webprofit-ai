@@ -3,21 +3,55 @@ const products = [
 id: 1,
 name: "Habit Élégant",
 price: 7500,
-category: "fête"
+category: "fête",
+image: "https://picsum.photos/300/300?1"
 },
 {
 id: 2,
 name: "Sneakers Premium",
 price: 15000,
-category: "chaussure"
+category: "chaussure",
+image: "https://picsum.photos/300/300?2"
 },
 {
 id: 3,
 name: "Montre Premium",
 price: 6500,
-category: "accessoire"
+category: "accessoire",
+image: "https://picsum.photos/300/300?3"
 }
 ];
+
+function displayProducts() {
+
+const container =
+document.getElementById("product-grid");
+
+let html = "";
+
+products.forEach(product => {
+
+html += `
+<div class="product-card">
+
+<img src="${product.image}" alt="${product.name}">
+
+<h3>${product.name}</h3>
+
+<p>Catégorie : ${product.category}</p>
+
+<span>${product.price.toLocaleString()} FCFA</span>
+
+<button>🛒 Ajouter</button>
+
+</div>
+`;
+
+});
+
+container.innerHTML = html;
+
+}
 
 function askAI(){
 
@@ -50,31 +84,15 @@ response.push(
 if(response.length > 0){
 
 result.innerHTML =
-"🤖 Je recommande : <br><br>" +
+"🤖 Je recommande :<br><br>" +
 response.join("<br>");
 
 return;
 
 }
 
-if(question.includes("5000")){
-
 result.innerHTML =
-"🤖 Ton budget est un peu limité. Essaie d'augmenter ton budget pour avoir plus de choix.";
-
-return;
-
+"🤖 Aucun produit trouvé.";
 }
 
-if(question.includes("15000")){
-
-result.innerHTML =
-"🤖 Avec 15 000 FCFA, tu peux acheter les Sneakers Premium.";
-
-return;
-
-}
-
-result.innerHTML =
-"🤖 Aucun produit trouvé pour cette demande.";
-}
+displayProducts();
