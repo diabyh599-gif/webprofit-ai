@@ -1,46 +1,56 @@
-const products = [
-{
-id:1,
-name:"Habit Élégant",
-price:7500,
-category:"Fête"
-},
-{
-id:2,
-name:"Sneakers Premium",
-price:15000,
-category:"Casual"
-},
-{
-id:3,
-name:"Montre Premium",
-price:6500,
-category:"Accessoire"
-}
-];
-
 function askAI() {
 
-const input = document.getElementById("ai-input").value.toLowerCase();
+const question = document
+.getElementById("ai-input")
+.value
+.toLowerCase();
 
-const result = document.getElementById("ai-result");
+const result =
+document.getElementById("ai-result");
 
-if(input.includes("5000")){
-
-result.innerHTML =
-"🤖 Avec 5000 FCFA, je te recommande l'Habit Élégant.";
-
-return;
+if(question.trim() === ""){
+    result.innerHTML =
+    "🤖 Écris ton besoin pour recevoir un conseil.";
+    return;
 }
 
-if(input.includes("15000")){
+if(
+question.includes("5000") ||
+question.includes("5 000")
+){
+    result.innerHTML =
+    "🤖 Avec 5 000 FCFA, je te conseille une tenue simple pour une fête. Ajoute un peu de budget pour avoir plus de choix.";
+    return;
+}
 
-result.innerHTML =
-"🤖 Avec 15000 FCFA, les Sneakers Premium sont un excellent choix.";
+if(
+question.includes("15000") ||
+question.includes("15 000")
+){
+    result.innerHTML =
+    "🤖 Avec 15 000 FCFA, les Sneakers Premium sont un excellent choix.";
+    return;
+}
 
-return;
+if(question.includes("montre")){
+    result.innerHTML =
+    "⌚ Je te recommande la Montre Premium à 6 500 FCFA.";
+    return;
+}
+
+if(question.includes("chaussure")
+|| question.includes("sneakers")){
+    result.innerHTML =
+    "👟 Les Sneakers Premium sont parfaites pour toi.";
+    return;
+}
+
+if(question.includes("fête")){
+    result.innerHTML =
+    "🎉 Pour une fête, je te conseille l'Habit Élégant.";
+    return;
 }
 
 result.innerHTML =
-"🤖 Je recherche le meilleur produit pour toi...";
+"🤖 Je continue d'apprendre. Essaie avec un budget ou un type de produit.";
 }
