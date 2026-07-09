@@ -115,5 +115,32 @@ color:#f97316;
 }
 
 .product-card button{
-width:100%;
+width:
 }
+.ai-box{
+margin-top:60px;
+background:white;
+padding:20px;
+border-radius:20px;
+color:black;
+}
+
+.ai-box h2{
+margin-bottom:15px;
+}
+
+.ai-box input{
+width:100%;
+padding:15px;
+border-radius:12px;
+border:1px solid #ddd;
+font-size:16px;
+margin-bottom:15px;
+}
+
+#ai-result{
+margin-top:15px;
+font-weight:bold;
+}
+
+
