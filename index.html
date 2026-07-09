@@ -24,9 +24,22 @@
         WebProfit AI te recommande les meilleurs produits.
     </p>
 
-    <button>
-        🤖 Demander conseil à l'IA
+</section>
+
+<section class="ai-box">
+
+    <h2>🤖 Conseiller IA</h2>
+
+    <input
+        id="ai-input"
+        type="text"
+        placeholder="Ex : J'ai 5000 FCFA pour une fête samedi">
+
+    <button onclick="askAI()">
+        Analyser ma demande
     </button>
+
+    <div id="ai-result"></div>
 
 </section>
 
@@ -58,11 +71,10 @@
             <p>Pour un look professionnel.</p>
             <span>6 500 FCFA</span>
             <button>🛒 Ajouter</button>
-        
+        </div>
 
     </div>
 
-</section>
 </section>
 
 <script src="app.js"></script>
