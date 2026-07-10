@@ -22,6 +22,10 @@ image:"https://picsum.photos/300/300?3"
 }
 ];
 
+let favorites = JSON.parse(
+localStorage.getItem("favorites")
+) || [];
+
 function displayProducts(list = products){
 
 const container =
@@ -30,6 +34,9 @@ document.getElementById("product-grid");
 let html = "";
 
 list.forEach(product => {
+
+const isFavorite =
+favorites.includes(product.id);
 
 html += `
 <div class="product-card">
@@ -42,14 +49,32 @@ html += `
 
 <span>${product.price.toLocaleString()} FCFA</span>
 
-<button>🛒 Ajouter</button>
+<button onclick="toggleFavorite(${product.id})">
+${isFavorite ? "❤️ Retirer" : "🤍 Favori"}
+</button>
 
 </div>
 `;
-
 });
 
 container.innerHTML = html;
+}
+
+function toggleFavorite(id){
+
+if(favorites.includes(id)){
+favorites =
+favorites.filter(f => f !== id);
+}else{
+favorites.push(id);
+}
+
+localStorage.setItem(
+"favorites",
+JSON.stringify(favorites)
+);
+
+displayProducts();
 }
 
 function searchProducts(){
