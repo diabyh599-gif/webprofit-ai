@@ -1,35 +1,35 @@
 const products = [
 {
-id: 1,
-name: "Habit Élégant",
-price: 7500,
-category: "fête",
-image: "https://picsum.photos/300/300?1"
+id:1,
+name:"Habit Élégant",
+price:7500,
+category:"fête",
+image:"https://picsum.photos/300/300?1"
 },
 {
-id: 2,
-name: "Sneakers Premium",
-price: 15000,
-category: "chaussure",
-image: "https://picsum.photos/300/300?2"
+id:2,
+name:"Sneakers Premium",
+price:15000,
+category:"chaussure",
+image:"https://picsum.photos/300/300?2"
 },
 {
-id: 3,
-name: "Montre Premium",
-price: 6500,
-category: "accessoire",
-image: "https://picsum.photos/300/300?3"
+id:3,
+name:"Montre Premium",
+price:6500,
+category:"accessoire",
+image:"https://picsum.photos/300/300?3"
 }
 ];
 
-function displayProducts() {
+function displayProducts(list = products){
 
 const container =
 document.getElementById("product-grid");
 
 let html = "";
 
-products.forEach(product => {
+list.forEach(product => {
 
 html += `
 <div class="product-card">
@@ -38,7 +38,7 @@ html += `
 
 <h3>${product.name}</h3>
 
-<p>Catégorie : ${product.category}</p>
+<p>${product.category}</p>
 
 <span>${product.price.toLocaleString()} FCFA</span>
 
@@ -50,7 +50,21 @@ html += `
 });
 
 container.innerHTML = html;
+}
 
+function searchProducts(){
+
+const search =
+document.getElementById("search-input")
+.value
+.toLowerCase();
+
+const filtered =
+products.filter(product =>
+product.name.toLowerCase().includes(search)
+);
+
+displayProducts(filtered);
 }
 
 function askAI(){
@@ -63,36 +77,26 @@ document.getElementById("ai-input")
 const result =
 document.getElementById("ai-result");
 
-if(question.trim() === ""){
+if(question.includes("fête")){
 result.innerHTML =
-"🤖 Écris une demande.";
+"🎉 Je recommande l'Habit Élégant.";
 return;
 }
 
-let response = [];
-
-products.forEach(product => {
-
-if(question.includes(product.category)){
-response.push(
-`${product.name} - ${product.price.toLocaleString()} FCFA`
-);
-}
-
-});
-
-if(response.length > 0){
-
+if(question.includes("chaussure")){
 result.innerHTML =
-"🤖 Je recommande :<br><br>" +
-response.join("<br>");
-
+"👟 Je recommande les Sneakers Premium.";
 return;
+}
 
+if(question.includes("montre")){
+result.innerHTML =
+"⌚ Je recommande la Montre Premium.";
+return;
 }
 
 result.innerHTML =
-"🤖 Aucun produit trouvé.";
+"🤖 Je recherche le meilleur produit pour toi.";
 }
 
 displayProducts();
