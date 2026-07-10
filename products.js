@@ -5,6 +5,7 @@ name: "Habit Élégant",
 price: 7500,
 category: "habit",
 event: "fête",
+stock: 5,
 image: "https://picsum.photos/300/300?1"
 },
 {
@@ -13,6 +14,7 @@ name: "Sneakers Premium",
 price: 15000,
 category: "chaussure",
 event: "sortie",
+stock: 3,
 image: "https://picsum.photos/300/300?2"
 },
 {
@@ -21,6 +23,7 @@ name: "Montre Premium",
 price: 6500,
 category: "accessoire",
 event: "fête",
+stock: 4,
 image: "https://picsum.photos/300/300?3"
 }
 ];
