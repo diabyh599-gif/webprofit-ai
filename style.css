@@ -222,3 +222,22 @@ text-decoration:line-through;
 color:#888;
 font-size:14px;
 }
+.filter-box{
+background:white;
+color:black;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+}
+
+.filters{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:15px;
+}
+
+.filters button{
+flex:1;
+min-width:120px;
+}
