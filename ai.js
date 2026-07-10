@@ -11,31 +11,47 @@ document.getElementById("ai-result");
 const budget =
 parseInt(question.replace(/\D/g,""));
 
-if(!budget){
+let selectedEvent = "";
 
-result.innerHTML =
-"🤖 Indique ton budget. Exemple : J'ai 10000 FCFA";
-
-return;
+if(question.includes("fête")){
+selectedEvent = "fête";
 }
 
-const recommendations =
-products.filter(product =>
+if(question.includes("sortie")){
+selectedEvent = "sortie";
+}
+
+let recommendations =
+products;
+
+if(budget){
+
+recommendations =
+recommendations.filter(product =>
 product.price <= budget
 );
+}
+
+if(selectedEvent){
+
+recommendations =
+recommendations.filter(product =>
+product.event === selectedEvent
+);
+}
 
 if(recommendations.length === 0){
 
 result.innerHTML =
-"🤖 Aucun produit disponible pour ce budget.";
+"🤖 Aucun produit trouvé pour cette demande.";
 
 return;
 }
 
 let html =
-"🤖 Produits recommandés :<br><br>";
+"🤖 Je recommande :<br><br>";
 
-recommendations.forEach(product => {
+recommendations.forEach(product=>{
 
 html +=
 `${product.name} - ${product.price.toLocaleString()} FCFA<br>`;
