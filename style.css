@@ -177,3 +177,10 @@ border-bottom:1px solid #eee;
 .cart-item button{
 padding:8px;
 }
+.stats-box{
+background:white;
+color:black;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+}
