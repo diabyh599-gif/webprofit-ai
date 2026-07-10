@@ -17,7 +17,11 @@ rating: 4.8,
 reviews: 124,
 isNew: true,
 isBestSeller: true,
-image: "https://i.ibb.co/0ykTzmM2/IMG-4374.jpg"
+images: [
+"https://i.ibb.co/0ykTzmM2/IMG-4374.jpg",
+"https://picsum.photos/600/600?11",
+"https://picsum.photos/600/600?12"
+]
 },
 
 {
