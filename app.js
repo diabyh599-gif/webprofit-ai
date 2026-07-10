@@ -2,7 +2,6 @@ let favorites =
 JSON.parse(
 localStorage.getItem("favorites")
 ) || [];
-let favorites = [];
 
 function toggleFavorite(id){
 
@@ -52,8 +51,6 @@ ${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
 
 <p>⭐ ${product.rating} (${product.reviews} avis)</p>
 
-<p>${product.description}</p>
-
 <p>📦 Stock : ${product.stock}</p>
 
 <p>🔥 Popularité : ${product.sales}</p>
@@ -71,7 +68,7 @@ ${product.oldPrice.toLocaleString()} FCFA
 </div>
 
 <button onclick="toggleFavorite(${product.id})">
-${favorite ? "❤️ Retirer des favoris" : "🤍 Ajouter aux favoris"}
+${favorite ? "❤️ Favori" : "🤍 Favori"}
 </button>
 
 <button onclick="addToCart(${product.id})">
@@ -109,9 +106,17 @@ products.reduce(
 0
 );
 
-document.getElementById("sales-count")
-.textContent =
+const stats =
+document.getElementById("sales-count");
+
+if(stats){
+
+stats.textContent =
 totalSales;
+
+}
+
 }
 
 displayProducts();
+updateStats();
