@@ -184,3 +184,41 @@ padding:20px;
 border-radius:20px;
 margin-bottom:20px;
 }
+.badge-new{
+background:#22c55e;
+color:white;
+padding:6px 10px;
+border-radius:10px;
+display:inline-block;
+margin:10px;
+font-size:12px;
+font-weight:bold;
+}
+
+.badge-best{
+background:#f97316;
+color:white;
+padding:6px 10px;
+border-radius:10px;
+display:inline-block;
+margin:10px;
+font-size:12px;
+font-weight:bold;
+}
+
+.price-box{
+padding:10px 15px;
+}
+
+.current-price{
+display:block;
+font-size:20px;
+font-weight:bold;
+color:#f97316;
+}
+
+.old-price{
+text-decoration:line-through;
+color:#888;
+font-size:14px;
+}
