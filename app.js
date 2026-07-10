@@ -139,3 +139,63 @@ product => product.category === category
 displayProducts(filtered);
 
 }
+
+function showProduct(id){
+
+const product =
+products.find(
+p => p.id === id
+);
+
+const modal =
+document.getElementById("product-modal");
+
+const body =
+document.getElementById("modal-body");
+
+body.innerHTML = `
+
+<img src="${product.image}">
+
+<h2>${product.name}</h2>
+
+<p>
+⭐ ${product.rating}
+(${product.reviews} avis)
+</p>
+
+<p>
+📦 Stock :
+${product.stock}
+</p>
+
+<p>
+${product.category}
+</p>
+
+<h3>
+${product.price.toLocaleString()} FCFA
+</h3>
+
+<p style="text-decoration:line-through;">
+${product.oldPrice.toLocaleString()} FCFA
+</p>
+
+<button
+onclick="addToCart(${product.id})">
+🛒 Ajouter au panier
+</button>
+
+`;
+
+modal.style.display = "flex";
+
+}
+
+function closeModal(){
+
+document.getElementById(
+"product-modal"
+).style.display = "none";
+
+}
