@@ -120,3 +120,22 @@ totalSales;
 
 displayProducts();
 updateStats();
+
+function filterProducts(category){
+
+if(category === "all"){
+
+displayProducts(products);
+
+return;
+
+}
+
+const filtered =
+products.filter(
+product => product.category === category
+);
+
+displayProducts(filtered);
+
+}
