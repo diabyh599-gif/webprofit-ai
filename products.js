@@ -1,9 +1,13 @@
+localStorage.removeItem("products");
+
 const savedProducts =
 JSON.parse(
 localStorage.getItem("products")
 );
+
 const products =
 savedProducts || [
+
 {
 id: 1,
 name: "Ensemble Élégant Premium",
@@ -58,9 +62,9 @@ reviews: 256,
 isNew: true,
 isBestSeller: false,
 images: [
-"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
-"https://picsum.photos/600/600?21",
-"https://picsum.photos/600/600?22"
+"https://i.ibb.co/M4gzDNK/IMG-4379.jpg",
+"https://picsum.photos/600/600?31",
+"https://picsum.photos/600/600?32"
 ]
 },
 
@@ -78,9 +82,9 @@ reviews: 178,
 isNew: false,
 isBestSeller: true,
 images: [
-"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
-"https://picsum.photos/600/600?21",
-"https://picsum.photos/600/600?22"
+"https://i.ibb.co/8n9Bxb4C/IMG-4376.jpg",
+"https://picsum.photos/600/600?41",
+"https://picsum.photos/600/600?42"
 ]
 },
 
@@ -98,9 +102,10 @@ reviews: 92,
 isNew: true,
 isBestSeller: false,
 images: [
-"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
-"https://picsum.photos/600/600?21",
-"https://picsum.photos/600/600?22"
+"https://i.ibb.co/MydF07fD/IMG-4377.jpg",
+"https://picsum.photos/600/600?51",
+"https://picsum.photos/600/600?52"
 ]
 }
+
 ];
