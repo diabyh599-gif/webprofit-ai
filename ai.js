@@ -8,24 +8,39 @@ document.getElementById("ai-input")
 const result =
 document.getElementById("ai-result");
 
-if(question.includes("fête")){
+const budget =
+parseInt(question.replace(/\D/g,""));
+
+if(!budget){
+
 result.innerHTML =
-"🎉 Je recommande l'Habit Élégant.";
+"🤖 Indique ton budget. Exemple : J'ai 10000 FCFA";
+
 return;
 }
 
-if(question.includes("chaussure")){
+const recommendations =
+products.filter(product =>
+product.price <= budget
+);
+
+if(recommendations.length === 0){
+
 result.innerHTML =
-"👟 Je recommande les Sneakers Premium.";
+"🤖 Aucun produit disponible pour ce budget.";
+
 return;
 }
 
-if(question.includes("montre")){
-result.innerHTML =
-"⌚ Je recommande la Montre Premium.";
-return;
-}
+let html =
+"🤖 Produits recommandés :<br><br>";
 
-result.innerHTML =
-"🤖 Je cherche le meilleur produit pour toi.";
+recommendations.forEach(product => {
+
+html +=
+`${product.name} - ${product.price.toLocaleString()} FCFA<br>`;
+
+});
+
+result.innerHTML = html;
 }
