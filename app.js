@@ -43,7 +43,11 @@ ${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
 
 ${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
 
-<img src="${product.image}" alt="${product.name}">
+<img
+src="${product.image}"
+alt="${product.name}"
+onclick="showProduct(${product.id})"
+style="cursor:pointer;">
 
 <h3>${product.name}</h3>
 
