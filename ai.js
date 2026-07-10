@@ -11,51 +11,34 @@ document.getElementById("ai-result");
 const budget =
 parseInt(question.replace(/\D/g,""));
 
-let selectedEvent = "";
-
-if(question.includes("fête")){
-selectedEvent = "fête";
-}
-
-if(question.includes("sortie")){
-selectedEvent = "sortie";
-}
-
 let recommendations =
-products;
+products.filter(
+product => product.stock > 0
+);
 
 if(budget){
 
 recommendations =
-recommendations.filter(product =>
-product.price <= budget
-);
-}
-
-if(selectedEvent){
-
-recommendations =
-recommendations.filter(product =>
-product.event === selectedEvent
+recommendations.filter(
+product => product.price <= budget
 );
 }
 
 if(recommendations.length === 0){
 
 result.innerHTML =
-"🤖 Aucun produit trouvé pour cette demande.";
+"🤖 Aucun produit disponible.";
 
 return;
 }
 
 let html =
-"🤖 Je recommande :<br><br>";
+"🤖 Produits disponibles :<br><br>";
 
 recommendations.forEach(product=>{
 
 html +=
-`${product.name} - ${product.price.toLocaleString()} FCFA<br>`;
-
+`${product.name} (${product.stock} en stock) - ${product.price.toLocaleString()} FCFA<br>`;
 });
 
 result.innerHTML = html;
