@@ -37,7 +37,11 @@ rating: 4.9,
 reviews: 89,
 isNew: false,
 isBestSeller: true,
-image: "https://i.ibb.co/5WVcQyYX/IMG-4378.jpg"
+images: [
+"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
+"https://picsum.photos/600/600?21",
+"https://picsum.photos/600/600?22"
+]
 },
 
 {
@@ -53,7 +57,11 @@ rating: 4.7,
 reviews: 256,
 isNew: true,
 isBestSeller: false,
-image: "https://i.ibb.co/M4gzDNK/IMG-4379.jpg"
+images: [
+"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
+"https://picsum.photos/600/600?21",
+"https://picsum.photos/600/600?22"
+]
 },
 
 {
@@ -69,7 +77,11 @@ rating: 4.6,
 reviews: 178,
 isNew: false,
 isBestSeller: true,
-image: "https://i.ibb.co/8n9Bxb4C/IMG-4376.jpg"
+images: [
+"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
+"https://picsum.photos/600/600?21",
+"https://picsum.photos/600/600?22"
+]
 },
 
 {
@@ -85,6 +97,10 @@ rating: 4.8,
 reviews: 92,
 isNew: true,
 isBestSeller: false,
-image: "https://i.ibb.co/MydF07fD/IMG-4377.jpg"
+images: [
+"https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
+"https://picsum.photos/600/600?21",
+"https://picsum.photos/600/600?22"
+]
 }
 ];
