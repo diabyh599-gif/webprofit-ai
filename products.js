@@ -6,6 +6,7 @@ price: 7500,
 category: "habit",
 event: "fête",
 stock: 5,
+sales: 0,
 image: "https://picsum.photos/300/300?1"
 },
 {
@@ -15,6 +16,7 @@ price: 15000,
 category: "chaussure",
 event: "sortie",
 stock: 3,
+sales: 0,
 image: "https://picsum.photos/300/300?2"
 },
 {
@@ -24,6 +26,7 @@ price: 6500,
 category: "accessoire",
 event: "fête",
 stock: 4,
+sales: 0,
 image: "https://picsum.photos/300/300?3"
 }
 ];
