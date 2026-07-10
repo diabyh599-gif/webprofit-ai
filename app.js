@@ -31,24 +31,42 @@ favorites.includes(product.id);
 html += `
 <div class="product-card">
 
+${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
+
+${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
+
 <img src="${product.image}" alt="${product.name}">
 
 <h3>${product.name}</h3>
 
 <p>${product.category}</p>
 
+<p>⭐ ${product.rating} (${product.reviews} avis)</p>
+
+<p>${product.description}</p>
+
 <p>📦 Stock : ${product.stock}</p>
 
 <p>🔥 Popularité : ${product.sales}</p>
 
-<span>${product.price.toLocaleString()} FCFA</span>
+<div class="price-box">
+
+<span class="current-price">
+${product.price.toLocaleString()} FCFA
+</span>
+
+<span class="old-price">
+${product.oldPrice.toLocaleString()} FCFA
+</span>
+
+</div>
 
 <button onclick="toggleFavorite(${product.id})">
-${favorite ? "❤️" : "🤍"}
+${favorite ? "❤️ Retirer des favoris" : "🤍 Ajouter aux favoris"}
 </button>
 
 <button onclick="addToCart(${product.id})">
-🛒 Ajouter
+🛒 Ajouter au panier
 </button>
 
 </div>
