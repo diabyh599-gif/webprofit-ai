@@ -158,3 +158,22 @@ border-radius:12px;
 border:1px solid #ddd;
 font-size:16px;
 }
+.cart-box{
+background:white;
+color:black;
+padding:20px;
+border-radius:20px;
+margin-top:30px;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 0;
+border-bottom:1px solid #eee;
+}
+
+.cart-item button{
+padding:8px;
+}
