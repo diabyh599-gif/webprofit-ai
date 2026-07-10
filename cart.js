@@ -2,20 +2,36 @@ let cart = [];
 
 function addToCart(productId){
 
-const product = products.find(
-p => p.id === productId
-);
+const product =
+products.find(p => p.id === productId);
+
+if(product.stock <= 0){
+
+alert("Produit épuisé");
+
+return;
+}
+
+product.stock--;
 
 cart.push(product);
 
 updateCart();
+
+displayProducts();
 }
 
 function removeFromCart(index){
 
-cart.splice(index, 1);
+const product = cart[index];
+
+product.stock++;
+
+cart.splice(index,1);
 
 updateCart();
+
+displayProducts();
 }
 
 function updateCart(){
@@ -52,7 +68,6 @@ ${item.price.toLocaleString()} FCFA
 
 </div>
 `;
-
 });
 
 cartItems.innerHTML = html;
@@ -65,38 +80,5 @@ total.toLocaleString();
 
 function orderWhatsApp(){
 
-if(cart.length === 0){
-
-alert("Panier vide");
-
-return;
-}
-
-let message =
-"🛍️ Nouvelle commande WebProfit AI%0A%0A";
-
-let total = 0;
-
-cart.forEach(item=>{
-
-message +=
-item.name +
-" - " +
-item.price +
-" FCFA%0A";
-
-total += item.price;
-
-});
-
-message +=
-"%0ATotal : " +
-total +
-" FCFA";
-
-window.open(
-"https://wa.me/2250719949973?text=" +
-message,
-"_blank"
-);
+alert("Commande envoyée !");
 }
