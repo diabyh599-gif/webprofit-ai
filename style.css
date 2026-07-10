@@ -280,3 +280,16 @@ width:100%;
 border-radius:15px;
 margin-bottom:15px;
 }
+
+.gallery{
+display:flex;
+gap:10px;
+overflow-x:auto;
+margin-bottom:15px;
+}
+
+.gallery-image{
+width:220px;
+border-radius:15px;
+flex-shrink:0;
+}
