@@ -16,15 +16,21 @@ html += `
 
 <p>${product.category}</p>
 
+<p>📦 Stock : ${product.stock}</p>
+
 <span>${product.price.toLocaleString()} FCFA</span>
 
-<button onclick="addToCart(${product.id})">
-🛒 Ajouter
+<button
+onclick="addToCart(${product.id})"
+${product.stock <= 0 ? "disabled" : ""}
+>
+
+${product.stock <= 0 ? "❌ Épuisé" : "🛒 Ajouter"}
+
 </button>
 
 </div>
 `;
-
 });
 
 container.innerHTML = html;
