@@ -1,4 +1,20 @@
-let cart = [];
+let cart = JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+function saveCart(){
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+}
 
 function addToCart(productId){
 
@@ -6,14 +22,19 @@ const product =
 products.find(p => p.id === productId);
 
 if(product.stock <= 0){
+
 alert("Produit épuisé");
+
 return;
+
 }
 
 product.stock--;
 product.sales++;
 
 cart.push(product);
+
+saveCart();
 
 updateCart();
 displayProducts();
@@ -27,6 +48,8 @@ const product = cart[index];
 product.stock++;
 
 cart.splice(index,1);
+
+saveCart();
 
 updateCart();
 displayProducts();
@@ -53,14 +76,33 @@ total += item.price;
 
 html += `
 <div class="cart-item">
-<p>${item.name} - ${item.price.toLocaleString()} FCFA</p>
-<button onclick="removeFromCart(${index})">❌</button>
+<p>
+${item.name}
+-
+${item.price.toLocaleString()} FCFA
+</p>
+
+<button onclick="removeFromCart(${index})">
+❌
+</button>
+
 </div>
 `;
 
 });
 
 cartItems.innerHTML = html;
-cartCount.textContent = cart.length;
-cartTotal.textContent = total.toLocaleString();
+
+cartCount.textContent =
+cart.length;
+
+cartTotal.textContent =
+total.toLocaleString();
 }
+
+function orderWhatsApp(){
+
+alert("Commande envoyée !");
+}
+
+updateCart();
