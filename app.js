@@ -1,3 +1,7 @@
+let favorites =
+JSON.parse(
+localStorage.getItem("favorites")
+) || [];
 let favorites = [];
 
 function toggleFavorite(id){
@@ -12,6 +16,11 @@ favorites.filter(f => f !== id);
 favorites.push(id);
 
 }
+
+localStorage.setItem(
+"favorites",
+JSON.stringify(favorites)
+);
 
 displayProducts();
 }
