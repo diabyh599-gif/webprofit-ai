@@ -44,7 +44,7 @@ ${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
 ${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
 
 <img
-src="${product.image}"
+src="${product.images[0]}"
 alt="${product.name}"
 onclick="showProduct(${product.id})"
 style="cursor:pointer;">
@@ -157,9 +157,25 @@ document.getElementById("product-modal");
 const body =
 document.getElementById("modal-body");
 
+let gallery = "";
+
+product.images.forEach(img => {
+
+gallery += `
+<img
+src="${img}"
+class="gallery-image">
+`;
+
+});
+
 body.innerHTML = `
 
-<img src="${product.image}">
+<div class="gallery">
+
+${gallery}
+
+</div>
 
 <h2>${product.name}</h2>
 
