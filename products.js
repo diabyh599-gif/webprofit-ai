@@ -1,4 +1,9 @@
-const products = [
+const savedProducts =
+JSON.parse(
+localStorage.getItem("products")
+);
+const products =
+savedProducts || [
 {
 id: 1,
 name: "Ensemble Élégant Premium",
