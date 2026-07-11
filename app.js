@@ -248,3 +248,29 @@ favorites.length;
 }
 
 }
+
+function simulateVisitors(){
+
+const visitors =
+document.getElementById(
+"visitor-count"
+);
+
+if(!visitors) return;
+
+setInterval(()=>{
+
+let current =
+parseInt(visitors.textContent);
+
+current +=
+Math.floor(Math.random()*3);
+
+visitors.textContent =
+current;
+
+},10000);
+
+}
+
+simulateVisitors();
