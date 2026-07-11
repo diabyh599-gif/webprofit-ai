@@ -31,6 +31,9 @@ const container =
 document.getElementById("product-grid");
 
 let html = "";
+list = [...list].sort(
+(a,b) => b.sales - a.sales
+);
 
 list.forEach(product => {
 
@@ -39,6 +42,10 @@ favorites.includes(product.id);
 
 html += `
 <div class="product-card">
+
+${product.sales >= 3 ?
+'<div class="badge-top">🏆 Top Vente</div>'
+: ''}
 
 ${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
 
