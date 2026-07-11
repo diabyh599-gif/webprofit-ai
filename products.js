@@ -26,6 +26,7 @@ comments: [
 "⭐⭐⭐⭐ Élégant et confortable",
 "⭐⭐⭐⭐⭐ Je recommande"
 ],
+delivery: "🚚 Livraison 2 à 3 jours",
 images: [
 "https://i.ibb.co/0ykTzmM2/IMG-4374.jpg",
 "https://picsum.photos/600/600?11",
@@ -51,6 +52,7 @@ comments: [
 "⭐⭐⭐⭐ Élégant et confortable",
 "⭐⭐⭐⭐⭐ Je recommande"
 ],
+delivery: "🚚 Livraison 2 à 3 jours",
 images: [
 "https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
 "https://picsum.photos/600/600?21",
@@ -76,6 +78,7 @@ comments: [
 "⭐⭐⭐⭐ Livraison rapide",
 "⭐⭐⭐⭐⭐ Produit conforme"
 ],
+delivery: "🚚 Livraison 2 à 3 jours",
 images: [
 "https://i.ibb.co/M4gzDNK/IMG-4379.jpg",
 "https://picsum.photos/600/600?31",
@@ -101,6 +104,7 @@ comments: [
 "⭐⭐⭐⭐ Livraison rapide",
 "⭐⭐⭐⭐⭐ Produit conforme"
 ],
+delivery: "🚚 Livraison demain",
 images: [
 "https://i.ibb.co/8n9Bxb4C/IMG-4376.jpg",
 "https://picsum.photos/600/600?41",
@@ -126,6 +130,7 @@ comments: [
 "⭐⭐⭐⭐ Élégant et confortable",
 "⭐⭐⭐⭐⭐ Je recommande"
 ],
+delivery: "🚚 Livraison 2 à 3 jours",
 images: [
 "https://i.ibb.co/MydF07fD/IMG-4377.jpg",
 "https://picsum.photos/600/600?51",
