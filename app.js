@@ -169,6 +169,18 @@ class="gallery-image">
 
 });
 
+let comments = "";
+
+product.comments.forEach(comment => {
+
+comments += `
+<p class="review">
+${comment}
+</p>
+`;
+
+});
+
 body.innerHTML = `
 
 <div class="gallery">
@@ -200,6 +212,10 @@ ${product.price.toLocaleString()} FCFA
 <p style="text-decoration:line-through;">
 ${product.oldPrice.toLocaleString()} FCFA
 </p>
+
+<h3>💬 Avis clients</h3>
+
+${comments}
 
 <button
 onclick="addToCart(${product.id})">
