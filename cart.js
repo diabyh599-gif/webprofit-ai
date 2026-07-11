@@ -106,7 +106,47 @@ finalTotal.toLocaleString();
 
 function orderWhatsApp(){
 
-alert("Commande envoyée !");
+if(cart.length === 0){
+
+alert("Panier vide");
+
+return;
+
+}
+
+const tracking =
+document.getElementById(
+"tracking-status"
+);
+
+tracking.innerHTML =
+"🟡 Commande reçue";
+
+setTimeout(()=>{
+
+tracking.innerHTML =
+"🔵 Préparation";
+
+},3000);
+
+setTimeout(()=>{
+
+tracking.innerHTML =
+"🟣 Expédiée";
+
+},6000);
+
+setTimeout(()=>{
+
+tracking.innerHTML =
+"🟢 Livrée";
+
+},9000);
+
+alert(
+"Commande enregistrée !"
+);
+
 }
 
 updateCart();
