@@ -21,6 +21,11 @@ rating: 4.8,
 reviews: 124,
 isNew: true,
 isBestSeller: true,
+comments: [
+"⭐⭐⭐⭐⭐ Très bonne qualité",
+"⭐⭐⭐⭐ Élégant et confortable",
+"⭐⭐⭐⭐⭐ Je recommande"
+],
 images: [
 "https://i.ibb.co/0ykTzmM2/IMG-4374.jpg",
 "https://picsum.photos/600/600?11",
@@ -41,6 +46,11 @@ rating: 4.9,
 reviews: 89,
 isNew: false,
 isBestSeller: true,
+comments: [
+"⭐⭐⭐⭐⭐ Très bonne qualité",
+"⭐⭐⭐⭐ Élégant et confortable",
+"⭐⭐⭐⭐⭐ Je recommande"
+],
 images: [
 "https://i.ibb.co/5WVcQyYX/IMG-4378.jpg",
 "https://picsum.photos/600/600?21",
@@ -61,6 +71,11 @@ rating: 4.7,
 reviews: 256,
 isNew: true,
 isBestSeller: false,
+comments: [
+"⭐⭐⭐⭐⭐ Très confortable",
+"⭐⭐⭐⭐ Livraison rapide",
+"⭐⭐⭐⭐⭐ Produit conforme"
+],
 images: [
 "https://i.ibb.co/M4gzDNK/IMG-4379.jpg",
 "https://picsum.photos/600/600?31",
@@ -81,6 +96,11 @@ rating: 4.6,
 reviews: 178,
 isNew: false,
 isBestSeller: true,
+comments: [
+"⭐⭐⭐⭐⭐ Très confortable",
+"⭐⭐⭐⭐ Livraison rapide",
+"⭐⭐⭐⭐⭐ Produit conforme"
+],
 images: [
 "https://i.ibb.co/8n9Bxb4C/IMG-4376.jpg",
 "https://picsum.photos/600/600?41",
@@ -101,6 +121,11 @@ rating: 4.8,
 reviews: 92,
 isNew: true,
 isBestSeller: false,
+comments: [
+"⭐⭐⭐⭐⭐ Très bonne qualité",
+"⭐⭐⭐⭐ Élégant et confortable",
+"⭐⭐⭐⭐⭐ Je recommande"
+],
 images: [
 "https://i.ibb.co/MydF07fD/IMG-4377.jpg",
 "https://picsum.photos/600/600?51",
