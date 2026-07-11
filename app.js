@@ -213,10 +213,6 @@ ${product.price.toLocaleString()} FCFA
 ${product.oldPrice.toLocaleString()} FCFA
 </p>
 
-<h3>💬 Avis clients</h3>
-
-${comments}
-
 <button
 onclick="addToCart(${product.id})">
 🛒 Ajouter au panier
