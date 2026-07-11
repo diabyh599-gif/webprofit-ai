@@ -325,3 +325,11 @@ border-radius:10px;
 font-weight:bold;
 margin-top:10px;
 }
+
+.review{
+background:#f8fafc;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+border-left:4px solid #f97316;
+}
