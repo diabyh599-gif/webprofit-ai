@@ -293,3 +293,17 @@ width:220px;
 border-radius:15px;
 flex-shrink:0;
 }
+
+.ai-product{
+background:#f8fafc;
+padding:15px;
+margin-top:15px;
+border-radius:15px;
+}
+
+.ai-product img{
+width:100%;
+border-radius:12px;
+cursor:pointer;
+margin-bottom:10px;
+}
