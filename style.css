@@ -333,3 +333,17 @@ border-radius:10px;
 margin-bottom:10px;
 border-left:4px solid #f97316;
 }
+
+.tracking-box{
+background:white;
+color:black;
+padding:20px;
+border-radius:20px;
+margin-top:30px;
+}
+
+#tracking-status{
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
