@@ -231,3 +231,19 @@ document.getElementById(
 ).style.display = "none";
 
 }
+
+function updateFavoritesCount(){
+
+const element =
+document.getElementById(
+"favorite-count"
+);
+
+if(element){
+
+element.textContent =
+favorites.length;
+
+}
+
+}
