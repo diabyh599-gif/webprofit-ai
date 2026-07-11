@@ -347,3 +347,14 @@ font-size:18px;
 font-weight:bold;
 margin-top:10px;
 }
+
+.badge-top{
+background:#eab308;
+color:white;
+padding:6px 10px;
+border-radius:10px;
+display:inline-block;
+margin:10px;
+font-size:12px;
+font-weight:bold;
+}
