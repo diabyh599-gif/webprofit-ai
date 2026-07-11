@@ -45,16 +45,8 @@ product => product.event === event
 
 }
 
-if(recommendations.length === 0){
-
-result.innerHTML =
-"🤖 Aucun produit disponible.";
-
-return;
-}
-
 recommendations.sort(
-(a,b)=>b.price-a.price
+(a,b)=>b.rating-a.rating
 );
 
 let selected = [];
@@ -78,7 +70,7 @@ total += product.price;
 if(selected.length === 0){
 
 result.innerHTML =
-"🤖 Aucun produit ne correspond à votre budget.";
+"🤖 Aucun produit trouvé.";
 
 return;
 }
@@ -87,21 +79,22 @@ let html = `
 <h3>🤖 Conseil WebProfit AI</h3>
 `;
 
-if(event){
-
-html += `
-<p>🎉 Événement : ${event}</p>
-`;
-}
-
 selected.forEach(product => {
 
 html += `
+<div class="ai-product">
+
+<img
+src="${product.images[0]}"
+onclick="showProduct(${product.id})">
+
+<h4>${product.name}</h4>
+
 <p>
-✅ ${product.name}
-<br>
 💰 ${product.price.toLocaleString()} FCFA
 </p>
+
+</div>
 `;
 });
 
