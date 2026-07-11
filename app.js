@@ -65,6 +65,8 @@ style="cursor:pointer;">
 
 <p>📦 Stock : ${product.stock}</p>
 
+<p>${product.delivery}</p>
+
 <p>🔥 Popularité : ${product.sales}</p>
 
 <div class="price-box">
@@ -208,6 +210,10 @@ ${gallery}
 📦 Stock :
 ${product.stock}
 </p>
+
+<div class="delivery">
+${product.delivery}
+</div>
 
 <p>
 ${product.category}
