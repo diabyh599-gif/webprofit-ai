@@ -1,3 +1,4 @@
+let discount = 0;
 let cart = JSON.parse(
 localStorage.getItem("cart")
 ) || [];
@@ -96,8 +97,11 @@ cartItems.innerHTML = html;
 cartCount.textContent =
 cart.length;
 
+const finalTotal =
+total - (total * discount / 100);
+
 cartTotal.textContent =
-total.toLocaleString();
+finalTotal.toLocaleString();
 }
 
 function orderWhatsApp(){
@@ -106,3 +110,42 @@ alert("Commande envoyée !");
 }
 
 updateCart();
+
+function applyPromo(){
+
+const code =
+document.getElementById("promo-code")
+.value
+.toUpperCase();
+
+const message =
+document.getElementById("promo-message");
+
+if(code === "BIENVENUE10"){
+
+discount = 10;
+
+message.innerHTML =
+"✅ Réduction de 10% appliquée";
+
+}
+else if(code === "FETE20"){
+
+discount = 20;
+
+message.innerHTML =
+"✅ Réduction de 20% appliquée";
+
+}
+else{
+
+discount = 0;
+
+message.innerHTML =
+"❌ Code invalide";
+
+}
+
+updateCart();
+
+}
