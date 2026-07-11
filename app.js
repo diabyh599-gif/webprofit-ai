@@ -22,6 +22,7 @@ JSON.stringify(favorites)
 );
 
 displayProducts();
+updateFavoritesCount();
 }
 
 function displayProducts(list = products){
