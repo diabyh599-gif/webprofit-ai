@@ -18,6 +18,8 @@ JSON.stringify(products)
 }
 
 function addToCart(productId){
+    
+alert("Ajout panier OK");
 
 const product =
 products.find(p => p.id === productId);
