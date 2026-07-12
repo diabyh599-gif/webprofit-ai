@@ -1,5 +1,3 @@
-localStorage.removeItem("products");
-
 const savedProducts =
 JSON.parse(
 localStorage.getItem("products")
