@@ -327,4 +327,5 @@ totalSeconds = 24 * 60 * 60;
 
 updateFavoritesCount();
 
+
 startCountdown();
