@@ -290,37 +290,55 @@ simulateVisitors();
 
 function startCountdown(){
 
-let totalSeconds = 24 * 60 * 60;
+let hours = 24;
+let minutes = 0;
+let seconds = 0;
 
 const countdown =
-document.getElementById("countdown");
+document.getElementById(
+"countdown"
+);
 
 if(!countdown) return;
 
 setInterval(()=>{
 
-let hours =
-Math.floor(totalSeconds / 3600);
+if(seconds === 0){
 
-let minutes =
-Math.floor((totalSeconds % 3600) / 60);
+if(minutes === 0){
 
-let seconds =
-totalSeconds % 60;
+if(hours === 0){
+
+hours = 24;
+minutes = 0;
+seconds = 0;
+
+}else{
+
+hours--;
+minutes = 59;
+seconds = 59;
+
+}
+
+}else{
+
+minutes--;
+seconds = 59;
+
+}
+
+}else{
+
+seconds--;
+
+}
 
 countdown.textContent =
 `${hours}h ${minutes}m ${seconds}s`;
 
-if(totalSeconds > 0){
-
-totalSeconds--;
-
-}else{
-
-totalSeconds = 24 * 60 * 60;
-
-}
-
 },1000);
 
 }
+
+startCountdown();
