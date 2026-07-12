@@ -97,12 +97,29 @@ cartItems.innerHTML = html;
 cartCount.textContent =
 cart.length;
 
-const finalTotal =
+if(cart.length >= 3){
+
+discount = 5;
+
+const promoMessage =
+document.getElementById(
+"promo-message"
+);
+
+if(promoMessage){
+
+promoMessage.innerHTML =
+"🎉 Bonus fidélité : 5% de réduction appliquée";
+
+}
+
+}
+
+const finalPrice =
 total - (total * discount / 100);
 
 cartTotal.textContent =
-finalTotal.toLocaleString();
-}
+finalPrice.toLocaleString();
 
 function orderWhatsApp(){
 
