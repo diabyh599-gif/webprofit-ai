@@ -1,4 +1,5 @@
 let discount = 0;
+
 let cart = JSON.parse(
 localStorage.getItem("cart")
 ) || [];
@@ -18,11 +19,15 @@ JSON.stringify(products)
 }
 
 function addToCart(productId){
-    
-alert("Ajout panier OK");
 
 const product =
-products.find(p => p.id === productId);
+products.find(
+p => p.id === productId
+);
+
+if(!product){
+return;
+}
 
 if(product.stock <= 0){
 
@@ -40,23 +45,34 @@ cart.push(product);
 saveCart();
 
 updateCart();
+
 displayProducts();
+
 updateStats();
+
 }
 
 function removeFromCart(index){
 
-const product = cart[index];
+const product =
+cart[index];
+
+if(product){
 
 product.stock++;
+
+}
 
 cart.splice(index,1);
 
 saveCart();
 
 updateCart();
+
 displayProducts();
+
 updateStats();
+
 }
 
 function updateCart(){
@@ -71,6 +87,7 @@ const cartTotal =
 document.getElementById("cart-total");
 
 let html = "";
+
 let total = 0;
 
 cart.forEach((item,index)=>{
@@ -79,6 +96,7 @@ total += item.price;
 
 html += `
 <div class="cart-item">
+
 <p>
 ${item.name}
 -
@@ -94,10 +112,18 @@ ${item.price.toLocaleString()} FCFA
 
 });
 
+if(cartItems){
+
 cartItems.innerHTML = html;
+
+}
+
+if(cartCount){
 
 cartCount.textContent =
 cart.length;
+
+}
 
 if(cart.length >= 3){
 
@@ -111,7 +137,7 @@ document.getElementById(
 if(promoMessage){
 
 promoMessage.innerHTML =
-"🎉 Bonus fidélité : 5% de réduction appliquée";
+"🎉 Bonus fidélité : 5% appliqué";
 
 }
 
@@ -120,8 +146,14 @@ promoMessage.innerHTML =
 const finalPrice =
 total - (total * discount / 100);
 
+if(cartTotal){
+
 cartTotal.textContent =
 finalPrice.toLocaleString();
+
+}
+
+}
 
 function orderWhatsApp(){
 
@@ -137,6 +169,8 @@ const tracking =
 document.getElementById(
 "tracking-status"
 );
+
+if(tracking){
 
 tracking.innerHTML =
 "🟡 Commande reçue";
@@ -162,23 +196,25 @@ tracking.innerHTML =
 
 },9000);
 
+}
+
 alert(
 "Commande enregistrée !"
 );
 
 }
 
-updateCart();
-
 function applyPromo(){
 
 const code =
-document.getElementById("promo-code")
-.value
-.toUpperCase();
+document.getElementById(
+"promo-code"
+).value.toUpperCase();
 
 const message =
-document.getElementById("promo-message");
+document.getElementById(
+"promo-message"
+);
 
 if(code === "BIENVENUE10"){
 
@@ -208,3 +244,5 @@ message.innerHTML =
 updateCart();
 
 }
+
+updateCart();
