@@ -165,6 +165,34 @@ return;
 
 }
 
+let message =
+"🛍️ Nouvelle commande WebProfit AI%0A%0A";
+
+let total = 0;
+
+cart.forEach(item=>{
+
+message +=
+item.name +
+" - " +
+item.price +
+" FCFA%0A";
+
+total += item.price;
+
+});
+
+message +=
+"%0A💰 Total : " +
+total +
+" FCFA";
+
+window.open(
+"https://wa.me/2250719949973?text=" +
+message,
+"_blank"
+);
+
 const tracking =
 document.getElementById(
 "tracking-status"
@@ -174,6 +202,10 @@ if(tracking){
 
 tracking.innerHTML =
 "🟡 Commande reçue";
+
+}
+
+}
 
 setTimeout(()=>{
 
