@@ -160,7 +160,6 @@ function orderWhatsApp(){
 if(cart.length === 0){
 
 alert("Panier vide");
-
 return;
 
 }
@@ -170,7 +169,7 @@ let message =
 
 let total = 0;
 
-cart.forEach(item=>{
+cart.forEach(item => {
 
 message +=
 item.name +
@@ -202,10 +201,6 @@ if(tracking){
 
 tracking.innerHTML =
 "🟡 Commande reçue";
-
-}
-
-}
 
 setTimeout(()=>{
 
