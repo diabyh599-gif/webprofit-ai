@@ -329,3 +329,73 @@ updateFavoritesCount();
 
 
 startCountdown();
+
+function addProduct(){
+
+const name =
+document.getElementById("admin-name").value;
+
+const price =
+Number(
+document.getElementById("admin-price").value
+);
+
+const category =
+document.getElementById("admin-category").value;
+
+if(!name || !price || !category){
+
+alert("Remplissez tous les champs");
+
+return;
+
+}
+
+const newProduct = {
+
+id: Date.now(),
+
+name: name,
+
+price: price,
+
+oldPrice: price,
+
+stock: 10,
+
+sales: 0,
+
+category: category,
+
+event: "quotidien",
+
+rating: 5,
+
+reviews: 0,
+
+isNew: true,
+
+isBestSeller: false,
+
+comments: [],
+
+delivery: "🚚 Livraison 2 à 3 jours",
+
+images: [
+"https://picsum.photos/600/600?random=" + Date.now()
+]
+
+};
+
+products.push(newProduct);
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+displayProducts();
+
+alert("Produit ajouté");
+
+}
