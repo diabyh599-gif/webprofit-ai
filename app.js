@@ -322,6 +322,8 @@ updateFavoritesCount();
 startCountdown();
 
 function addProduct(){
+    
+alert("Bouton cliqué");
 
 const name =
 document.getElementById("admin-name").value;
