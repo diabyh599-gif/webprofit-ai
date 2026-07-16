@@ -234,6 +234,12 @@ onclick="addToCart(${product.id})">
 
 `;
 
+${product.id > 0 ? `
+<button onclick="deleteProduct(${product.id})">
+🗑️ Supprimer
+</button>
+` : ""}
+
 modal.style.display = "flex";
 
 }
@@ -399,5 +405,38 @@ JSON.stringify(products)
 displayProducts();
 
 alert("Produit ajouté");
+
+}
+
+function deleteProduct(id){
+
+const confirmDelete =
+confirm(
+"Voulez-vous supprimer ce produit ?"
+);
+
+if(!confirmDelete){
+return;
+}
+
+const index =
+products.findIndex(
+product => product.id === id
+);
+
+if(index !== -1){
+
+products.splice(index,1);
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+displayProducts();
+
+alert("Produit supprimé");
+
+}
 
 }
