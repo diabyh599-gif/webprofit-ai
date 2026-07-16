@@ -20,6 +20,8 @@ JSON.stringify(products)
 
 function addToCart(productId){
 
+alert("Bouton panier cliqué");
+
 const product =
 products.find(
 p => p.id === productId
