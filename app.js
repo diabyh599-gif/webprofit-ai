@@ -511,3 +511,5 @@ document.getElementById(
 ).textContent = outStock;
 
 }
+
+updateAdminStats();
