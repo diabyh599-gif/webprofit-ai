@@ -210,6 +210,28 @@ placeholder="URL de la photo">
 <script src="ai.js"></script>
 <script src="app.js"></script>
 
+<button onclick="openAdmin()">
+⚙️ Admin
+</button>
+
+<div id="admin-panel" style="display:none;">
+
+<h2>Administration</h2>
+
+<input id="admin-name" placeholder="Nom produit">
+
+<input id="admin-price" type="number" placeholder="Prix">
+
+<input id="admin-category" placeholder="Catégorie">
+
+<input id="admin-image" placeholder="URL image">
+
+<button onclick="addProduct()">
+➕ Ajouter produit
+</button>
+
+</div>
+
 <script>
 if("serviceWorker" in navigator){
 
