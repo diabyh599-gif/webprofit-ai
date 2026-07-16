@@ -190,10 +190,21 @@ localStorage.getItem("orders")
 ) || [];
 
 orders.push({
+
 id: Date.now(),
+
 date: new Date().toLocaleString(),
+
+customerName,
+
+customerPhone,
+
+customerAddress,
+
 items: cart,
-total: total
+
+total
+
 });
 
 localStorage.setItem(
