@@ -75,26 +75,7 @@ updateStats();
 
 }
 
-function updateCart(){
-
-const cartItems =
-document.getElementById("cart-items");
-
-const cartCount =
-document.getElementById("cart-count");
-
-const cartTotal =
-document.getElementById("cart-total");
-
-let html = "";
-
-let total = 0;
-
-cart.forEach((item,index)=>{
-
-total += item.price;
-
-html += `
+function updateCart(){html += `
 <div class="cart-item">
 
 <p>
@@ -103,13 +84,22 @@ ${item.name}
 ${item.price.toLocaleString()} FCFA
 </p>
 
+<div>
+
 <button onclick="removeFromCart(${index})">
-❌
+➖
+</button>
+
+<span>1</span>
+
+<button onclick="addToCart(${item.id})">
+➕
 </button>
 
 </div>
-`;
 
+</div>
+`;
 });
 
 if(cartItems){
