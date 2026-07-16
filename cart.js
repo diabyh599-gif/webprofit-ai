@@ -99,9 +99,15 @@ total += item.price;
 html += `
 <div class="cart-item">
 
+<img
+src="${item.images[0]}"
+width="60"
+height="60"
+style="border-radius:10px;">
+
 <p>
 ${item.name}
--
+<br>
 ${item.price.toLocaleString()} FCFA
 </p>
 
