@@ -434,3 +434,14 @@ height:220px;
 object-fit:cover;
 border-radius:12px;
 }
+
+.discount-badge{
+background:red;
+color:white;
+padding:5px;
+border-radius:10px;
+width:60px;
+text-align:center;
+font-weight:bold;
+margin-bottom:5px;
+}
