@@ -229,6 +229,21 @@ message,
 "_blank"
 );
 
+message +=
+"👤 Client : " +
+customerName +
+"%0A";
+
+message +=
+"📞 Téléphone : " +
+customerPhone +
+"%0A";
+
+message +=
+"📍 Adresse : " +
+customerAddress +
+"%0A%0A";
+
 const tracking =
 document.getElementById(
 "tracking-status"
