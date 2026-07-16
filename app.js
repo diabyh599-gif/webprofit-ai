@@ -65,7 +65,10 @@ style="cursor:pointer;">
 
 <p>${product.category}</p>
 
-<p>⭐ ${product.rating} (${product.reviews} avis)</p>
+<p class="rating">
+⭐⭐⭐⭐⭐
+(${product.reviews} avis)
+</p>
 
 <p>📦 Stock : ${product.stock}</p>
 
