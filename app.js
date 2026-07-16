@@ -344,7 +344,9 @@ const category =
 document.getElementById("admin-category").value;
 
 const image =
-document.getElementById("admin-image").value;
+document.getElementById("admin-image")
+.value
+.trim();
 if(!name || !price || !category){
 
 alert("Remplissez tous les champs");
@@ -383,9 +385,7 @@ comments: [],
 
 delivery: "🚚 Livraison 2 à 3 jours",
 
-images: [
-image
-]
+images: [image]
 
 };
 
