@@ -471,3 +471,43 @@ alert("Accès refusé");
 }
 
 }
+
+function updateAdminStats(){
+
+const productsCount =
+products.length;
+
+const salesCount =
+products.reduce(
+(sum,p)=>sum+p.sales,
+0
+);
+
+const revenue =
+products.reduce(
+(sum,p)=>sum+(p.sales*p.price),
+0
+);
+
+const outStock =
+products.filter(
+p => p.stock <= 0
+).length;
+
+document.getElementById(
+"admin-products-count"
+).textContent = productsCount;
+
+document.getElementById(
+"admin-sales-count"
+).textContent = salesCount;
+
+document.getElementById(
+"admin-revenue"
+).textContent = revenue.toLocaleString();
+
+document.getElementById(
+"admin-out-stock"
+).textContent = outStock;
+
+}
