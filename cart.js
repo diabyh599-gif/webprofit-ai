@@ -156,6 +156,34 @@ finalPrice.toLocaleString();
 }
 
 function orderWhatsApp(){
+const customerName =
+document.getElementById(
+"customer-name"
+).value;
+
+const customerPhone =
+document.getElementById(
+"customer-phone"
+).value;
+
+const customerAddress =
+document.getElementById(
+"customer-address"
+).value;
+
+if(
+!customerName ||
+!customerPhone ||
+!customerAddress
+){
+
+alert(
+"Remplissez vos informations"
+);
+
+return;
+
+}
 let orders =
 JSON.parse(
 localStorage.getItem("orders")
