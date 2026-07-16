@@ -194,51 +194,36 @@ ${comment}
 body.innerHTML = `
 
 <div class="gallery">
-
 ${gallery}
-
 </div>
 
 <h2>${product.name}</h2>
 
-<p>
-⭐ ${product.rating}
-(${product.reviews} avis)
-</p>
+<p>⭐ ${product.rating} (${product.reviews} avis)</p>
 
-<p>
-📦 Stock :
-${product.stock}
-</p>
+<p>📦 Stock : ${product.stock}</p>
 
 <div class="delivery">
 ${product.delivery}
 </div>
 
-<p>
-${product.category}
-</p>
+<p>${product.category}</p>
 
-<h3>
-${product.price.toLocaleString()} FCFA
-</h3>
+<h3>${product.price.toLocaleString()} FCFA</h3>
 
 <p style="text-decoration:line-through;">
 ${product.oldPrice.toLocaleString()} FCFA
 </p>
 
-<button
-onclick="addToCart(${product.id})">
+<button onclick="addToCart(${product.id})">
 🛒 Ajouter au panier
 </button>
 
-`;
-
-${product.id > 0 ? `
 <button onclick="deleteProduct(${product.id})">
 🗑️ Supprimer
 </button>
-` : ""}
+
+`;
 
 modal.style.display = "flex";
 
