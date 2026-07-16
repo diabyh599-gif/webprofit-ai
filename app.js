@@ -577,3 +577,17 @@ container.innerHTML = html;
 displayOrders();
 
 console.log("cart.js chargé");
+
+function buyNow(id){
+
+addToCart(id);
+
+document.querySelector(
+".cart-box"
+).scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+}
