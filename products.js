@@ -3,8 +3,6 @@ JSON.parse(
 localStorage.getItem("products")
 );
 
-localStorage.removeItem("products");
-
 const products =
 savedProducts || [
 
