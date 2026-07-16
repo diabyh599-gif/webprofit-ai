@@ -448,3 +448,5 @@ alert("Maillot supprimé");
 }
 
 }
+
+console.log(products);
