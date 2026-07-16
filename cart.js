@@ -77,7 +77,26 @@ updateStats();
 
 }
 
-function updateCart(){html += `
+function updateCart(){
+
+const cartItems =
+document.getElementById("cart-items");
+
+const cartCount =
+document.getElementById("cart-count");
+
+const cartTotal =
+document.getElementById("cart-total");
+
+let html = "";
+
+let total = 0;
+
+cart.forEach((item,index)=>{
+
+total += item.price;
+
+html += `
 <div class="cart-item">
 
 <p>
@@ -102,47 +121,23 @@ ${item.price.toLocaleString()} FCFA
 
 </div>
 `;
+
 });
 
 if(cartItems){
-
 cartItems.innerHTML = html;
-
 }
 
 if(cartCount){
-
-cartCount.textContent =
-cart.length;
-
-}
-
-if(cart.length >= 3){
-
-discount = 5;
-
-const promoMessage =
-document.getElementById(
-"promo-message"
-);
-
-if(promoMessage){
-
-promoMessage.innerHTML =
-"🎉 Bonus fidélité : 5% appliqué";
-
-}
-
+cartCount.textContent = cart.length;
 }
 
 const finalPrice =
 total - (total * discount / 100);
 
 if(cartTotal){
-
 cartTotal.textContent =
 finalPrice.toLocaleString();
-
 }
 
 }
