@@ -343,6 +343,8 @@ document.getElementById("admin-price").value
 const category =
 document.getElementById("admin-category").value;
 
+const image =
+document.getElementById("admin-image").value;
 if(!name || !price || !category){
 
 alert("Remplissez tous les champs");
@@ -382,7 +384,7 @@ comments: [],
 delivery: "🚚 Livraison 2 à 3 jours",
 
 images: [
-"https://picsum.photos/600/600?random=" + Date.now()
+image
 ]
 
 };
