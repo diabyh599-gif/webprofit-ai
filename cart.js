@@ -156,20 +156,15 @@ finalPrice.toLocaleString();
 }
 
 function orderWhatsApp(){
+
 const customerName =
-document.getElementById(
-"customer-name"
-).value;
+document.getElementById("customer-name").value;
 
 const customerPhone =
-document.getElementById(
-"customer-phone"
-).value;
+document.getElementById("customer-phone").value;
 
 const customerAddress =
-document.getElementById(
-"customer-address"
-).value;
+document.getElementById("customer-address").value;
 
 if(
 !customerName ||
@@ -177,45 +172,37 @@ if(
 !customerAddress
 ){
 
-alert(
-"Remplissez vos informations"
-);
-
+alert("Remplissez vos informations");
 return;
 
 }
-let orders =
-JSON.parse(
-localStorage.getItem("orders")
-) || [];
 
-orders.push({
+if(cart.length === 0){
 
-id: Date.now(),
+alert("Panier vide");
+return;
 
-date: new Date().toLocaleString(),
+}
 
-customerName,
-
-customerPhone,
-
-customerAddress,
-
-items: cart,
-
-total
-
-});
-
-localStorage.setItem(
-"orders",
-JSON.stringify(orders)
-);
+let total = 0;
 
 let message =
 "🛍️ Nouvelle commande WebProfit AI%0A%0A";
 
-let total = 0;
+message +=
+"👤 Client : " +
+customerName +
+"%0A";
+
+message +=
+"📞 Téléphone : " +
+customerPhone +
+"%0A";
+
+message +=
+"📍 Adresse : " +
+customerAddress +
+"%0A%0A";
 
 cart.forEach(item => {
 
@@ -234,26 +221,35 @@ message +=
 total +
 " FCFA";
 
-window.open(
-"https://wa.me/2250719949973?text=" +
-message,
-"_blank"
+let orders =
+JSON.parse(
+localStorage.getItem("orders")
+) || [];
+
+orders.push({
+
+id: Date.now(),
+date: new Date().toLocaleString(),
+customerName,
+customerPhone,
+customerAddress,
+items: cart,
+total
+
+});
+
+localStorage.setItem(
+"orders",
+JSON.stringify(orders)
 );
 
-message +=
-"👤 Client : " +
-customerName +
-"%0A";
-
-message +=
-"📞 Téléphone : " +
-customerPhone +
-"%0A";
-
-message +=
-"📍 Adresse : " +
-customerAddress +
-"%0A%0A";
+window.open(
+"https://wa.me/2250719949973?text=" +
+encodeURIComponent(
+decodeURIComponent(message)
+),
+"_blank"
+);
 
 const tracking =
 document.getElementById(
@@ -266,31 +262,23 @@ tracking.innerHTML =
 "🟡 Commande reçue";
 
 setTimeout(()=>{
-
 tracking.innerHTML =
 "🔵 Préparation";
-
 },3000);
 
 setTimeout(()=>{
-
 tracking.innerHTML =
 "🟣 Expédiée";
-
 },6000);
 
 setTimeout(()=>{
-
 tracking.innerHTML =
 "🟢 Livrée";
-
 },9000);
 
 }
 
-alert(
-"Commande enregistrée !"
-);
+alert("Commande enregistrée !");
 
 }
 
