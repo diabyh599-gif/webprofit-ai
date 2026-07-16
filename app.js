@@ -96,6 +96,10 @@ ${favorite ? "❤️ Favori" : "🤍 Favori"}
 🛒 Ajouter au panier
 </button>
 
+<button onclick="buyNow(${product.id})">
+⚡ Acheter maintenant
+</button>
+
 </div>
 `;
 
