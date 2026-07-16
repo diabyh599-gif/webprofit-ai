@@ -425,3 +425,30 @@ alert("Produit supprimé");
 }
 
 }
+
+function editProduct(id){
+
+const product =
+products.find(p => p.id === id);
+
+const newPrice = prompt(
+"Nouveau prix",
+product.price
+);
+
+if(newPrice === null) return;
+
+product.price = Number(newPrice);
+
+localStorage.setItem(
+"products",
+JSON.stringify(products)
+);
+
+displayProducts();
+
+showProduct(id);
+
+alert("Produit modifié");
+
+}
