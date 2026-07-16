@@ -566,3 +566,5 @@ container.innerHTML = html;
 }
 
 displayOrders();
+
+console.log("cart.js chargé");
