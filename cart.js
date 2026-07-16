@@ -156,13 +156,22 @@ finalPrice.toLocaleString();
 }
 
 function orderWhatsApp(){
+let orders =
+JSON.parse(
+localStorage.getItem("orders")
+) || [];
 
-if(cart.length === 0){
+orders.push({
+id: Date.now(),
+date: new Date().toLocaleString(),
+items: cart,
+total: total
+});
 
-alert("Panier vide");
-return;
-
-}
+localStorage.setItem(
+"orders",
+JSON.stringify(orders)
+);
 
 let message =
 "🛍️ Nouvelle commande WebProfit AI%0A%0A";
