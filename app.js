@@ -425,28 +425,3 @@ alert("Produit supprimé");
 }
 
 }
-
-function deleteMaillot(){
-
-const index = products.findIndex(
-p => p.name === "Maillot de France"
-);
-
-if(index !== -1){
-
-products.splice(index,1);
-
-localStorage.setItem(
-"products",
-JSON.stringify(products)
-);
-
-displayProducts();
-
-alert("Maillot supprimé");
-
-}
-
-}
-
-console.log(products);
