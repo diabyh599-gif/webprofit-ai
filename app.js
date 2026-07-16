@@ -513,3 +513,52 @@ document.getElementById(
 }
 
 updateAdminStats();
+
+function displayOrders(){
+
+const orders =
+JSON.parse(
+localStorage.getItem("orders")
+) || [];
+
+const container =
+document.getElementById("admin-orders");
+
+if(!container) return;
+
+if(orders.length === 0){
+
+container.innerHTML =
+"Aucune commande";
+
+return;
+
+}
+
+let html = "";
+
+orders.forEach(order => {
+
+html += `
+<div class="order-card">
+
+<p>
+🆔 ${order.id}
+</p>
+
+<p>
+📅 ${order.date}
+</p>
+
+<p>
+💰 ${order.total} FCFA
+</p>
+
+</div>
+`;
+
+});
+
+container.innerHTML = html;
+
+}
