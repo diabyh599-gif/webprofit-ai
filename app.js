@@ -562,3 +562,5 @@ html += `
 container.innerHTML = html;
 
 }
+
+displayOrders();
