@@ -51,6 +51,10 @@ ${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
 
 ${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
 
+<div class="discount-badge">
+-20%
+</div>
+
 <img
 src="${product.images[0]}"
 alt="${product.name}"
