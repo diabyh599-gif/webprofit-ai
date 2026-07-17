@@ -615,6 +615,8 @@ alert(
 
 }
 
+window.onload = function(){
+
 const savedClient =
 localStorage.getItem(
 "clientName"
@@ -622,9 +624,18 @@ localStorage.getItem(
 
 if(savedClient){
 
+const accountName =
 document.getElementById(
 "account-name"
-).textContent =
+);
+
+if(accountName){
+
+accountName.textContent =
 savedClient;
 
 }
+
+}
+
+};
