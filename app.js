@@ -592,78 +592,91 @@ behavior:"smooth"
 
 }
 
-function loginClient(){
+function registerUser(){
 
-const name = prompt(
-"Entrez votre nom"
-);
+const email =
+document.getElementById("login-email").value;
 
-if(!name) return;
+const password =
+document.getElementById("login-password").value;
+
+if(!email || !password){
+
+alert("Remplissez tous les champs");
+return;
+
+}
 
 localStorage.setItem(
-"clientName",
-name
+"userEmail",
+email
 );
 
-document.getElementById(
-"account-name"
-).textContent = name;
-
-alert(
-"Bienvenue " + name
+localStorage.setItem(
+"userPassword",
+password
 );
+
+alert("Compte créé avec succès");
 
 }
 
-console.log(
-localStorage.getItem("clientName")
+function loginUser(){
+
+const email =
+document.getElementById("login-email").value;
+
+const password =
+document.getElementById("login-password").value;
+
+const savedEmail =
+localStorage.getItem("userEmail");
+
+const savedPassword =
+localStorage.getItem("userPassword");
+
+if(
+email === savedEmail &&
+password === savedPassword
+){
+
+localStorage.setItem(
+"currentUser",
+email
 );
-
-window.onload = function(){
-
-const savedClient =
-localStorage.getItem(
-"clientName"
-);
-
-if(savedClient){
-
-const accountName =
-document.getElementById(
-"account-name"
-);
-
-if(accountName){
-
-accountName.textContent =
-savedClient;
-
-}
-
-}
-
-};
-
-window.addEventListener("load", function(){
-
-const savedClient =
-localStorage.getItem("clientName");
-
-if(savedClient){
 
 document.getElementById(
-"account-name"
+"login-status"
 ).textContent =
-savedClient;
+"✅ Connecté : " + email;
+
+alert("Connexion réussie");
+
+}else{
+
+alert("Email ou mot de passe incorrect");
 
 }
 
-});
+}
 
-window.onload = function(){
+document.addEventListener(
+"DOMContentLoaded",
+function(){
 
-alert(
-document.getElementById("account-name")
+const currentUser =
+localStorage.getItem(
+"currentUser"
 );
 
-};
+if(currentUser){
+
+document.getElementById(
+"login-status"
+).textContent =
+"✅ Connecté : " + currentUser;
+
+}
+
+}
+);
