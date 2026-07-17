@@ -614,3 +614,17 @@ alert(
 );
 
 }
+
+const savedClient =
+localStorage.getItem(
+"clientName"
+);
+
+if(savedClient){
+
+document.getElementById(
+"account-name"
+).textContent =
+savedClient;
+
+}
