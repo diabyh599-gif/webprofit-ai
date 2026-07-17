@@ -660,4 +660,10 @@ savedClient;
 
 });
 
-console.log("Nom enregistré :", localStorage.getItem("clientName"));
+window.onload = function(){
+
+alert(
+document.getElementById("account-name")
+);
+
+};
