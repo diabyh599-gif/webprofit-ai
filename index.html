@@ -118,22 +118,31 @@ Fin de la promotion dans :
 
 <section class="account-box">
 
-<h2>👤 Mon Compte</h2>
+<h2>👤 Connexion</h2>
 
-<p>
-Nom :
-<span id="account-name">
-Non connecté
-</span>
-</p>
+<input
+id="login-email"
+type="email"
+placeholder="Votre email">
 
-<button onclick="loginClient()">
+<input
+id="login-password"
+type="password"
+placeholder="Mot de passe">
+
+<button onclick="registerUser()">
+Créer un compte
+</button>
+
+<button onclick="loginUser()">
 Se connecter
 </button>
 
-</section>
+<p id="login-status">
+Non connecté
+</p>
 
-<section class="cart-box">
+</section>
 
 <h2>
 🛒 Panier
