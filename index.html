@@ -121,22 +121,28 @@ Fin de la promotion dans :
 <h2>👤 Connexion</h2>
 
 <input
-id="login-email"
+id="email"
 type="email"
 placeholder="Votre email">
 
 <input
-id="login-password"
+id="password"
 type="password"
 placeholder="Mot de passe">
 
-<button onclick="registerUser()">
+<button onclick="login()">
+Se connecter
+</button>
+
+<button onclick="register()">
 Créer un compte
 </button>
 
-<button onclick="loginUser()">
-Se connecter
-</button>
+<p id="account-name">
+Non connecté
+</p>
+
+</section>
 
 <p id="login-status">
 Non connecté
