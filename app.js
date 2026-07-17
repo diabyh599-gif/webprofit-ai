@@ -469,7 +469,7 @@ function openAdmin(){
 const password =
 prompt("Mot de passe Admin");
 
-if(password === "1234"){
+if(password === "45886736"){
 
 document.getElementById(
 "admin-panel"
