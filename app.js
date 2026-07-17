@@ -680,3 +680,18 @@ document.getElementById(
 
 }
 );
+
+function logoutUser(){
+
+localStorage.removeItem(
+"currentUser"
+);
+
+document.getElementById(
+"login-status"
+).textContent =
+"Non connecté";
+
+alert("Déconnexion réussie");
+
+}
