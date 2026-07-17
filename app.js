@@ -659,3 +659,5 @@ savedClient;
 }
 
 });
+
+console.log("Nom enregistré :", localStorage.getItem("clientName"));
