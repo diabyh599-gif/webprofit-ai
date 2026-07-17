@@ -643,3 +643,19 @@ savedClient;
 }
 
 };
+
+window.addEventListener("load", function(){
+
+const savedClient =
+localStorage.getItem("clientName");
+
+if(savedClient){
+
+document.getElementById(
+"account-name"
+).textContent =
+savedClient;
+
+}
+
+});
