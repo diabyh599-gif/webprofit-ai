@@ -615,6 +615,10 @@ alert(
 
 }
 
+console.log(
+localStorage.getItem("clientName")
+);
+
 window.onload = function(){
 
 const savedClient =
