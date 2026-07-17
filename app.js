@@ -591,3 +591,26 @@ behavior:"smooth"
 });
 
 }
+
+function loginClient(){
+
+const name = prompt(
+"Entrez votre nom"
+);
+
+if(!name) return;
+
+localStorage.setItem(
+"clientName",
+name
+);
+
+document.getElementById(
+"account-name"
+).textContent = name;
+
+alert(
+"Bienvenue " + name
+);
+
+}
