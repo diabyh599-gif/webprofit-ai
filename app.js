@@ -680,8 +680,3 @@ document.getElementById(
 
 }
 );
-
-console.log(
-"Utilisateur sauvegardé :",
-localStorage.getItem("currentUser")
-);
