@@ -660,23 +660,3 @@ alert("Email ou mot de passe incorrect");
 
 }
 
-document.addEventListener(
-"DOMContentLoaded",
-function(){
-
-const currentUser =
-localStorage.getItem(
-"currentUser"
-);
-
-if(currentUser){
-
-document.getElementById(
-"login-status"
-).textContent =
-"✅ Connecté : " + currentUser;
-
-}
-
-}
-);
