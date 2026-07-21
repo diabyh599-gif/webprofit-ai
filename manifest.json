@@ -1,22 +1,111 @@
 {
-  "name": "WebProfit AI",
+  "name": "WebProfit AI - Boutique Intelligente",
   "short_name": "WebProfit",
-  "description": "Boutique intelligente avec assistant IA",
+  "description": "🛍️ La boutique intelligente qui te conseille avant d'acheter",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#f97316",
   "orientation": "portrait",
+  "prefer_related_applications": false,
+  "categories": ["shopping", "lifestyle", "productivity"],
+  "lang": "fr",
+  "dir": "ltr",
   "icons": [
+    {
+      "src": "icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "platform": "android",
+      "label": "Page d'accueil"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rechercher",
+      "short_name": "Recherche",
+      "description": "Rechercher un produit",
+      "url": "./index.html?action=search",
+      "icons": [
+        {
+          "src": "icon-search.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Panier",
+      "short_name": "Panier",
+      "description": "Voir mon panier",
+      "url": "./index.html?action=cart",
+      "icons": [
+        {
+          "src": "icon-cart.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Conseiller IA",
+      "short_name": "IA",
+      "description": "Demander conseil à l'IA",
+      "url": "./index.html?action=ai",
+      "icons": [
+        {
+          "src": "icon-ai.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }
