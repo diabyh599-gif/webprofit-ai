@@ -3,120 +3,107 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>WebProfit AI - Boutique intelligente</title>
+    <title>WebProfit AI - Boutique Premium</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#f97316" />
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
+    <!-- ===== HEADER AVEC RECHERCHE ===== -->
     <header class="app-header">
         <div class="header-top">
-            <h1>🛍️ WebProfit AI</h1>
-            <span class="badge-promo">🔥 Ventes Flash</span>
+            <div class="logo-area">
+                <span class="logo-icon">🛍️</span>
+                <span class="logo-text">WebProfit<span class="highlight">AI</span></span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="showSection('favorites')">❤️</button>
+                <button class="header-btn" onclick="showSection('cart')">
+                    🛒
+                    <span class="header-badge" id="header-cart-badge">0</span>
+                </button>
+            </div>
         </div>
         <div class="search-bar">
-            <input type="text" id="search-input" placeholder="🔍 Rechercher un produit..." onkeyup="searchProducts()" />
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Rechercher un produit..." onkeyup="searchProducts()" />
         </div>
     </header>
 
-    <!-- ===== BANNIÈRE PROMO ===== -->
-    <section class="banner-flash">
-        <div class="banner-content">
-            <span class="flash-icon">⚡</span>
-            <span class="flash-title">VENTES FLASH - CHAQUE JOUR</span>
-            <span class="flash-timer" id="countdown">24h 00m 00s</span>
+    <!-- ===== BANNIÈRE VENTES FLASH ===== -->
+    <section class="flash-banner">
+        <div class="flash-header">
+            <span class="flash-lightning">⚡</span>
+            <span class="flash-title">VENTES FLASH</span>
+            <span class="flash-subtitle">Chaque jour</span>
+        </div>
+        <div class="flash-timer" id="flash-timer">
+            <div class="timer-block"><span id="hours">24</span><label>h</label></div>
+            <span class="timer-sep">:</span>
+            <div class="timer-block"><span id="minutes">00</span><label>m</label></div>
+            <span class="timer-sep">:</span>
+            <div class="timer-block"><span id="seconds">00</span><label>s</label></div>
+        </div>
+        <div class="flash-progress">
+            <div class="progress-bar" style="width: 70%"></div>
+            <span class="progress-label">70% des stocks écoulés</span>
         </div>
     </section>
 
     <!-- ===== CATÉGORIES ===== -->
-    <section class="categories-grid">
-        <div class="category-item" onclick="filterProducts('all')">
-            <span class="cat-icon">📂</span>
-            <span>Tous</span>
-        </div>
-        <div class="category-item" onclick="filterProducts('Vêtements')">
-            <span class="cat-icon">👕</span>
-            <span>Vêtements</span>
-        </div>
-        <div class="category-item" onclick="filterProducts('Chaussures')">
-            <span class="cat-icon">👟</span>
-            <span>Chaussures</span>
-        </div>
-        <div class="category-item" onclick="filterProducts('Accessoires')">
-            <span class="cat-icon">⌚</span>
-            <span>Accessoires</span>
-        </div>
-        <div class="category-item" onclick="filterProducts('Électronique')">
-            <span class="cat-icon">💻</span>
-            <span>Électronique</span>
-        </div>
-        <div class="category-item" onclick="document.querySelector('.ai-box').scrollIntoView({behavior:'smooth'})">
-            <span class="cat-icon">🤖</span>
-            <span>Conseiller IA</span>
+    <section class="categories-section">
+        <div class="category-scroll">
+            <div class="category-item active" onclick="filterProducts('all')">
+                <span class="cat-emoji">🔥</span>
+                <span>Tous</span>
+            </div>
+            <div class="category-item" onclick="filterProducts('Téléphones')">
+                <span class="cat-emoji">📱</span>
+                <span>Phones</span>
+            </div>
+            <div class="category-item" onclick="filterProducts('Électronique')">
+                <span class="cat-emoji">💻</span>
+                <span>Électro</span>
+            </div>
+            <div class="category-item" onclick="filterProducts('Vêtements')">
+                <span class="cat-emoji">👕</span>
+                <span>Mode</span>
+            </div>
+            <div class="category-item" onclick="filterProducts('Chaussures')">
+                <span class="cat-emoji">👟</span>
+                <span>Chaussures</span>
+            </div>
+            <div class="category-item" onclick="filterProducts('Accessoires')">
+                <span class="cat-emoji">⌚</span>
+                <span>Accessoires</span>
+            </div>
+            <div class="category-item" onclick="document.querySelector('.ai-section').scrollIntoView({behavior:'smooth'})">
+                <span class="cat-emoji">🤖</span>
+                <span>IA</span>
+            </div>
         </div>
     </section>
 
-    <!-- ===== PRODUITS ===== -->
-    <section class="products-section">
-        <h2>🔥 Recommandé pour vous</h2>
+    <!-- ===== PRODUITS EN VEDETTE ===== -->
+    <section class="featured-section">
+        <div class="section-header">
+            <h2>✨ Recommandé pour vous</h2>
+            <span class="see-all">Voir tout →</span>
+        </div>
         <div id="product-grid" class="product-grid"></div>
     </section>
 
-    <!-- ===== CONSEILLER IA (caché mais accessible) ===== -->
-    <section class="ai-box" style="display:none;">
-        <h2>🤖 Conseiller IA</h2>
-        <input id="ai-input" type="text" placeholder="Ex : J'ai 5000 FCFA pour une fête" />
-        <button onclick="askAI()">Analyser</button>
-        <div id="ai-result"></div>
-    </section>
-
-    <!-- ===== PANIER (caché mais fonctionnel) ===== -->
-    <section class="cart-box" style="display:none;">
-        <h2>🛒 Panier (<span id="cart-count">0</span>)</h2>
-        <div id="cart-items"></div>
-        <h3>Total : <span id="cart-total">0</span> FCFA</h3>
-        <div class="promo-box">
-            <input id="promo-code" type="text" placeholder="Code promo" />
-            <button onclick="applyPromo()">Appliquer</button>
-        </div>
-        <p id="promo-message"></p>
-        <input id="customer-name" type="text" placeholder="Nom complet" />
-        <input id="customer-phone" type="text" placeholder="Téléphone" />
-        <input id="customer-address" type="text" placeholder="Adresse de livraison" />
-        <button onclick="orderWhatsApp()" class="whatsapp-btn">📲 Commander WhatsApp</button>
-    </section>
-
-    <!-- ===== COMPTE (caché mais fonctionnel) ===== -->
-    <section class="account-box" style="display:none;">
-        <h2>👤 Connexion</h2>
-        <input id="login-email" type="email" placeholder="Votre email" />
-        <input id="login-password" type="password" placeholder="Mot de passe" />
-        <button onclick="loginUser()">Se connecter</button>
-        <button onclick="registerUser()">Créer un compte</button>
-        <p id="login-status">Non connecté</p>
-        <button onclick="logoutUser()" class="logout-btn">🚪 Déconnexion</button>
-    </section>
-
-    <!-- ===== ADMIN (caché) ===== -->
-    <section class="admin-section">
-        <button onclick="openAdmin()" class="admin-toggle">⚙️ Admin</button>
-        <div id="admin-panel" style="display:none;">
-            <h2>Administration</h2>
-            <div class="admin-stats">
-                <p>📦 Produits : <span id="admin-products-count">0</span></p>
-                <p>🛒 Ventes : <span id="admin-sales-count">0</span></p>
-                <p>💰 CA : <span id="admin-revenue">0</span> FCFA</p>
-                <p>⚠️ Rupture : <span id="admin-out-stock">0</span></p>
+    <!-- ===== SECTION IA ===== -->
+    <section class="ai-section" id="ai-section">
+        <div class="ai-card">
+            <h3>🤖 Conseiller IA</h3>
+            <p class="ai-desc">Décris ton besoin, je te trouve le produit parfait</p>
+            <div class="ai-input-group">
+                <input id="ai-input" type="text" placeholder="Ex : J'ai 5000 FCFA pour une fête..." />
+                <button onclick="askAI()">Analyser</button>
             </div>
-            <h3>📋 Commandes</h3>
-            <div id="admin-orders">Aucune commande</div>
-            <input id="admin-name" placeholder="Nom produit" />
-            <input id="admin-price" type="number" placeholder="Prix" />
-            <input id="admin-category" placeholder="Catégorie" />
-            <input id="admin-image" placeholder="URL image" />
-            <button onclick="addProduct()">➕ Ajouter produit</button>
+            <div id="ai-result" class="ai-result"></div>
         </div>
     </section>
 
@@ -125,6 +112,93 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">✖</span>
             <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- ===== PANIER (caché) ===== -->
+    <div id="cart-section" style="display:none;" class="page-section">
+        <div class="cart-container">
+            <h2>🛒 Mon Panier</h2>
+            <div id="cart-items"></div>
+            <div class="cart-summary">
+                <div class="cart-total-row">
+                    <span>Total</span>
+                    <span id="cart-total">0</span>
+                    <span>FCFA</span>
+                </div>
+                <div class="promo-row">
+                    <input id="promo-code" placeholder="Code promo" />
+                    <button onclick="applyPromo()">Appliquer</button>
+                </div>
+                <p id="promo-message" class="promo-msg"></p>
+                <button class="checkout-btn" onclick="openCheckout()">📦 Passer la commande</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CHECKOUT (caché) ===== -->
+    <div id="checkout-section" style="display:none;" class="page-section">
+        <div class="checkout-container">
+            <h2>📦 Livraison</h2>
+            <input id="customer-name" placeholder="Nom complet" />
+            <input id="customer-phone" placeholder="Téléphone" />
+            <input id="customer-address" placeholder="Adresse de livraison" />
+            <button class="whatsapp-btn" onclick="orderWhatsApp()">📲 Commander WhatsApp</button>
+            <button class="back-btn" onclick="showSection('cart')">← Retour</button>
+        </div>
+    </div>
+
+    <!-- ===== COMPTE (caché) ===== -->
+    <div id="account-section" style="display:none;" class="page-section">
+        <div class="account-container">
+            <div class="account-profile">
+                <span class="profile-avatar">👤</span>
+                <div>
+                    <h3 id="account-name">Invité</h3>
+                    <p id="account-email">Non connecté</p>
+                </div>
+            </div>
+            <div class="account-menu">
+                <div class="menu-item" onclick="showSection('orders')">
+                    <span>📋</span> Mes commandes
+                </div>
+                <div class="menu-item" onclick="showSection('favorites')">
+                    <span>❤️</span> Favoris
+                </div>
+                <div class="menu-item" onclick="toggleAuth()">
+                    <span>🔑</span> <span id="auth-label">Se connecter</span>
+                </div>
+            </div>
+            <div id="auth-form" style="display:none;">
+                <input id="login-email" placeholder="Email" />
+                <input id="login-password" type="password" placeholder="Mot de passe" />
+                <button onclick="loginUser()">Se connecter</button>
+                <button onclick="registerUser()" class="secondary-btn">Créer un compte</button>
+                <p id="login-status" class="auth-status"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ADMIN ===== -->
+    <div class="admin-fab" onclick="openAdmin()">⚙️</div>
+    <div id="admin-panel" style="display:none;" class="admin-panel">
+        <div class="admin-content">
+            <h2>⚙️ Administration</h2>
+            <div class="admin-stats">
+                <div class="admin-stat"><span>📦</span><span id="admin-products-count">0</span></div>
+                <div class="admin-stat"><span>🛒</span><span id="admin-sales-count">0</span></div>
+                <div class="admin-stat"><span>💰</span><span id="admin-revenue">0</span></div>
+                <div class="admin-stat"><span>⚠️</span><span id="admin-out-stock">0</span></div>
+            </div>
+            <h3>Commandes</h3>
+            <div id="admin-orders" class="admin-orders">Aucune commande</div>
+            <h3>Ajouter un produit</h3>
+            <input id="admin-name" placeholder="Nom" />
+            <input id="admin-price" type="number" placeholder="Prix" />
+            <input id="admin-category" placeholder="Catégorie" />
+            <input id="admin-image" placeholder="URL image" />
+            <button onclick="addProduct()">➕ Ajouter</button>
+            <button onclick="document.getElementById('admin-panel').style.display='none'" class="close-admin">Fermer</button>
         </div>
     </div>
 
@@ -159,46 +233,107 @@
     <script src="ai.js"></script>
     <script src="app.js"></script>
     <script>
-        // Navigation entre les sections
+        // Timer Ventes Flash
+        function startFlashTimer() {
+            let totalSeconds = 86400; // 24h
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            setInterval(() => {
+                totalSeconds--;
+                if (totalSeconds < 0) totalSeconds = 86400;
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
+                hoursEl.textContent = String(h).padStart(2, '0');
+                minutesEl.textContent = String(m).padStart(2, '0');
+                secondsEl.textContent = String(s).padStart(2, '0');
+            }, 1000);
+        }
+        startFlashTimer();
+
+        // Navigation
         function showSection(section) {
-            // Cacher toutes les sections
-            document.querySelectorAll('.products-section, .ai-box, .cart-box, .account-box, .categories-grid, .banner-flash')
+            document.querySelectorAll('.page-section, #cart-section, #checkout-section, #account-section')
                 .forEach(el => el.style.display = 'none');
-            
-            // Afficher la section demandée
-            if (section === 'home') {
-                document.querySelector('.banner-flash').style.display = 'block';
-                document.querySelector('.categories-grid').style.display = 'grid';
-                document.querySelector('.products-section').style.display = 'block';
-            } else if (section === 'categories') {
-                document.querySelector('.categories-grid').style.display = 'grid';
-            } else if (section === 'cart') {
-                document.querySelector('.cart-box').style.display = 'block';
-                updateCartDisplay();
+            document.querySelector('.flash-banner').style.display = 'block';
+            document.querySelector('.categories-section').style.display = 'block';
+            document.querySelector('.featured-section').style.display = 'block';
+            document.querySelector('.ai-section').style.display = 'block';
+
+            if (section === 'cart') {
+                document.querySelector('.flash-banner').style.display = 'none';
+                document.querySelector('.categories-section').style.display = 'none';
+                document.querySelector('.featured-section').style.display = 'none';
+                document.querySelector('.ai-section').style.display = 'none';
+                document.getElementById('cart-section').style.display = 'block';
+                if (typeof updateCartDisplay === 'function') updateCartDisplay();
+            } else if (section === 'checkout') {
+                document.querySelector('.flash-banner').style.display = 'none';
+                document.querySelector('.categories-section').style.display = 'none';
+                document.querySelector('.featured-section').style.display = 'none';
+                document.querySelector('.ai-section').style.display = 'none';
+                document.getElementById('checkout-section').style.display = 'block';
             } else if (section === 'account') {
-                document.querySelector('.account-box').style.display = 'block';
+                document.querySelector('.flash-banner').style.display = 'none';
+                document.querySelector('.categories-section').style.display = 'none';
+                document.querySelector('.featured-section').style.display = 'none';
+                document.querySelector('.ai-section').style.display = 'none';
+                document.getElementById('account-section').style.display = 'block';
+                updateAccountUI();
             } else if (section === 'favorites') {
-                alert('❤️ Tes favoris seront bientôt disponibles !');
+                alert('❤️ Tes favoris arrivent bientôt !');
+                return;
             }
-            
-            // Mettre à jour la nav active
+
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            
-            // Scroll en haut
+            const navMap = { 'home': 0, 'categories': 1, 'cart': 2, 'favorites': 3, 'account': 4 };
+            const idx = navMap[section] || 0;
+            document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Mise à jour du badge panier
+        function openCheckout() {
+            showSection('checkout');
+        }
+
+        function toggleAuth() {
+            const form = document.getElementById('auth-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateAccountUI() {
+            const name = document.getElementById('account-name');
+            const email = document.getElementById('account-email');
+            const label = document.getElementById('auth-label');
+            const status = document.getElementById('login-status');
+            const stored = localStorage.getItem('user');
+            if (stored) {
+                const user = JSON.parse(stored);
+                name.textContent = user.email?.split('@')[0] || 'Utilisateur';
+                email.textContent = user.email || 'Connecté';
+                label.textContent = 'Se déconnecter';
+                if (status) status.textContent = '✅ Connecté';
+            }
+        }
+
         function updateCartBadge() {
             const badge = document.getElementById('cart-badge');
+            const headerBadge = document.getElementById('header-cart-badge');
             const count = document.getElementById('cart-count');
             if (badge && count) {
                 badge.textContent = count.textContent;
                 badge.style.display = count.textContent > 0 ? 'flex' : 'none';
             }
+            if (headerBadge && count) {
+                headerBadge.textContent = count.textContent;
+                headerBadge.style.display = count.textContent > 0 ? 'flex' : 'none';
+            }
         }
         setInterval(updateCartBadge, 500);
+        setTimeout(updateCartBadge, 1000);
 
         // Service Worker
         if ("serviceWorker" in navigator) {
