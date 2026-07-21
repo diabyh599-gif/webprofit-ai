@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#f97316" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
 <body>
 
@@ -18,8 +20,8 @@
                 <span class="logo-text">WebProfit<span class="highlight">AI</span></span>
             </div>
             <div class="header-actions">
-                <button class="header-btn" onclick="showSection('favorites')">❤️</button>
-                <button class="header-btn" onclick="showSection('cart')">
+                <button class="header-btn" onclick="showSection('favorites')" aria-label="Favoris">❤️</button>
+                <button class="header-btn" onclick="showSection('cart')" aria-label="Panier">
                     🛒
                     <span class="header-badge" id="header-cart-badge">0</span>
                 </button>
@@ -58,14 +60,6 @@
                 <span class="cat-emoji">🔥</span>
                 <span>Tous</span>
             </div>
-            <div class="category-item" onclick="filterProducts('Téléphones')">
-                <span class="cat-emoji">📱</span>
-                <span>Phones</span>
-            </div>
-            <div class="category-item" onclick="filterProducts('Électronique')">
-                <span class="cat-emoji">💻</span>
-                <span>Électro</span>
-            </div>
             <div class="category-item" onclick="filterProducts('Vêtements')">
                 <span class="cat-emoji">👕</span>
                 <span>Mode</span>
@@ -78,6 +72,10 @@
                 <span class="cat-emoji">⌚</span>
                 <span>Accessoires</span>
             </div>
+            <div class="category-item" onclick="filterProducts('Électronique')">
+                <span class="cat-emoji">💻</span>
+                <span>Électro</span>
+            </div>
             <div class="category-item" onclick="document.querySelector('.ai-section').scrollIntoView({behavior:'smooth'})">
                 <span class="cat-emoji">🤖</span>
                 <span>IA</span>
@@ -89,7 +87,7 @@
     <section class="featured-section">
         <div class="section-header">
             <h2>✨ Recommandé pour vous</h2>
-            <span class="see-all">Voir tout →</span>
+            <span class="see-all" onclick="filterProducts('all')">Voir tout →</span>
         </div>
         <div id="product-grid" class="product-grid"></div>
     </section>
@@ -118,100 +116,99 @@
     <!-- ==========================================
      PANIER ULTIME - VERSION 2.0
      ========================================== -->
-
-<div id="cart-section" style="display:none;" class="page-section">
-    <div class="cart-container">
-        
-        <!-- ===== EN-TÊTE ===== -->
-        <div class="cart-header">
-            <div class="cart-header-left">
-                <button class="back-btn" onclick="showSection('home')">←</button>
-                <h2>Mon Panier</h2>
-            </div>
-            <span class="cart-items-count" id="cart-items-count-header">0 article</span>
-        </div>
-
-        <!-- ===== RÉSUMÉ ===== -->
-        <div class="cart-summary-card">
-            <div class="summary-row">
-                <span>Sous-total</span>
-                <span id="cart-subtotal">0 FCFA</span>
-            </div>
-            <div class="summary-row discount-row" id="discount-row" style="display:none;">
-                <span>Réduction</span>
-                <span id="cart-discount" style="color:#22c55e;">-0 FCFA</span>
-            </div>
-            <div class="summary-row">
-                <span>Livraison</span>
-                <span id="cart-shipping">Gratuite</span>
-            </div>
-            <div class="summary-row total">
-                <span>Total</span>
-                <span id="cart-total">0 FCFA</span>
-            </div>
-
-            <!-- Barre livraison gratuite -->
-            <div class="free-shipping-progress">
-                <div class="progress-track">
-                    <div class="progress-fill" id="shipping-progress" style="width: 0%;"></div>
+    <div id="cart-section" style="display:none;" class="page-section">
+        <div class="cart-container">
+            
+            <!-- EN-TÊTE -->
+            <div class="cart-header">
+                <div class="cart-header-left">
+                    <button class="back-btn" onclick="showSection('home')">←</button>
+                    <h2>Mon Panier</h2>
                 </div>
-                <div class="progress-label" id="shipping-message">
-                    🚚 Ajoutez <strong id="remaining-amount">6 555 FCFA</strong> pour la livraison gratuite
+                <span class="cart-items-count" id="cart-items-count-header">0 article</span>
+            </div>
+
+            <!-- RÉSUMÉ -->
+            <div class="cart-summary-card">
+                <div class="summary-row">
+                    <span>Sous-total</span>
+                    <span id="cart-subtotal">0 FCFA</span>
+                </div>
+                <div class="summary-row discount-row" id="discount-row" style="display:none;">
+                    <span>Réduction</span>
+                    <span id="cart-discount" style="color:#22c55e;">-0 FCFA</span>
+                </div>
+                <div class="summary-row">
+                    <span>Livraison</span>
+                    <span id="cart-shipping">Gratuite</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="cart-total">0 FCFA</span>
+                </div>
+
+                <!-- Barre livraison gratuite -->
+                <div class="free-shipping-progress">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="shipping-progress" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-label" id="shipping-message">
+                        🚚 Ajoutez <strong id="remaining-amount">6 555 FCFA</strong> pour la livraison gratuite
+                    </div>
+                </div>
+
+                <!-- Bouton Commander -->
+                <button class="checkout-btn" onclick="openCheckout()">
+                    <span>📦 Commander</span>
+                    <span id="cart-total-btn">0 FCFA</span>
+                </button>
+            </div>
+
+            <!-- LISTE DES PRODUITS -->
+            <div class="cart-items-section">
+                <div class="section-header">
+                    <h3>🛒 Panier (<span id="cart-items-count">0</span>)</h3>
+                    <span class="clear-cart" onclick="clearCart()">Tout supprimer</span>
+                </div>
+                <div id="cart-items" class="cart-items-list">
+                    <!-- Rempli par JavaScript -->
                 </div>
             </div>
 
-            <!-- Bouton Commander -->
-            <button class="checkout-btn" onclick="openCheckout()">
-                <span>📦 Commander</span>
-                <span id="cart-total-btn">0 FCFA</span>
-            </button>
-        </div>
+            <!-- PRODUITS ENREGISTRÉS -->
+            <div class="saved-products">
+                <div class="section-header">
+                    <h3>⭐ Mes produits enregistrés (<span id="saved-count">0</span>)</h3>
+                    <span class="see-all" onclick="showAllSaved()">VOIR TOUS →</span>
+                </div>
+                <div id="saved-products-grid" class="saved-grid">
+                    <!-- Rempli par JavaScript -->
+                </div>
+            </div>
 
-        <!-- ===== LISTE DES PRODUITS ===== -->
-        <div class="cart-items-section">
-            <div class="section-header">
-                <h3>🛒 Panier (<span id="cart-items-count">0</span>)</h3>
-                <span class="clear-cart" onclick="clearCart()">Tout supprimer</span>
+            <!-- VUS RÉCEMMENT -->
+            <div class="recent-products">
+                <div class="section-header">
+                    <h3>🕐 Vus récemment</h3>
+                    <span class="see-all" onclick="showAllRecent()">VOIR TOUS →</span>
+                </div>
+                <div id="recent-products-grid" class="recent-grid">
+                    <!-- Rempli par JavaScript -->
+                </div>
             </div>
-            <div id="cart-items" class="cart-items-list">
-                <!-- Rempli par JavaScript -->
-            </div>
-        </div>
 
-        <!-- ===== PRODUITS ENREGISTRÉS ===== -->
-        <div class="saved-products">
-            <div class="section-header">
-                <h3>⭐ Mes produits enregistrés (<span id="saved-count">0</span>)</h3>
-                <span class="see-all" onclick="showAllSaved()">VOIR TOUS →</span>
+            <!-- SUGGESTIONS -->
+            <div class="suggestions">
+                <div class="section-header">
+                    <h3>👥 Les clients ont aussi consulté</h3>
+                </div>
+                <div id="suggestions-grid" class="suggestions-grid">
+                    <!-- Rempli par JavaScript -->
+                </div>
             </div>
-            <div id="saved-products-grid" class="saved-grid">
-                <!-- Rempli par JavaScript -->
-            </div>
-        </div>
 
-        <!-- ===== VUS RÉCEMMENT ===== -->
-        <div class="recent-products">
-            <div class="section-header">
-                <h3>🕐 Vus récemment</h3>
-                <span class="see-all" onclick="showAllRecent()">VOIR TOUS →</span>
-            </div>
-            <div id="recent-products-grid" class="recent-grid">
-                <!-- Rempli par JavaScript -->
-            </div>
         </div>
-
-        <!-- ===== SUGGESTIONS ===== -->
-        <div class="suggestions">
-            <div class="section-header">
-                <h3>👥 Les clients ont aussi consulté</h3>
-            </div>
-            <div id="suggestions-grid" class="suggestions-grid">
-                <!-- Rempli par JavaScript -->
-            </div>
-        </div>
-
     </div>
-</div>
 
     <!-- ===== CHECKOUT (caché) ===== -->
     <div id="checkout-section" style="display:none;" class="page-section">
@@ -225,115 +222,111 @@
         </div>
     </div>
 
-    <!-- ===== COMPTE (améliorée) ===== -->
-<div id="account-section" style="display:none;" class="page-section">
-    <div class="account-container">
-        
-        <!-- Profil utilisateur -->
-        <div class="account-profile">
-            <div class="profile-avatar">
-                <span id="profile-emoji">👤</span>
-                <span class="profile-status" id="profile-status">🟢</span>
-            </div>
-            <div class="profile-info">
-                <h3 id="account-name">Invité</h3>
-                <p id="account-email">Non connecté</p>
-                <div class="profile-credit">
-                    <span>💰 Solde crédit</span>
-                    <span class="credit-amount" id="account-credit">0 FCFA</span>
+    <!-- ===== COMPTE ===== -->
+    <div id="account-section" style="display:none;" class="page-section">
+        <div class="account-container">
+            
+            <!-- Profil utilisateur -->
+            <div class="account-profile">
+                <div class="profile-avatar">
+                    <span id="profile-emoji">👤</span>
+                    <span class="profile-status" id="profile-status">🟢</span>
+                </div>
+                <div class="profile-info">
+                    <h3 id="account-name">Invité</h3>
+                    <p id="account-email">Non connecté</p>
+                    <div class="profile-credit">
+                        <span>💰 Solde crédit</span>
+                        <span class="credit-amount" id="account-credit">0 FCFA</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Actions rapides -->
-        <div class="quick-actions">
-            <div class="quick-action" onclick="openChat()">
-                <span>💬</span>
-                <span>Chat en direct</span>
+            <!-- Actions rapides -->
+            <div class="quick-actions">
+                <div class="quick-action" onclick="openChat()">
+                    <span>💬</span>
+                    <span>Chat en direct</span>
+                </div>
+                <div class="quick-action" onclick="openWhatsApp()">
+                    <span>📲</span>
+                    <span>WhatsApp</span>
+                </div>
             </div>
-            <div class="quick-action" onclick="openWhatsApp()">
-                <span>📲</span>
-                <span>WhatsApp</span>
-            </div>
-        </div>
 
-        <!-- Menu Besoin d'aide -->
-        <div class="menu-section">
-            <h4>❓ Besoin d'aide ?</h4>
-            <div class="menu-item" onclick="navigateTo('help')">
-                <span>🆘</span> Aide & Assistance
-                <span class="menu-arrow">→</span>
+            <!-- Menu Besoin d'aide -->
+            <div class="menu-section">
+                <h4>❓ Besoin d'aide ?</h4>
+                <div class="menu-item" onclick="navigateTo('help')">
+                    <span>🆘</span> Aide & Assistance
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('orders')">
+                    <span>📋</span> Mes Commandes
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('inbox')">
+                    <span>📩</span> Boîte de réception
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('reviews')">
+                    <span>⭐</span> Notes et avis
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="showSection('favorites')">
+                    <span>❤️</span> Favoris
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('followed')">
+                    <span>👥</span> Vendeurs Suivis
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('history')">
+                    <span>🕐</span> Derniers produits vus
+                    <span class="menu-arrow">→</span>
+                </div>
             </div>
-            <div class="menu-item" onclick="navigateTo('account')">
-                <span>👤</span> Mon compte
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('orders')">
-                <span>📋</span> Mes Commandes
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('inbox')">
-                <span>📩</span> Boîte de réception
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('reviews')">
-                <span>⭐</span> Notes et avis
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="showSection('favorites')">
-                <span>❤️</span> Favoris
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('followed')">
-                <span>👥</span> Vendeurs Suivis
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('history')">
-                <span>🕐</span> Derniers produits vus
-                <span class="menu-arrow">→</span>
-            </div>
-        </div>
 
-        <!-- Paramètres -->
-        <div class="menu-section">
-            <h4>⚙️ Mes paramètres</h4>
-            <div class="menu-item" onclick="navigateTo('payment')">
-                <span>💳</span> Paramètres de paiement
-                <span class="menu-arrow">→</span>
+            <!-- Paramètres -->
+            <div class="menu-section">
+                <h4>⚙️ Mes paramètres</h4>
+                <div class="menu-item" onclick="navigateTo('payment')">
+                    <span>💳</span> Paramètres de paiement
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('address')">
+                    <span>📍</span> Carnet d'adresses
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('settings')">
+                    <span>🔐</span> Gestion de compte
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('notifications')">
+                    <span>🔔</span> Préférences de notification
+                    <span class="menu-arrow">→</span>
+                </div>
+                <div class="menu-item" onclick="navigateTo('privacy')">
+                    <span>🔒</span> Politique de Confidentialité
+                    <span class="menu-arrow">→</span>
+                </div>
             </div>
-            <div class="menu-item" onclick="navigateTo('address')">
-                <span>📍</span> Carnet d'adresses
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('settings')">
-                <span>🔐</span> Gestion de compte
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('notifications')">
-                <span>🔔</span> Préférences de notification
-                <span class="menu-arrow">→</span>
-            </div>
-            <div class="menu-item" onclick="navigateTo('privacy')">
-                <span>🔒</span> Politique de Confidentialité
-                <span class="menu-arrow">→</span>
-            </div>
-        </div>
 
-        <!-- Déconnexion -->
-        <button class="logout-btn-full" onclick="logoutUser()">
-            🚪 Se déconnecter
-        </button>
+            <!-- Déconnexion -->
+            <button class="logout-btn-full" onclick="logoutUser()">
+                🚪 Se déconnecter
+            </button>
 
-        <!-- Formulaire de connexion (caché) -->
-        <div id="auth-form" style="display:none;" class="auth-form-full">
-            <input id="login-email" placeholder="Email" />
-            <input id="login-password" type="password" placeholder="Mot de passe" />
-            <button onclick="loginUser()" class="login-btn-full">Se connecter</button>
-            <button onclick="registerUser()" class="register-btn-full">Créer un compte</button>
-            <p id="login-status" class="auth-status"></p>
+            <!-- Formulaire de connexion -->
+            <div id="auth-form" style="display:block;" class="auth-form-full">
+                <input id="login-email" placeholder="Email" />
+                <input id="login-password" type="password" placeholder="Mot de passe" />
+                <button onclick="loginUser()" class="login-btn-full">Se connecter</button>
+                <button onclick="registerUser()" class="register-btn-full">Créer un compte</button>
+                <p id="login-status" class="auth-status">❌ Non connecté</p>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- ===== ADMIN ===== -->
     <div class="admin-fab" onclick="openAdmin()">⚙️</div>
@@ -346,9 +339,9 @@
                 <div class="admin-stat"><span>💰</span><span id="admin-revenue">0</span></div>
                 <div class="admin-stat"><span>⚠️</span><span id="admin-out-stock">0</span></div>
             </div>
-            <h3>Commandes</h3>
+            <h3>📋 Commandes</h3>
             <div id="admin-orders" class="admin-orders">Aucune commande</div>
-            <h3>Ajouter un produit</h3>
+            <h3>➕ Ajouter un produit</h3>
             <input id="admin-name" placeholder="Nom" />
             <input id="admin-price" type="number" placeholder="Prix" />
             <input id="admin-category" placeholder="Catégorie" />
@@ -391,7 +384,7 @@
     <script>
         // Timer Ventes Flash
         function startFlashTimer() {
-            let totalSeconds = 86400; // 24h
+            let totalSeconds = 86400;
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');
             const secondsEl = document.getElementById('seconds');
@@ -411,42 +404,62 @@
 
         // Navigation
         function showSection(section) {
+            // Cacher toutes les sections
             document.querySelectorAll('.page-section, #cart-section, #checkout-section, #account-section')
-                .forEach(el => el.style.display = 'none');
-            document.querySelector('.flash-banner').style.display = 'block';
-            document.querySelector('.categories-section').style.display = 'block';
-            document.querySelector('.featured-section').style.display = 'block';
-            document.querySelector('.ai-section').style.display = 'block';
+                .forEach(el => {
+                    if (el) el.style.display = 'none';
+                });
 
+            // Afficher les sections par défaut
+            const flash = document.querySelector('.flash-banner');
+            const categories = document.querySelector('.categories-section');
+            const featured = document.querySelector('.featured-section');
+            const ai = document.querySelector('.ai-section');
+            
+            if (flash) flash.style.display = 'block';
+            if (categories) categories.style.display = 'block';
+            if (featured) featured.style.display = 'block';
+            if (ai) ai.style.display = 'block';
+
+            // Gérer les sections spéciales
             if (section === 'cart') {
-                document.querySelector('.flash-banner').style.display = 'none';
-                document.querySelector('.categories-section').style.display = 'none';
-                document.querySelector('.featured-section').style.display = 'none';
-                document.querySelector('.ai-section').style.display = 'none';
-                document.getElementById('cart-section').style.display = 'block';
-                if (typeof updateCartDisplay === 'function') updateCartDisplay();
+                if (flash) flash.style.display = 'none';
+                if (categories) categories.style.display = 'none';
+                if (featured) featured.style.display = 'none';
+                if (ai) ai.style.display = 'none';
+                const cartSection = document.getElementById('cart-section');
+                if (cartSection) cartSection.style.display = 'block';
+                if (typeof renderCart === 'function') renderCart();
             } else if (section === 'checkout') {
-                document.querySelector('.flash-banner').style.display = 'none';
-                document.querySelector('.categories-section').style.display = 'none';
-                document.querySelector('.featured-section').style.display = 'none';
-                document.querySelector('.ai-section').style.display = 'none';
-                document.getElementById('checkout-section').style.display = 'block';
+                if (flash) flash.style.display = 'none';
+                if (categories) categories.style.display = 'none';
+                if (featured) featured.style.display = 'none';
+                if (ai) ai.style.display = 'none';
+                const checkout = document.getElementById('checkout-section');
+                if (checkout) checkout.style.display = 'block';
             } else if (section === 'account') {
-                document.querySelector('.flash-banner').style.display = 'none';
-                document.querySelector('.categories-section').style.display = 'none';
-                document.querySelector('.featured-section').style.display = 'none';
-                document.querySelector('.ai-section').style.display = 'none';
-                document.getElementById('account-section').style.display = 'block';
-                updateAccountUI();
+                if (flash) flash.style.display = 'none';
+                if (categories) categories.style.display = 'none';
+                if (featured) featured.style.display = 'none';
+                if (ai) ai.style.display = 'none';
+                const account = document.getElementById('account-section');
+                if (account) account.style.display = 'block';
+                if (typeof updateAccountUI === 'function') updateAccountUI();
             } else if (section === 'favorites') {
-                alert('❤️ Tes favoris arrivent bientôt !');
+                if (typeof showToast === 'function') {
+                    showToast('❤️ Tes favoris arrivent bientôt !');
+                } else {
+                    alert('❤️ Tes favoris arrivent bientôt !');
+                }
                 return;
             }
 
+            // Mettre à jour la navigation active
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             const navMap = { 'home': 0, 'categories': 1, 'cart': 2, 'favorites': 3, 'account': 4 };
             const idx = navMap[section] || 0;
-            document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+            const navItems = document.querySelectorAll('.nav-item');
+            if (navItems[idx]) navItems[idx].classList.add('active');
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -457,45 +470,83 @@
 
         function toggleAuth() {
             const form = document.getElementById('auth-form');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            if (form) {
+                form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            }
         }
 
         function updateAccountUI() {
             const name = document.getElementById('account-name');
             const email = document.getElementById('account-email');
-            const label = document.getElementById('auth-label');
+            const credit = document.getElementById('account-credit');
             const status = document.getElementById('login-status');
+            const profileEmoji = document.getElementById('profile-emoji');
+            const authForm = document.getElementById('auth-form');
+
             const stored = localStorage.getItem('user');
             if (stored) {
-                const user = JSON.parse(stored);
-                name.textContent = user.email?.split('@')[0] || 'Utilisateur';
-                email.textContent = user.email || 'Connecté';
-                label.textContent = 'Se déconnecter';
-                if (status) status.textContent = '✅ Connecté';
+                try {
+                    const user = JSON.parse(stored);
+                    const displayName = user.email?.split('@')[0] || 'Utilisateur';
+                    if (name) name.textContent = displayName;
+                    if (email) email.textContent = user.email || 'Connecté';
+                    if (credit) credit.textContent = '10 000 FCFA';
+                    if (profileEmoji) profileEmoji.textContent = '😎';
+                    if (status) status.textContent = '✅ Connecté avec succès';
+                    if (authForm) authForm.style.display = 'none';
+                } catch (e) {
+                    console.warn('Erreur de lecture du profil:', e);
+                }
+            } else {
+                if (name) name.textContent = 'Invité';
+                if (email) email.textContent = 'Non connecté';
+                if (credit) credit.textContent = '0 FCFA';
+                if (profileEmoji) profileEmoji.textContent = '👤';
+                if (status) status.textContent = '❌ Non connecté';
+                if (authForm) authForm.style.display = 'block';
             }
         }
 
         function updateCartBadge() {
             const badge = document.getElementById('cart-badge');
             const headerBadge = document.getElementById('header-cart-badge');
-            const count = document.getElementById('cart-count');
-            if (badge && count) {
-                badge.textContent = count.textContent;
-                badge.style.display = count.textContent > 0 ? 'flex' : 'none';
+            
+            // Récupérer le compteur depuis le localStorage ou l'élément cart-count
+            let count = 0;
+            const cartCountEl = document.getElementById('cart-count');
+            if (cartCountEl) {
+                count = parseInt(cartCountEl.textContent) || 0;
+            } else {
+                // Essayer de récupérer depuis le localStorage
+                try {
+                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                    count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                } catch (e) {}
             }
-            if (headerBadge && count) {
-                headerBadge.textContent = count.textContent;
-                headerBadge.style.display = count.textContent > 0 ? 'flex' : 'none';
+            
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+            if (headerBadge) {
+                headerBadge.textContent = count;
+                headerBadge.style.display = count > 0 ? 'flex' : 'none';
             }
         }
+        
+        // Mettre à jour le badge régulièrement
         setInterval(updateCartBadge, 500);
         setTimeout(updateCartBadge, 1000);
 
         // Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("./service-worker.js")
-                .then(() => console.log("Service Worker installé"));
+                .then(() => console.log("✅ Service Worker installé"))
+                .catch(err => console.warn("⚠️ Service Worker:", err));
         }
+
+        console.log('✅ WebProfit AI chargé avec succès !');
+        console.log('📱 Version 2.0 - Jumia Killer');
     </script>
 </body>
 </html>
