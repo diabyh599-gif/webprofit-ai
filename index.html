@@ -148,36 +148,115 @@
         </div>
     </div>
 
-    <!-- ===== COMPTE (caché) ===== -->
-    <div id="account-section" style="display:none;" class="page-section">
-        <div class="account-container">
-            <div class="account-profile">
-                <span class="profile-avatar">👤</span>
-                <div>
-                    <h3 id="account-name">Invité</h3>
-                    <p id="account-email">Non connecté</p>
-                </div>
+    <!-- ===== COMPTE (améliorée) ===== -->
+<div id="account-section" style="display:none;" class="page-section">
+    <div class="account-container">
+        
+        <!-- Profil utilisateur -->
+        <div class="account-profile">
+            <div class="profile-avatar">
+                <span id="profile-emoji">👤</span>
+                <span class="profile-status" id="profile-status">🟢</span>
             </div>
-            <div class="account-menu">
-                <div class="menu-item" onclick="showSection('orders')">
-                    <span>📋</span> Mes commandes
+            <div class="profile-info">
+                <h3 id="account-name">Invité</h3>
+                <p id="account-email">Non connecté</p>
+                <div class="profile-credit">
+                    <span>💰 Solde crédit</span>
+                    <span class="credit-amount" id="account-credit">0 FCFA</span>
                 </div>
-                <div class="menu-item" onclick="showSection('favorites')">
-                    <span>❤️</span> Favoris
-                </div>
-                <div class="menu-item" onclick="toggleAuth()">
-                    <span>🔑</span> <span id="auth-label">Se connecter</span>
-                </div>
-            </div>
-            <div id="auth-form" style="display:none;">
-                <input id="login-email" placeholder="Email" />
-                <input id="login-password" type="password" placeholder="Mot de passe" />
-                <button onclick="loginUser()">Se connecter</button>
-                <button onclick="registerUser()" class="secondary-btn">Créer un compte</button>
-                <p id="login-status" class="auth-status"></p>
             </div>
         </div>
+
+        <!-- Actions rapides -->
+        <div class="quick-actions">
+            <div class="quick-action" onclick="openChat()">
+                <span>💬</span>
+                <span>Chat en direct</span>
+            </div>
+            <div class="quick-action" onclick="openWhatsApp()">
+                <span>📲</span>
+                <span>WhatsApp</span>
+            </div>
+        </div>
+
+        <!-- Menu Besoin d'aide -->
+        <div class="menu-section">
+            <h4>❓ Besoin d'aide ?</h4>
+            <div class="menu-item" onclick="navigateTo('help')">
+                <span>🆘</span> Aide & Assistance
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('account')">
+                <span>👤</span> Mon compte
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('orders')">
+                <span>📋</span> Mes Commandes
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('inbox')">
+                <span>📩</span> Boîte de réception
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('reviews')">
+                <span>⭐</span> Notes et avis
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="showSection('favorites')">
+                <span>❤️</span> Favoris
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('followed')">
+                <span>👥</span> Vendeurs Suivis
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('history')">
+                <span>🕐</span> Derniers produits vus
+                <span class="menu-arrow">→</span>
+            </div>
+        </div>
+
+        <!-- Paramètres -->
+        <div class="menu-section">
+            <h4>⚙️ Mes paramètres</h4>
+            <div class="menu-item" onclick="navigateTo('payment')">
+                <span>💳</span> Paramètres de paiement
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('address')">
+                <span>📍</span> Carnet d'adresses
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('settings')">
+                <span>🔐</span> Gestion de compte
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('notifications')">
+                <span>🔔</span> Préférences de notification
+                <span class="menu-arrow">→</span>
+            </div>
+            <div class="menu-item" onclick="navigateTo('privacy')">
+                <span>🔒</span> Politique de Confidentialité
+                <span class="menu-arrow">→</span>
+            </div>
+        </div>
+
+        <!-- Déconnexion -->
+        <button class="logout-btn-full" onclick="logoutUser()">
+            🚪 Se déconnecter
+        </button>
+
+        <!-- Formulaire de connexion (caché) -->
+        <div id="auth-form" style="display:none;" class="auth-form-full">
+            <input id="login-email" placeholder="Email" />
+            <input id="login-password" type="password" placeholder="Mot de passe" />
+            <button onclick="loginUser()" class="login-btn-full">Se connecter</button>
+            <button onclick="registerUser()" class="register-btn-full">Créer un compte</button>
+            <p id="login-status" class="auth-status"></p>
+        </div>
     </div>
+</div>
 
     <!-- ===== ADMIN ===== -->
     <div class="admin-fab" onclick="openAdmin()">⚙️</div>
