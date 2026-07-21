@@ -2,124 +2,69 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebProfit AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>WebProfit AI - Boutique intelligente</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#f97316" />
 </head>
 <body>
-    <!-- ===== EN-TÊTE ===== -->
-    <header class="header">
-        <div class="header-content">
+
+    <!-- ===== HEADER AVEC RECHERCHE ===== -->
+    <header class="app-header">
+        <div class="header-top">
             <h1>🛍️ WebProfit AI</h1>
-            <p>La boutique intelligente qui te conseille avant d'acheter</p>
+            <span class="badge-promo">🔥 Ventes Flash</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="🔍 Rechercher un produit..." onkeyup="searchProducts()" />
         </div>
     </header>
 
-    <!-- ===== SECTION HERO ===== -->
-    <section class="hero">
-        <div class="container">
-            <h2>Trouve le produit parfait grâce à l'IA</h2>
-            <p>Décris ton besoin, ton budget ou ton événement.</p>
+    <!-- ===== BANNIÈRE PROMO ===== -->
+    <section class="banner-flash">
+        <div class="banner-content">
+            <span class="flash-icon">⚡</span>
+            <span class="flash-title">VENTES FLASH - CHAQUE JOUR</span>
+            <span class="flash-timer" id="countdown">01h:02m:55s</span>
         </div>
     </section>
 
-    <!-- ===== CONSEILLER IA ===== -->
-    <section class="ai-box container">
-        <h2>🤖 Conseiller IA</h2>
-        <div class="ai-form">
-            <input id="ai-input" type="text" placeholder="Ex : J'ai 5000 FCFA pour une fête samedi" />
-            <button onclick="askAI()">Analyser ma demande</button>
+    <!-- ===== CATÉGORIES EN GRILLE ===== -->
+    <section class="categories-grid">
+        <div class="category-item" onclick="filterProducts('Téléphones')">
+            <span class="cat-icon">📱</span>
+            <span>Téléphones</span>
         </div>
-        <div id="ai-result"></div>
-    </section>
-
-    <!-- ===== RECHERCHE ===== -->
-    <section class="search-box container">
-        <h2>🔍 Recherche</h2>
-        <input id="search-input" type="text" placeholder="Rechercher un produit..." onkeyup="searchProducts()" />
-    </section>
-
-    <!-- ===== FILTRES CATÉGORIES ===== -->
-    <section class="filter-box container">
-        <h2>📂 Catégories</h2>
-        <div class="filters">
-            <button onclick="filterProducts('all')">Tous</button>
-            <button onclick="filterProducts('Vêtements')">Vêtements</button>
-            <button onclick="filterProducts('Chaussures')">Chaussures</button>
-            <button onclick="filterProducts('Accessoires')">Accessoires</button>
-            <button onclick="filterProducts('Électronique')">Électronique</button>
+        <div class="category-item" onclick="filterProducts('Électronique')">
+            <span class="cat-icon">💻</span>
+            <span>Électronique</span>
         </div>
-    </section>
-
-    <!-- ===== TABLEAU DE BORD + PROMO ===== -->
-    <section class="stats-box container">
-        <h2>📊 Tableau de bord</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <p>👥 Visiteurs : <span id="visitor-count">127</span></p>
-                <p>🛒 Ventes simulées : <span id="sales-count">0</span></p>
-                <p>❤️ Favoris : <span id="favorite-count">0</span></p>
-            </div>
-            <div class="promo-timer stat-card">
-                <h3>⏰ Offre spéciale</h3>
-                <p>Fin de la promotion dans :</p>
-                <div id="countdown">24h 00m 00s</div>
-            </div>
+        <div class="category-item" onclick="filterProducts('Vêtements')">
+            <span class="cat-icon">👕</span>
+            <span>Vêtements</span>
+        </div>
+        <div class="category-item" onclick="filterProducts('Chaussures')">
+            <span class="cat-icon">👟</span>
+            <span>Chaussures</span>
+        </div>
+        <div class="category-item" onclick="filterProducts('Accessoires')">
+            <span class="cat-icon">⌚</span>
+            <span>Accessoires</span>
+        </div>
+        <div class="category-item" onclick="filterProducts('all')">
+            <span class="cat-icon">📂</span>
+            <span>Tout</span>
         </div>
     </section>
 
     <!-- ===== PRODUITS ===== -->
-    <section class="products container">
-        <h2>🔥 Produits populaires</h2>
+    <section class="products-section">
+        <h2>🔥 Recommandé pour vous</h2>
         <div id="product-grid" class="product-grid"></div>
     </section>
 
-    <!-- ===== AUTHENTIFICATION ===== -->
-    <section class="account-box container">
-        <h2>👤 Connexion</h2>
-        <div class="auth-form">
-            <input id="login-email" type="email" placeholder="Votre email" />
-            <input id="login-password" type="password" placeholder="Mot de passe" />
-            <div class="auth-buttons">
-                <button onclick="loginUser()">Se connecter</button>
-                <button onclick="registerUser()">Créer un compte</button>
-            </div>
-            <p id="login-status">Non connecté</p>
-            <button onclick="logoutUser()" class="logout-btn">🚪 Déconnexion</button>
-        </div>
-    </section>
-
-    <!-- ===== PANIER ===== -->
-    <section class="cart-box container">
-        <h2>🛒 Panier (<span id="cart-count">0</span>)</h2>
-        <div id="cart-items" class="cart-items"></div>
-        <h3>Total : <span id="cart-total">0</span> FCFA</h3>
-
-        <div class="promo-box">
-            <input id="promo-code" type="text" placeholder="Code promo" />
-            <button onclick="applyPromo()">Appliquer</button>
-        </div>
-        <p id="promo-message"></p>
-    </section>
-
-    <!-- ===== LIVRAISON & COMMANDE ===== -->
-    <section class="delivery-box container">
-        <h2>📦 Livraison</h2>
-        <input id="customer-name" type="text" placeholder="Nom complet" />
-        <input id="customer-phone" type="text" placeholder="Téléphone" />
-        <input id="customer-address" type="text" placeholder="Adresse de livraison" />
-        <button onclick="orderWhatsApp()" class="whatsapp-btn">📲 Commander WhatsApp</button>
-    </section>
-
-    <!-- ===== SUIVI COMMANDE ===== -->
-    <section class="tracking-box container">
-        <h2>🚚 Suivi de commande</h2>
-        <div id="tracking-status">Aucune commande en cours</div>
-    </section>
-
-    <!-- ===== MODAL PRODUIT ===== -->
+    <!-- ===== MODALE PRODUIT ===== -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">✖</span>
@@ -127,37 +72,60 @@
         </div>
     </div>
 
-    <!-- ===== ADMIN ===== -->
-    <div class="admin-section container">
-        <button onclick="openAdmin()" class="admin-toggle">⚙️ Admin</button>
-        <div id="admin-panel" style="display:none;">
-            <h2>Administration</h2>
-            <div class="admin-stats">
-                <p>📦 Produits : <span id="admin-products-count">0</span></p>
-                <p>🛒 Ventes : <span id="admin-sales-count">0</span></p>
-                <p>💰 Chiffre d'affaires : <span id="admin-revenue">0</span> FCFA</p>
-                <p>⚠️ Rupture de stock : <span id="admin-out-stock">0</span></p>
-            </div>
-            <h3>📋 Commandes</h3>
-            <div id="admin-orders">Aucune commande</div>
-            <h3>➕ Ajouter un produit</h3>
-            <div class="admin-form">
-                <input id="admin-name" placeholder="Nom produit" />
-                <input id="admin-price" type="number" placeholder="Prix" />
-                <input id="admin-category" placeholder="Catégorie" />
-                <input id="admin-image" placeholder="URL image" />
-                <button onclick="addProduct()">➕ Ajouter produit</button>
-            </div>
+    <!-- ===== NAVIGATION BASSE ===== -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('home')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Accueil</span>
         </div>
-    </div>
+        <div class="nav-item" onclick="navigateTo('categories')">
+            <span class="nav-icon">📂</span>
+            <span class="nav-label">Catégories</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('cart')">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Panier</span>
+            <span class="nav-badge" id="cart-badge">0</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('favorites')">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-label">Favoris</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('account')">
+            <span class="nav-icon">👤</span>
+            <span class="nav-label">Compte</span>
+        </div>
+    </nav>
 
     <!-- ===== SCRIPTS ===== -->
     <script src="products.js"></script>
     <script src="cart.js"></script>
     <script src="ai.js"></script>
     <script src="app.js"></script>
-
     <script>
+        // Navigation
+        function navigateTo(section) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            // Scroll en haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mettre à jour le badge du panier
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                const count = document.getElementById('cart-count')?.textContent || '0';
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        // Observer les changements du panier
+        setInterval(updateCartBadge, 500);
+        updateCartBadge();
+
+        // Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("./service-worker.js")
                 .then(() => console.log("Service Worker installé"));
