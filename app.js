@@ -660,3 +660,241 @@ alert("Email ou mot de passe incorrect");
 
 }
 
+// ==========================================
+// NOUVELLES FONCTIONS POUR LE COMPTE
+// ==========================================
+
+/**
+ * Met à jour l'interface du compte utilisateur
+ * Affiche le nom, l'email, le crédit et le statut de connexion
+ */
+function updateAccountUI() {
+    const name = document.getElementById('account-name');
+    const email = document.getElementById('account-email');
+    const credit = document.getElementById('account-credit');
+    const status = document.getElementById('login-status');
+    const authForm = document.getElementById('auth-form');
+    const profileEmoji = document.getElementById('profile-emoji');
+    const loginStatus = document.getElementById('login-status');
+    const authLabel = document.getElementById('auth-label');
+
+    // Récupérer l'utilisateur stocké dans localStorage
+    const stored = localStorage.getItem('user');
+    
+    if (stored) {
+        try {
+            const user = JSON.parse(stored);
+            const displayName = user.email?.split('@')[0] || 'Utilisateur';
+            
+            if (name) name.textContent = displayName;
+            if (email) email.textContent = user.email || 'Connecté';
+            if (credit) credit.textContent = '10 000 FCFA'; // Valeur simulée
+            if (profileEmoji) profileEmoji.textContent = '😎';
+            if (loginStatus) loginStatus.textContent = '✅ Connecté avec succès';
+            if (authForm) authForm.style.display = 'none';
+            if (authLabel) authLabel.textContent = 'Se déconnecter';
+            
+            // Stocker le nom pour l'utiliser ailleurs
+            localStorage.setItem('userName', displayName);
+            
+        } catch (e) {
+            console.warn('Erreur de lecture du profil:', e);
+            resetAccountUI();
+        }
+    } else {
+        resetAccountUI();
+    }
+}
+
+/**
+ * Réinitialise l'UI du compte quand l'utilisateur est déconnecté
+ */
+function resetAccountUI() {
+    const name = document.getElementById('account-name');
+    const email = document.getElementById('account-email');
+    const credit = document.getElementById('account-credit');
+    const profileEmoji = document.getElementById('profile-emoji');
+    const loginStatus = document.getElementById('login-status');
+    const authForm = document.getElementById('auth-form');
+    const authLabel = document.getElementById('auth-label');
+
+    if (name) name.textContent = 'Invité';
+    if (email) email.textContent = 'Non connecté';
+    if (credit) credit.textContent = '0 FCFA';
+    if (profileEmoji) profileEmoji.textContent = '👤';
+    if (loginStatus) loginStatus.textContent = '❌ Non connecté';
+    if (authForm) authForm.style.display = 'block';
+    if (authLabel) authLabel.textContent = 'Se connecter';
+}
+
+/**
+ * Navigation vers une section (menu du compte)
+ * @param {string} section - Nom de la section à afficher
+ */
+function navigateTo(section) {
+    const messages = {
+        'help': '🆘 Aide & Assistance - Contactez-nous par WhatsApp !',
+        'account': '👤 Mon compte - Consultez vos informations',
+        'orders': '📋 Mes Commandes - Suivez vos achats',
+        'inbox': '📩 Boîte de réception - Vos messages',
+        'reviews': '⭐ Notes et avis - Donnez votre avis',
+        'favorites': '❤️ Favoris - Vos produits préférés',
+        'followed': '👥 Vendeurs Suivis - Les vendeurs que vous suivez',
+        'history': '🕐 Derniers produits vus - Votre historique',
+        'payment': '💳 Paramètres de paiement - Gérez vos moyens de paiement',
+        'address': '📍 Carnet d\'adresses - Vos adresses de livraison',
+        'settings': '🔐 Gestion de compte - Sécurité et confidentialité',
+        'notifications': '🔔 Préférences de notification - Gérez vos alertes',
+        'privacy': '🔒 Politique de Confidentialité - Comment nous protégeons vos données'
+    };
+
+    const message = messages[section] || `📍 Page "${section}" - Fonctionnalité à venir !`;
+    
+    // Afficher une notification visuelle au lieu d'une alerte (plus propre)
+    showToast(message);
+}
+
+/**
+ * Ouvre le chat en direct (version améliorée)
+ */
+function openChat() {
+    // Vérifier si l'utilisateur est connecté
+    const user = localStorage.getItem('user');
+    if (!user) {
+        showToast('💬 Connectez-vous pour accéder au chat !');
+        return;
+    }
+    showToast('💬 Chat en direct - Un conseiller va vous répondre !');
+}
+
+/**
+ * Ouvre WhatsApp avec un message pré-rempli
+ */
+function openWhatsApp() {
+    const user = localStorage.getItem('user');
+    let name = 'Client';
+    
+    if (user) {
+        try {
+            const parsed = JSON.parse(user);
+            name = parsed.email?.split('@')[0] || 'Client';
+        } catch (e) {}
+    }
+    
+    const message = `Bonjour WebProfit AI ! Je suis ${name} et je souhaite passer une commande.`;
+    const phone = '22500000000'; // Remplace par ton numéro WhatsApp
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
+
+/**
+ * Affiche une notification temporaire (toast)
+ * @param {string} message - Message à afficher
+ */
+function showToast(message) {
+    // Vérifier si un toast existe déjà
+    let toast = document.getElementById('toast-notification');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast-notification';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2e;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            z-index: 9999;
+            max-width: 90%;
+            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.1);
+        `;
+        document.body.appendChild(toast);
+    }
+    
+    // Mettre à jour le message
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    
+    // Cacher après 3 secondes
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 3000);
+}
+
+/**
+ * Surcharge de la fonction logoutUser pour mettre à jour l'UI
+ * (Garde l'ancienne fonction, on l'améliore)
+ */
+const originalLogout = window.logoutUser;
+window.logoutUser = function() {
+    if (typeof originalLogout === 'function') {
+        originalLogout();
+    }
+    // Mettre à jour l'UI du compte
+    setTimeout(resetAccountUI, 100);
+    showToast('🚪 Déconnexion réussie');
+};
+
+/**
+ * Surcharge de loginUser pour mettre à jour l'UI
+ */
+const originalLogin = window.loginUser;
+window.loginUser = function() {
+    if (typeof originalLogin === 'function') {
+        originalLogin();
+    }
+    // Mettre à jour l'UI du compte après connexion
+    setTimeout(updateAccountUI, 300);
+};
+
+/**
+ * Surcharge de registerUser pour mettre à jour l'UI
+ */
+const originalRegister = window.registerUser;
+window.registerUser = function() {
+    if (typeof originalRegister === 'function') {
+        originalRegister();
+    }
+    // Mettre à jour l'UI du compte après inscription
+    setTimeout(updateAccountUI, 300);
+};
+
+// ==========================================
+// INITIALISATION AUTOMATIQUE
+// ==========================================
+
+// Mettre à jour l'UI du compte au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(updateAccountUI, 500);
+});
+
+// Mettre à jour le badge du panier depuis le compte
+setInterval(function() {
+    const cartCount = document.getElementById('cart-count');
+    const badge = document.getElementById('cart-badge');
+    const headerBadge = document.getElementById('header-cart-badge');
+    
+    if (cartCount && badge) {
+        const count = cartCount.textContent || '0';
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+    if (cartCount && headerBadge) {
+        const count = cartCount.textContent || '0';
+        headerBadge.textContent = count;
+        headerBadge.style.display = count > 0 ? 'flex' : 'none';
+    }
+}, 500);
