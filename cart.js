@@ -1,368 +1,195 @@
+// ==========================================
+// CART.JS - VERSION UNIFIÉE ET STABLE
+// ==========================================
+
+// ===== VARIABLES GLOBALES =====
 let discount = 0;
+let cart = [];
 
-let cart = JSON.parse(
-localStorage.getItem("cart")
-) || [];
-
-function saveCart(){
-
-localStorage.setItem(
-"cart",
-JSON.stringify(cart)
-);
-
-localStorage.setItem(
-"products",
-JSON.stringify(products)
-);
-
-}
-
-function addToCart(productId){
-
-const product =
-products.find(
-p => p.id === productId
-);
-
-if(!product){
-return;
-}
-
-if(product.stock <= 0){
-
-alert("Produit épuisé");
-
-return;
-
-}
-
-product.stock--;
-product.sales++;
-
-cart.push(product);
-
-saveCart();
-
-updateCart();
-
-displayProducts();
-
-updateStats();
-
-}
-
-function removeFromCart(index){
-
-const product =
-cart[index];
-
-if(product){
-
-product.stock++;
-
-}
-
-cart.splice(index,1);
-
-saveCart();
-
-updateCart();
-
-displayProducts();
-
-updateStats();
-
-}
-
-function updateCart(){
-
-const cartItems =
-document.getElementById("cart-items");
-
-const cartCount =
-document.getElementById("cart-count");
-
-const cartTotal =
-document.getElementById("cart-total");
-
-let html = "";
-
-let total = 0;
-
-cart.forEach((item,index)=>{
-
-total += item.price;
-
-html += `
-<div class="cart-item">
-
-<img
-src="${item.images[0]}"
-width="60"
-height="60"
-style="border-radius:10px;">
-
-<p>
-${item.name}
-<br>
-${item.price.toLocaleString()} FCFA
-</p>
-
-<div>
-
-<button onclick="removeFromCart(${index})">
-➖
-</button>
-
-<span>1</span>
-
-<button onclick="addToCart(${item.id})">
-➕
-</button>
-
-</div>
-
-</div>
-`;
-
-});
-
-if(cartItems){
-cartItems.innerHTML = html;
-}
-
-if(cartCount){
-cartCount.textContent = cart.length;
-}
-
-const finalPrice =
-total - (total * discount / 100);
-
-if(cartTotal){
-cartTotal.textContent =
-finalPrice.toLocaleString();
-}
-
-}
-
-function orderWhatsApp(){
-
-const customerName =
-document.getElementById("customer-name").value;
-
-const customerPhone =
-document.getElementById("customer-phone").value;
-
-const customerAddress =
-document.getElementById("customer-address").value;
-
-if(
-!customerName ||
-!customerPhone ||
-!customerAddress
-){
-
-alert("Remplissez vos informations");
-return;
-
-}
-
-if(cart.length === 0){
-
-alert("Panier vide");
-return;
-
-}
-
-let total = 0;
-
-let message =
-"🛍️ Nouvelle commande WebProfit AI%0A%0A";
-
-message +=
-"👤 Client : " +
-customerName +
-"%0A";
-
-message +=
-"📞 Téléphone : " +
-customerPhone +
-"%0A";
-
-message +=
-"📍 Adresse : " +
-customerAddress +
-"%0A%0A";
-
-cart.forEach(item => {
-
-message +=
-item.name +
-" - " +
-item.price +
-" FCFA%0A";
-
-total += item.price;
-
-});
-
-message +=
-"%0A💰 Total : " +
-total +
-" FCFA";
-
-let orders =
-JSON.parse(
-localStorage.getItem("orders")
-) || [];
-
-orders.push({
-
-id: Date.now(),
-date: new Date().toLocaleString(),
-customerName,
-customerPhone,
-customerAddress,
-items: cart,
-total
-
-});
-
-localStorage.setItem(
-"orders",
-JSON.stringify(orders)
-);
-
-window.open(
-"https://wa.me/2250719949973?text=" +
-encodeURIComponent(
-decodeURIComponent(message)
-),
-"_blank"
-);
-
-const tracking =
-document.getElementById(
-"tracking-status"
-);
-
-if(tracking){
-
-tracking.innerHTML =
-"🟡 Commande reçue";
-
-setTimeout(()=>{
-tracking.innerHTML =
-"🔵 Préparation";
-},3000);
-
-setTimeout(()=>{
-tracking.innerHTML =
-"🟣 Expédiée";
-},6000);
-
-setTimeout(()=>{
-tracking.innerHTML =
-"🟢 Livrée";
-},9000);
-
-}
-
-alert("Commande enregistrée !");
-
-}
-
-function applyPromo(){
-
-const code =
-document.getElementById(
-"promo-code"
-).value.toUpperCase();
-
-const message =
-document.getElementById(
-"promo-message"
-);
-
-if(code === "BIENVENUE10"){
-
-discount = 10;
-
-message.innerHTML =
-"✅ Réduction de 10% appliquée";
-
-}
-else if(code === "FETE20"){
-
-discount = 20;
-
-message.innerHTML =
-"✅ Réduction de 20% appliquée";
-
-}
-else{
-
-discount = 0;
-
-message.innerHTML =
-"❌ Code invalide";
-
-}
-
-updateCart();
-
-}
-
-updateCart();
-
-/* ==========================================
-   PANIER ULTIME - VERSION 2.0
-   ========================================== */
-
-// Données simulées
-const savedProducts = [
-    { id: 's1', name: 'Montres Pour Femmes', price: 994, oldPrice: 4739, discount: '-79%', image: 'https://via.placeholder.com/200' },
-    { id: 's2', name: 'Gandour Eau De Parf...', price: 3000, oldPrice: null, image: 'https://via.placeholder.com/200' },
-    { id: 's3', name: 'HUAHU', price: 1950, oldPrice: 5850, discount: '-67%', image: 'https://via.placeholder.com/200' },
-    { id: 's4', name: 'Sac à Dos', price: 3703, oldPrice: 10003, discount: '-63%', image: 'https://via.placeholder.com/200' },
-    { id: 's5', name: 'VIC 20000mAh', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
-];
-
-const recentProducts = [
-    { id: 'r1', name: 'Aspirateur portable 3...', price: 13000, oldPrice: 25000, discount: '-48%', image: 'https://via.placeholder.com/200' },
-    { id: 'r2', name: 'VIC 20000mAh Banq...', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
-];
-
-const suggestions = [
-    { id: 'g1', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
-    { id: 'g2', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
-    { id: 'g3', name: 'JNKACL', price: 1248, oldPrice: 3835, discount: '-67%', image: 'https://via.placeholder.com/200' }
-];
-
-const FREE_SHIPPING_THRESHOLD = 7500; // Seuil livraison gratuite
-
-/* ===== FONCTIONS PRINCIPALES ===== */
+// ===== FONCTIONS DE BASE =====
 
 /**
- * Rendu complet du panier
+ * Récupère le panier depuis localStorage
+ */
+function getCart() {
+    try {
+        const data = localStorage.getItem('cart');
+        return data ? JSON.parse(data) : [];
+    } catch {
+        return [];
+    }
+}
+
+/**
+ * Sauvegarde le panier dans localStorage
+ */
+function saveCart(cartData) {
+    localStorage.setItem('cart', JSON.stringify(cartData));
+    cart = cartData;
+    updateCartBadge();
+}
+
+/**
+ * Met à jour le badge du panier dans la navigation
+ */
+function updateCartBadge() {
+    const cartData = getCart();
+    const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    
+    const badge = document.getElementById('cart-badge');
+    if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'flex' : 'none';
+    }
+    
+    const headerBadge = document.getElementById('header-cart-badge');
+    if (headerBadge) {
+        headerBadge.textContent = count;
+        headerBadge.style.display = count > 0 ? 'flex' : 'none';
+    }
+}
+
+// ===== FONCTIONS PRINCIPALES =====
+
+/**
+ * Ajoute un produit au panier
+ */
+function addToCart(productId) {
+    // Chercher le produit dans la liste globale
+    let product = null;
+    
+    // Si les produits sont dans une variable globale 'products'
+    if (typeof products !== 'undefined') {
+        product = products.find(p => p.id === productId);
+    }
+    
+    // Si pas trouvé, chercher dans savedProducts
+    if (!product && typeof savedProducts !== 'undefined') {
+        product = savedProducts.find(p => p.id === productId);
+    }
+    
+    if (!product) {
+        showToast('❌ Produit introuvable');
+        return;
+    }
+    
+    // Vérifier le stock
+    if (product.stock !== undefined && product.stock <= 0) {
+        showToast('❌ Produit épuisé');
+        return;
+    }
+
+    const cartData = getCart();
+    const existing = cartData.find(item => item.id === productId);
+    
+    if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+        showToast(`✅ ${product.name} : quantité ${existing.quantity}`);
+    } else {
+        cartData.push({
+            id: productId,
+            name: product.name,
+            price: product.price,
+            image: product.images ? product.images[0] : (product.image || 'https://via.placeholder.com/200'),
+            quantity: 1,
+            oldPrice: product.oldPrice || null,
+            discount: product.discount || null
+        });
+        showToast(`✅ ${product.name} ajouté au panier !`);
+    }
+    
+    // Mettre à jour le stock si disponible
+    if (product.stock !== undefined) {
+        product.stock--;
+        if (typeof saveProducts === 'function') saveProducts();
+    }
+    
+    saveCart(cartData);
+    renderCart();
+    updateCartBadge();
+    if (typeof updateStats === 'function') updateStats();
+}
+
+/**
+ * Supprime un produit du panier
+ */
+function removeFromCart(index) {
+    const cartData = getCart();
+    if (!cartData || !cartData[index]) return;
+    
+    const item = cartData[index];
+    const name = item.name;
+    
+    // Restaurer le stock si possible
+    if (typeof products !== 'undefined') {
+        const product = products.find(p => p.id === item.id);
+        if (product && product.stock !== undefined) {
+            product.stock += (item.quantity || 1);
+        }
+    }
+    
+    cartData.splice(index, 1);
+    saveCart(cartData);
+    renderCart();
+    updateCartBadge();
+    showToast(`🗑️ "${name}" supprimé`);
+}
+
+/**
+ * Met à jour la quantité d'un produit
+ */
+function updateQuantity(index, delta) {
+    const cartData = getCart();
+    if (!cartData || !cartData[index]) return;
+
+    const newQty = (cartData[index].quantity || 1) + delta;
+    
+    if (newQty <= 0) {
+        removeFromCart(index);
+        return;
+    }
+    
+    cartData[index].quantity = newQty;
+    saveCart(cartData);
+    renderCart();
+    updateCartBadge();
+}
+
+/**
+ * Vide tout le panier
+ */
+function clearCart() {
+    if (confirm('🛒 Vider tout le panier ?')) {
+        saveCart([]);
+        renderCart();
+        updateCartBadge();
+        showToast('🗑️ Panier vidé');
+    }
+}
+
+// ===== AFFICHAGE =====
+
+/**
+ * Affiche le panier
  */
 function renderCart() {
-    const cart = getCart();
+    const cartData = getCart();
     const container = document.getElementById('cart-items');
+    const countDisplay = document.getElementById('cart-count');
+    const totalDisplay = document.getElementById('cart-total');
     const countHeader = document.getElementById('cart-items-count-header');
     const countSection = document.getElementById('cart-items-count');
     const subtotalEl = document.getElementById('cart-subtotal');
     const discountEl = document.getElementById('cart-discount');
     const discountRow = document.getElementById('discount-row');
-    const shippingEl = document.getElementById('cart-shipping');
     const totalEl = document.getElementById('cart-total');
     const totalBtnEl = document.getElementById('cart-total-btn');
+    const shippingMessage = document.getElementById('shipping-message');
 
     if (!container) return;
 
     // Panier vide
-    if (!cart || cart.length === 0) {
+    if (!cartData || cartData.length === 0) {
         container.innerHTML = `
             <div class="empty-cart">
                 <span>🛒</span>
@@ -374,7 +201,6 @@ function renderCart() {
         updateCounts(0);
         updateTotals(0, 0);
         updateProgressBar(0);
-        updateCheckoutBtn(0);
         return;
     }
 
@@ -382,19 +208,13 @@ function renderCart() {
     let subtotal = 0;
     let discountTotal = 0;
     let html = '';
+    const FREE_SHIPPING_THRESHOLD = 7500;
 
-    cart.forEach((item, index) => {
+    cartData.forEach((item, index) => {
         const price = item.price || 0;
         const qty = item.quantity || 1;
         const total = price * qty;
         subtotal += total;
-
-        // Appliquer une réduction simulée (10% si > 3 articles)
-        if (qty > 3 && item.discount === undefined) {
-            const itemDiscount = total * 0.1;
-            discountTotal += itemDiscount;
-            item._discount = itemDiscount;
-        }
 
         html += `
             <div class="cart-item" data-index="${index}">
@@ -405,11 +225,9 @@ function renderCart() {
                         <span class="cart-item-price">${formatPrice(total)} FCFA</span>
                         ${item.oldPrice ? `<span class="cart-item-old-price">${formatPrice(item.oldPrice)} FCFA</span>` : ''}
                         ${item.discount ? `<span class="cart-item-discount">${item.discount}</span>` : ''}
-                        ${item._discount ? `<span class="cart-item-discount" style="background:#22c55e;">-10%</span>` : ''}
                     </div>
                     <div class="cart-item-meta">
                         <span class="cart-item-stock">✅ Disponible</span>
-                        ${item.delivery ? `<span class="cart-item-delivery">🚚 ${item.delivery}</span>` : ''}
                     </div>
                     <div class="cart-item-actions">
                         <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
@@ -424,15 +242,16 @@ function renderCart() {
 
     container.innerHTML = html;
 
-    // Mise à jour des affichages
-    const finalTotal = subtotal - discountTotal;
-    updateCounts(cart.length);
-    updateTotals(subtotal, discountTotal, finalTotal);
-    updateProgressBar(subtotal);
-    updateCheckoutBtn(finalTotal);
+    // Appliquer la réduction si code promo
+    const finalTotal = subtotal - (subtotal * discount / 100);
 
-    // Mise à jour du badge
-    updateCartBadge();
+    // Mise à jour des affichages
+    updateCounts(cartData.length);
+    updateTotals(subtotal, subtotal * discount / 100, finalTotal);
+    updateProgressBar(subtotal);
+
+    // Total dans le bouton
+    if (totalBtnEl) totalBtnEl.textContent = `${formatPrice(finalTotal)} FCFA`;
 }
 
 /**
@@ -441,33 +260,35 @@ function renderCart() {
 function updateCounts(count) {
     const countHeader = document.getElementById('cart-items-count-header');
     const countSection = document.getElementById('cart-items-count');
-    const savedCount = document.getElementById('saved-count');
+    const cartCount = document.getElementById('cart-count');
 
     const text = `${count} article${count > 1 ? 's' : ''}`;
     if (countHeader) countHeader.textContent = text;
     if (countSection) countSection.textContent = count;
-    if (savedCount) savedCount.textContent = savedProducts.length;
+    if (cartCount) cartCount.textContent = count;
 }
 
 /**
  * Met à jour les totaux
  */
-function updateTotals(subtotal, discount, total) {
+function updateTotals(subtotal, discountAmount, total) {
     const subtotalEl = document.getElementById('cart-subtotal');
     const discountEl = document.getElementById('cart-discount');
     const discountRow = document.getElementById('discount-row');
     const totalEl = document.getElementById('cart-total');
+    const cartTotal = document.getElementById('cart-total');
 
     if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} FCFA`;
     
-    if (discount > 0) {
+    if (discountAmount > 0) {
         if (discountRow) discountRow.style.display = 'flex';
-        if (discountEl) discountEl.textContent = `- ${formatPrice(discount)} FCFA`;
+        if (discountEl) discountEl.textContent = `- ${formatPrice(discountAmount)} FCFA`;
     } else {
         if (discountRow) discountRow.style.display = 'none';
     }
 
-    if (totalEl) totalEl.textContent = `${formatPrice(total || subtotal)} FCFA`;
+    if (totalEl) totalEl.textContent = `${formatPrice(total)} FCFA`;
+    if (cartTotal) cartTotal.textContent = formatPrice(total);
 }
 
 /**
@@ -476,7 +297,7 @@ function updateTotals(subtotal, discount, total) {
 function updateProgressBar(subtotal) {
     const progress = document.getElementById('shipping-progress');
     const message = document.getElementById('shipping-message');
-    const remainingEl = document.getElementById('remaining-amount');
+    const FREE_SHIPPING_THRESHOLD = 7500;
 
     if (!progress || !message) return;
 
@@ -493,178 +314,115 @@ function updateProgressBar(subtotal) {
     }
 }
 
+// ===== CODE PROMO =====
+
 /**
- * Met à jour le bouton commander
+ * Applique un code promo
  */
-function updateCheckoutBtn(total) {
-    const btn = document.getElementById('cart-total-btn');
-    if (btn) btn.textContent = `${formatPrice(total)} FCFA`;
+function applyPromo() {
+    const code = document.getElementById('promo-code')?.value?.toUpperCase() || '';
+    const message = document.getElementById('promo-message');
+    const discountDisplay = document.getElementById('cart-discount');
+
+    if (code === 'BIENVENUE10') {
+        discount = 10;
+        if (message) message.innerHTML = '✅ Réduction de 10% appliquée';
+        if (discountDisplay) discountDisplay.textContent = '-10%';
+    } else if (code === 'FETE20') {
+        discount = 20;
+        if (message) message.innerHTML = '✅ Réduction de 20% appliquée';
+        if (discountDisplay) discountDisplay.textContent = '-20%';
+    } else {
+        discount = 0;
+        if (message) message.innerHTML = '❌ Code invalide';
+        if (discountDisplay) discountDisplay.textContent = '0%';
+    }
+
+    renderCart();
 }
 
-/**
- * Met à jour la quantité
- */
-function updateQuantity(index, delta) {
-    const cart = getCart();
-    if (!cart || !cart[index]) return;
+// ===== COMMANDE WHATSAPP =====
 
-    const newQty = (cart[index].quantity || 1) + delta;
-    if (newQty <= 0) {
-        // Supprimer avec animation
-        const item = cart[index];
-        cart.splice(index, 1);
-        saveCart(cart);
-        renderCart();
-        updateCartBadge();
-        showToast(`🗑️ "${item.name}" supprimé`);
+/**
+ * Envoie la commande par WhatsApp
+ */
+function orderWhatsApp() {
+    const customerName = document.getElementById('customer-name')?.value || '';
+    const customerPhone = document.getElementById('customer-phone')?.value || '';
+    const customerAddress = document.getElementById('customer-address')?.value || '';
+
+    if (!customerName || !customerPhone || !customerAddress) {
+        showToast('⚠️ Remplissez toutes vos informations');
         return;
     }
 
-    cart[index].quantity = newQty;
-    saveCart(cart);
-    renderCart();
-    updateCartBadge();
-}
-
-/**
- * Supprime un article
- */
-function removeFromCart(index) {
-    const cart = getCart();
-    if (!cart || !cart[index]) return;
-    
-    const item = cart[index];
-    const name = item.name;
-    cart.splice(index, 1);
-    saveCart(cart);
-    renderCart();
-    updateCartBadge();
-    showToast(`🗑️ "${name}" supprimé`);
-
-    // Undo (annulation)
-    setTimeout(() => {
-        if (!cart.find(i => i.id === item.id)) {
-            showToast('🔄 Cliquez pour annuler la suppression', true, () => {
-                cart.push(item);
-                saveCart(cart);
-                renderCart();
-                updateCartBadge();
-                showToast(`✅ "${name}" réajouté`);
-            });
-        }
-    }, 2000);
-}
-
-/**
- * Vide le panier
- */
-function clearCart() {
-    if (confirm('🛒 Vider tout le panier ?')) {
-        saveCart([]);
-        renderCart();
-        updateCartBadge();
-        showToast('🗑️ Panier vidé');
+    const cartData = getCart();
+    if (cartData.length === 0) {
+        showToast('🛒 Panier vide');
+        return;
     }
-}
 
-/**
- * Rendu des produits enregistrés
- */
-function renderSavedProducts() {
-    const container = document.getElementById('saved-products-grid');
-    const count = document.getElementById('saved-count');
-    if (!container) return;
+    let total = 0;
+    let message = '🛍️ Nouvelle commande WebProfit AI%0A%0A';
+    message += '👤 Client : ' + customerName + '%0A';
+    message += '📞 Téléphone : ' + customerPhone + '%0A';
+    message += '📍 Adresse : ' + customerAddress + '%0A%0A';
 
-    if (count) count.textContent = savedProducts.length;
+    cartData.forEach(item => {
+        const qty = item.quantity || 1;
+        const price = item.price || 0;
+        message += `📦 ${item.name} x${qty} - ${price * qty} FCFA%0A`;
+        total += price * qty;
+    });
 
-    container.innerHTML = savedProducts.map(p => `
-        <div class="saved-product-card" onclick="addToCartFromSaved('${p.id}')">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
-            <div class="product-name">${p.name}</div>
-            <div class="price-row">
-                <span class="current-price">${formatPrice(p.price)} FCFA</span>
-                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
-            </div>
-            <button class="buy-btn">Acheter</button>
-        </div>
-    `).join('');
-}
+    // Appliquer réduction
+    const finalTotal = total - (total * discount / 100);
+    message += '%0A💰 Total : ' + finalTotal + ' FCFA';
 
-/**
- * Rendu des produits récents
- */
-function renderRecentProducts() {
-    const container = document.getElementById('recent-products-grid');
-    if (!container) return;
+    // Sauvegarder la commande
+    let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push({
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        customerName,
+        customerPhone,
+        customerAddress,
+        items: cartData,
+        total: finalTotal,
+        discount: discount
+    });
+    localStorage.setItem('orders', JSON.stringify(orders));
 
-    container.innerHTML = recentProducts.map(p => `
-        <div class="recent-product-card" onclick="showProductDetail('${p.id}')">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
-            <div class="product-name">${p.name}</div>
-            <div class="price-row">
-                <span class="current-price">${formatPrice(p.price)} FCFA</span>
-                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
-            </div>
-        </div>
-    `).join('');
-}
+    window.open(
+        'https://wa.me/2250719949973?text=' + message,
+        '_blank'
+    );
 
-/**
- * Rendu des suggestions
- */
-function renderSuggestions() {
-    const container = document.getElementById('suggestions-grid');
-    if (!container) return;
-
-    container.innerHTML = suggestions.map(p => `
-        <div class="suggestion-card" onclick="showProductDetail('${p.id}')">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
-            <div class="product-name">${p.name}</div>
-            <div class="price-row">
-                <span class="current-price">${formatPrice(p.price)} FCFA</span>
-                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
-            </div>
-        </div>
-    `).join('');
-}
-
-/**
- * Ajoute un produit enregistré au panier
- */
-function addToCartFromSaved(productId) {
-    const product = savedProducts.find(p => p.id === productId);
-    if (!product) return;
-
-    const cart = getCart();
-    const existing = cart.find(item => item.id === productId);
-    if (existing) {
-        existing.quantity = (existing.quantity || 1) + 1;
-    } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: 1
-        });
+    // Simuler le suivi de commande
+    const tracking = document.getElementById('tracking-status');
+    if (tracking) {
+        tracking.innerHTML = '🟡 Commande reçue';
+        setTimeout(() => tracking.innerHTML = '🔵 Préparation', 3000);
+        setTimeout(() => tracking.innerHTML = '🟣 Expédiée', 6000);
+        setTimeout(() => tracking.innerHTML = '🟢 Livrée', 9000);
     }
-    saveCart(cart);
-    renderCart();
-    updateCartBadge();
-    showToast('✅ Produit ajouté au panier !');
+
+    showToast('✅ Commande enregistrée !');
 }
 
+// ===== UTILITAIRES =====
+
 /**
- * Formatte un prix
+ * Formate un prix
  */
 function formatPrice(price) {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return Math.round(price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 /**
- * Toast avec undo
+ * Affiche une notification
  */
-function showToast(message, withUndo = false, undoCallback = null) {
+function showToast(message) {
     let toast = document.getElementById('toast-notification');
     if (!toast) {
         toast = document.createElement('div');
@@ -692,53 +450,170 @@ function showToast(message, withUndo = false, undoCallback = null) {
         document.body.appendChild(toast);
     }
 
-    if (withUndo && undoCallback) {
-        toast.innerHTML = `${message} <span style="color:#f97316;margin-left:12px;cursor:pointer;pointer-events:auto;" onclick="this.parentElement.style.opacity='0';undoCallback()">↩️ Annuler</span>`;
-        // Stocker le callback
-        window._undoCallback = undoCallback;
-    } else {
-        toast.textContent = message;
-    }
-
+    toast.textContent = message;
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(-50%) translateY(0)';
-    toast.style.pointerEvents = 'auto';
 
     clearTimeout(toast._timeout);
     toast._timeout = setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(-50%) translateY(20px)';
-        toast.style.pointerEvents = 'none';
-    }, 3000);
+    }, 2500);
+}
+
+// ===== NAVIGATION =====
+
+/**
+ * Navigation vers une section (à utiliser avec le HTML)
+ */
+function showSection(section) {
+    // Cacher toutes les sections
+    document.querySelectorAll('.page-section, #cart-section, #checkout-section, #account-section, .cart-container, .ai-box, .account-box')
+        .forEach(el => {
+            if (el) el.style.display = 'none';
+        });
+    
+    // Afficher la section demandée
+    if (section === 'home') {
+        document.querySelector('.flash-banner')?.style.setProperty('display', 'block');
+        document.querySelector('.categories-section')?.style.setProperty('display', 'block');
+        document.querySelector('.featured-section')?.style.setProperty('display', 'block');
+        document.querySelector('.ai-section')?.style.setProperty('display', 'block');
+        document.querySelector('.products')?.style.setProperty('display', 'block');
+    } else if (section === 'cart') {
+        document.querySelector('#cart-section')?.style.setProperty('display', 'block');
+        renderCart();
+    } else if (section === 'account') {
+        document.querySelector('#account-section')?.style.setProperty('display', 'block');
+        if (typeof updateAccountUI === 'function') updateAccountUI();
+    }
+    
+    // Mettre à jour la navigation active
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const navMap = { 'home': 0, 'categories': 1, 'cart': 2, 'favorites': 3, 'account': 4 };
+    const idx = navMap[section] || 0;
+    document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== DONNÉES SIMULÉES POUR LE PANIER =====
+
+const savedProducts = [
+    { id: 's1', name: 'Montres Pour Femmes', price: 994, oldPrice: 4739, discount: '-79%', image: 'https://via.placeholder.com/200' },
+    { id: 's2', name: 'Gandour Eau De Parf...', price: 3000, oldPrice: null, image: 'https://via.placeholder.com/200' },
+    { id: 's3', name: 'HUAHU', price: 1950, oldPrice: 5850, discount: '-67%', image: 'https://via.placeholder.com/200' },
+    { id: 's4', name: 'Sac à Dos', price: 3703, oldPrice: 10003, discount: '-63%', image: 'https://via.placeholder.com/200' },
+    { id: 's5', name: 'VIC 20000mAh', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
+];
+
+const recentProducts = [
+    { id: 'r1', name: 'Aspirateur portable 3...', price: 13000, oldPrice: 25000, discount: '-48%', image: 'https://via.placeholder.com/200' },
+    { id: 'r2', name: 'VIC 20000mAh Banq...', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
+];
+
+const suggestions = [
+    { id: 'g1', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
+    { id: 'g2', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
+    { id: 'g3', name: 'JNKACL', price: 1248, oldPrice: 3835, discount: '-67%', image: 'https://via.placeholder.com/200' }
+];
+
+/**
+ * Affiche les produits enregistrés
+ */
+function renderSavedProducts() {
+    const container = document.getElementById('saved-products-grid');
+    if (!container) return;
+
+    container.innerHTML = savedProducts.map(p => `
+        <div class="saved-product-card" onclick="addToCart('${p.id}')">
+            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
+            <div class="product-name">${p.name}</div>
+            <div class="price-row">
+                <span class="current-price">${formatPrice(p.price)} FCFA</span>
+                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
+            </div>
+            <button class="buy-btn">Acheter</button>
+        </div>
+    `).join('');
 }
 
 /**
- * Initialisation
+ * Affiche les produits récents
+ */
+function renderRecentProducts() {
+    const container = document.getElementById('recent-products-grid');
+    if (!container) return;
+
+    container.innerHTML = recentProducts.map(p => `
+        <div class="recent-product-card" onclick="showProductDetail('${p.id}')">
+            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
+            <div class="product-name">${p.name}</div>
+            <div class="price-row">
+                <span class="current-price">${formatPrice(p.price)} FCFA</span>
+                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+/**
+ * Affiche les suggestions
+ */
+function renderSuggestions() {
+    const container = document.getElementById('suggestions-grid');
+    if (!container) return;
+
+    container.innerHTML = suggestions.map(p => `
+        <div class="suggestion-card" onclick="showProductDetail('${p.id}')">
+            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/200'" />
+            <div class="product-name">${p.name}</div>
+            <div class="price-row">
+                <span class="current-price">${formatPrice(p.price)} FCFA</span>
+                ${p.oldPrice ? `<span class="old-price">${formatPrice(p.oldPrice)} FCFA</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== INITIALISATION =====
+
+/**
+ * Initialisation du panier
  */
 function initCart() {
+    // Récupérer le panier depuis localStorage
+    cart = getCart();
+    
+    // Afficher le panier
     renderCart();
     renderSavedProducts();
     renderRecentProducts();
     renderSuggestions();
+    updateCartBadge();
 }
 
-// Appel au chargement
+// Initialiser au chargement
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(initCart, 300);
 });
 
-// Mise à jour auto du badge
+// Mise à jour automatique du badge
 setInterval(function() {
-    const cart = getCart();
-    const count = cart ? cart.reduce((sum, item) => sum + (item.quantity || 1), 0) : 0;
-    const badge = document.getElementById('cart-badge');
-    const headerBadge = document.getElementById('header-cart-badge');
-    if (badge) {
-        badge.textContent = count;
-        badge.style.display = count > 0 ? 'flex' : 'none';
-    }
-    if (headerBadge) {
-        headerBadge.textContent = count;
-        headerBadge.style.display = count > 0 ? 'flex' : 'none';
-    }
-}, 500);
+    const cartData = getCart();
+    const count = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    
+    document.querySelectorAll('.cart-badge, #cart-badge, #header-cart-badge, .nav-badge').forEach(el => {
+        if (el) {
+            el.textContent = count;
+            el.style.display = count > 0 ? 'flex' : 'none';
+        }
+    });
+}, 1000);
+
+// ===== ALIAS POUR COMPATIBILITÉ =====
+// Garder les anciens noms pour ne pas casser le code existant
+const updateCart = renderCart;
+const addToCartFromSaved = addToCart;
+
+console.log('🛒 Cart.js chargé avec succès !');
