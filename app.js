@@ -1,673 +1,390 @@
-let favorites =
-JSON.parse(
-localStorage.getItem("favorites")
-) || [];
+// ==========================================
+// APP.JS - VERSION CORRIGÉE
+// ==========================================
 
-function toggleFavorite(id){
+// ===== FAVORIS =====
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-if(favorites.includes(id)){
-
-favorites =
-favorites.filter(f => f !== id);
-
-}else{
-
-favorites.push(id);
-
+function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+    } else {
+        favorites.push(id);
+    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    displayProducts();
+    updateFavoritesCount();
 }
 
-localStorage.setItem(
-"favorites",
-JSON.stringify(favorites)
-);
-
-displayProducts();
-updateFavoritesCount();
+function updateFavoritesCount() {
+    const element = document.getElementById("favorite-count");
+    if (element) {
+        element.textContent = favorites.length;
+    }
 }
 
-function displayProducts(list = products){
+// ===== AFFICHAGE DES PRODUITS =====
+function displayProducts(list = products) {
+    const container = document.getElementById("product-grid");
+    if (!container) return;
 
-const container =
-document.getElementById("product-grid");
+    // Trier par popularité
+    list = [...list].sort((a, b) => (b.sales || 0) - (a.sales || 0));
 
-let html = "";
-list = [...list].sort(
-(a,b) => b.sales - a.sales
-);
+    let html = "";
+    list.forEach(product => {
+        const favorite = favorites.includes(product.id);
+        const imageUrl = product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/200';
+        
+        // Badges
+        let badges = '';
+        if (product.sales >= 3) badges += '<span class="badge-top">🏆 Top Vente</span> ';
+        if (product.isNew) badges += '<span class="badge-new">🆕 Nouveau</span> ';
+        if (product.isBestSeller) badges += '<span class="badge-best">🔥 Best Seller</span> ';
+        
+        // Réduction
+        let discount = '';
+        if (product.oldPrice && product.oldPrice > product.price) {
+            const percent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
+            discount = `<span class="discount-badge">-${percent}%</span>`;
+        }
 
-list.forEach(product => {
+        html += `
+            <div class="product-card">
+                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;">
+                    ${badges}
+                    ${discount}
+                </div>
+                <img src="${imageUrl}" alt="${product.name}" 
+                     onclick="showProduct(${product.id})" 
+                     onerror="this.src='https://via.placeholder.com/200'"
+                     style="width:100%;height:180px;object-fit:cover;border-radius:10px;cursor:pointer;background:#f0f0f0;">
+                <h3 style="margin:8px 0 4px;font-size:0.95rem;">${product.name}</h3>
+                <p style="color:#888;font-size:0.8rem;margin:2px 0;">${product.category}</p>
+                <p class="rating" style="font-size:0.8rem;color:#f59e0b;margin:2px 0;">
+                    ⭐⭐⭐⭐⭐ (${product.reviews || 0} avis)
+                </p>
+                <p style="font-size:0.75rem;color:#22c55e;margin:2px 0;">📦 Stock : ${product.stock}</p>
+                <p style="font-size:0.75rem;color:#555;margin:2px 0;">${product.delivery || '🚚 Livraison 2-3 jours'}</p>
+                <p style="font-size:0.75rem;color:#f97316;margin:2px 0;">🔥 Popularité : ${product.sales || 0}</p>
+                <div class="price-box" style="margin:6px 0;">
+                    <span class="current-price" style="font-weight:700;color:#f97316;font-size:1.1rem;">
+                        ${product.price.toLocaleString()} FCFA
+                    </span>
+                    ${product.oldPrice ? `<span class="old-price" style="font-size:0.8rem;color:#aaa;text-decoration:line-through;margin-left:8px;">${product.oldPrice.toLocaleString()} FCFA</span>` : ''}
+                </div>
+                <button onclick="toggleFavorite(${product.id})" style="width:100%;padding:8px;margin-bottom:4px;background:#f97316;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+                    ${favorite ? "❤️ Favori" : "🤍 Favori"}
+                </button>
+                <button onclick="addToCart(${product.id})" style="width:100%;padding:8px;margin-bottom:4px;background:#f97316;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+                    🛒 Ajouter au panier
+                </button>
+                <button onclick="buyNow(${product.id})" style="width:100%;padding:8px;background:#22c55e;color:white;border:none;border-radius:8px;font-weight:700;cursor:pointer;">
+                    ⚡ Acheter maintenant
+                </button>
+            </div>
+        `;
+    });
 
-const favorite =
-favorites.includes(product.id);
-
-html += `
-<div class="product-card">
-
-${product.sales >= 3 ?
-'<div class="badge-top">🏆 Top Vente</div>'
-: ''}
-
-${product.isNew ? '<div class="badge-new">🆕 Nouveau</div>' : ''}
-
-${product.isBestSeller ? '<div class="badge-best">🔥 Best Seller</div>' : ''}
-
-<div class="discount-badge">
--20%
-</div>
-
-<img
-src="${product.images[0]}"
-alt="${product.name}"
-onclick="showProduct(${product.id})"
-style="cursor:pointer;">
-
-<h3>${product.name}</h3>
-
-<p>${product.category}</p>
-
-<p class="rating">
-⭐⭐⭐⭐⭐
-(${product.reviews} avis)
-</p>
-
-<p>📦 Stock : ${product.stock}</p>
-
-<p>${product.delivery}</p>
-
-<p>🔥 Popularité : ${product.sales}</p>
-
-<div class="price-box">
-
-<span class="current-price">
-${product.price.toLocaleString()} FCFA
-</span>
-
-<span class="old-price">
-${product.oldPrice.toLocaleString()} FCFA
-</span>
-
-</div>
-
-<button onclick="toggleFavorite(${product.id})">
-${favorite ? "❤️ Favori" : "🤍 Favori"}
-</button>
-
-<button onclick="addToCart(${product.id})">
-🛒 Ajouter au panier
-</button>
-
-<button onclick="buyNow(${product.id})">
-⚡ Acheter maintenant
-</button>
-
-</div>
-`;
-
-});
-
-container.innerHTML = html;
+    container.innerHTML = html;
 }
 
-function searchProducts(){
-
-const search =
-document.getElementById("search-input")
-.value
-.toLowerCase();
-
-const filtered =
-products.filter(product =>
-product.name.toLowerCase().includes(search)
-);
-
-displayProducts(filtered);
+// ===== RECHERCHE =====
+function searchProducts() {
+    const search = document.getElementById("search-input");
+    if (!search) return;
+    
+    const query = search.value.toLowerCase().trim();
+    if (!query) {
+        displayProducts(products);
+        return;
+    }
+    
+    const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query)
+    );
+    displayProducts(filtered);
 }
 
-function updateStats(){
-
-const totalSales =
-products.reduce(
-(sum,p)=>sum+p.sales,
-0
-);
-
-const stats =
-document.getElementById("sales-count");
-
-if(stats){
-
-stats.textContent =
-totalSales;
-
+// ===== FILTRES =====
+function filterProducts(category) {
+    if (category === "all") {
+        displayProducts(products);
+        return;
+    }
+    const filtered = products.filter(product => product.category === category);
+    displayProducts(filtered);
 }
 
+// ===== STATISTIQUES =====
+function updateStats() {
+    const totalSales = products.reduce((sum, p) => sum + (p.sales || 0), 0);
+    const stats = document.getElementById("sales-count");
+    if (stats) stats.textContent = totalSales;
 }
 
-displayProducts();
-updateStats();
+// ===== MODALE PRODUIT =====
+function showProduct(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) {
+        showToast('❌ Produit introuvable');
+        return;
+    }
 
-function filterProducts(category){
+    const modal = document.getElementById("product-modal");
+    const body = document.getElementById("modal-body");
+    if (!modal || !body) return;
 
-if(category === "all"){
+    // Galerie
+    let gallery = "";
+    if (product.images && product.images.length > 0) {
+        product.images.forEach(img => {
+            gallery += `<img src="${img}" class="gallery-image" onerror="this.src='https://via.placeholder.com/200'" style="width:120px;height:120px;object-fit:cover;border-radius:10px;flex-shrink:0;">`;
+        });
+    }
 
-displayProducts(products);
+    // Commentaires
+    let comments = "";
+    if (product.comments && product.comments.length > 0) {
+        product.comments.forEach(comment => {
+            comments += `<p class="review" style="background:#f8fafc;padding:10px;border-radius:10px;margin-bottom:8px;border-left:4px solid #f97316;">${comment}</p>`;
+        });
+    }
 
-return;
+    body.innerHTML = `
+        <div class="gallery" style="display:flex;gap:10px;overflow-x:auto;margin-bottom:15px;padding-bottom:5px;">
+            ${gallery}
+        </div>
+        <h2 style="margin-bottom:6px;">${product.name}</h2>
+        <p style="margin:4px 0;">⭐ ${product.rating || 5} (${product.reviews || 0} avis)</p>
+        <p style="margin:4px 0;">📦 Stock : ${product.stock}</p>
+        <div class="delivery" style="background:#dcfce7;color:#166534;padding:4px 12px;border-radius:20px;display:inline-block;font-weight:bold;margin:4px 0;">
+            ${product.delivery || '🚚 Livraison 2-3 jours'}
+        </div>
+        <p style="margin:4px 0;color:#888;">${product.category}</p>
+        <h3 style="color:#f97316;font-size:1.4rem;margin:8px 0;">
+            ${product.price.toLocaleString()} FCFA
+        </h3>
+        ${product.oldPrice ? `<p style="text-decoration:line-through;color:#aaa;margin:4px 0;">${product.oldPrice.toLocaleString()} FCFA</p>` : ''}
+        <button onclick="addToCart(${product.id})" style="width:100%;padding:12px;background:#f97316;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
+            🛒 Ajouter au panier
+        </button>
+        <button onclick="deleteProduct(${product.id})" style="width:100%;padding:12px;background:#ef4444;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
+            🗑️ Supprimer
+        </button>
+        ${comments}
+    `;
 
+    modal.style.display = "flex";
 }
 
-const filtered =
-products.filter(
-product => product.category === category
-);
-
-displayProducts(filtered);
-
+function closeModal() {
+    const modal = document.getElementById("product-modal");
+    if (modal) modal.style.display = "none";
 }
 
-function showProduct(id){
-
-const product =
-products.find(
-p => p.id === id
-);
-
-const modal =
-document.getElementById("product-modal");
-
-const body =
-document.getElementById("modal-body");
-
-let gallery = "";
-
-product.images.forEach(img => {
-
-gallery += `
-<img
-src="${img}"
-class="gallery-image">
-`;
-
-});
-
-let comments = "";
-
-product.comments.forEach(comment => {
-
-comments += `
-<p class="review">
-${comment}
-</p>
-`;
-
-});
-
-body.innerHTML = `
-
-<div class="gallery">
-${gallery}
-</div>
-
-<h2>${product.name}</h2>
-
-<p>⭐ ${product.rating} (${product.reviews} avis)</p>
-
-<p>📦 Stock : ${product.stock}</p>
-
-<div class="delivery">
-${product.delivery}
-</div>
-
-<p>${product.category}</p>
-
-<h3>${product.price.toLocaleString()} FCFA</h3>
-
-<p style="text-decoration:line-through;">
-${product.oldPrice.toLocaleString()} FCFA
-</p>
-
-<button onclick="addToCart(${product.id})">
-🛒 Ajouter au panier
-</button>
-
-<button onclick="deleteProduct(${product.id})">
-🗑️ Supprimer
-</button>
-
-`;
-
-modal.style.display = "flex";
-
+// ===== SIMULATION VISITEURS =====
+function simulateVisitors() {
+    const visitors = document.getElementById("visitor-count");
+    if (!visitors) return;
+    setInterval(() => {
+        let current = parseInt(visitors.textContent) || 127;
+        current += Math.floor(Math.random() * 3);
+        visitors.textContent = current;
+    }, 10000);
 }
-
-function closeModal(){
-
-document.getElementById(
-"product-modal"
-).style.display = "none";
-
-}
-
-function updateFavoritesCount(){
-
-const element =
-document.getElementById(
-"favorite-count"
-);
-
-if(element){
-
-element.textContent =
-favorites.length;
-
-}
-
-}
-
-function simulateVisitors(){
-
-const visitors =
-document.getElementById(
-"visitor-count"
-);
-
-if(!visitors) return;
-
-setInterval(()=>{
-
-let current =
-parseInt(visitors.textContent);
-
-current +=
-Math.floor(Math.random()*3);
-
-visitors.textContent =
-current;
-
-},10000);
-
-}
-
 simulateVisitors();
 
-function startCountdown(){
+// ===== COUNTDOWN =====
+function startCountdown() {
+    let totalSeconds = 24 * 60 * 60;
+    const countdown = document.getElementById("countdown");
+    if (!countdown) return;
 
-let totalSeconds = 24 * 60 * 60;
-
-const countdown =
-document.getElementById("countdown");
-
-if(!countdown) return;
-
-setInterval(()=>{
-
-let hours =
-Math.floor(totalSeconds / 3600);
-
-let minutes =
-Math.floor((totalSeconds % 3600) / 60);
-
-let seconds =
-totalSeconds % 60;
-
-countdown.textContent =
-`${hours}h ${minutes}m ${seconds}s`;
-
-if(totalSeconds > 0){
-
-totalSeconds--;
-
-}else{
-
-totalSeconds = 24 * 60 * 60;
-
+    setInterval(() => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        countdown.textContent = `${hours}h ${minutes}m ${seconds}s`;
+        if (totalSeconds > 0) {
+            totalSeconds--;
+        } else {
+            totalSeconds = 24 * 60 * 60;
+        }
+    }, 1000);
 }
-
-},1000);
-
-}
-
-updateFavoritesCount();
-
-
 startCountdown();
 
-function addProduct(){
+// ===== ADMIN =====
+function addProduct() {
+    const name = document.getElementById("admin-name")?.value;
+    const price = Number(document.getElementById("admin-price")?.value);
+    const category = document.getElementById("admin-category")?.value;
+    const image = document.getElementById("admin-image")?.value?.trim();
 
-const name =
-document.getElementById("admin-name").value;
+    if (!name || !price || !category) {
+        alert("Remplissez tous les champs");
+        return;
+    }
 
-const price =
-Number(
-document.getElementById("admin-price").value
-);
+    const newProduct = {
+        id: Date.now(),
+        name: name,
+        price: price,
+        oldPrice: price,
+        stock: 10,
+        sales: 0,
+        category: category,
+        event: "quotidien",
+        rating: 5,
+        reviews: 0,
+        isNew: true,
+        isBestSeller: false,
+        comments: [],
+        delivery: "🚚 Livraison 2 à 3 jours",
+        images: [image || 'https://via.placeholder.com/200']
+    };
 
-const category =
-document.getElementById("admin-category").value;
-
-const image =
-document.getElementById("admin-image")
-.value
-.trim();
-if(!name || !price || !category){
-
-alert("Remplissez tous les champs");
-
-return;
-
+    products.push(newProduct);
+    localStorage.setItem("products", JSON.stringify(products));
+    displayProducts();
+    updateAdminStats();
+    showToast('✅ Produit ajouté');
 }
 
-const newProduct = {
-
-id: Date.now(),
-
-name: name,
-
-price: price,
-
-oldPrice: price,
-
-stock: 10,
-
-sales: 0,
-
-category: category,
-
-event: "quotidien",
-
-rating: 5,
-
-reviews: 0,
-
-isNew: true,
-
-isBestSeller: false,
-
-comments: [],
-
-delivery: "🚚 Livraison 2 à 3 jours",
-
-images: [image]
-
-};
-
-products.push(newProduct);
-
-localStorage.setItem(
-"products",
-JSON.stringify(products)
-);
-
-displayProducts();
-
-alert("Produit ajouté");
-
+function deleteProduct(id) {
+    if (!confirm("Voulez-vous supprimer ce produit ?")) return;
+    
+    const index = products.findIndex(product => product.id === id);
+    if (index !== -1) {
+        products.splice(index, 1);
+        localStorage.setItem("products", JSON.stringify(products));
+        displayProducts();
+        updateAdminStats();
+        closeModal();
+        showToast('🗑️ Produit supprimé');
+    }
 }
 
-function deleteProduct(id){
+function editProduct(id) {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
 
-const confirmDelete =
-confirm(
-"Voulez-vous supprimer ce produit ?"
-);
-
-if(!confirmDelete){
-return;
+    const newPrice = prompt("Nouveau prix", product.price);
+    if (newPrice === null) return;
+    
+    product.price = Number(newPrice);
+    localStorage.setItem("products", JSON.stringify(products));
+    displayProducts();
+    showProduct(id);
+    showToast('✅ Prix modifié');
 }
 
-const index =
-products.findIndex(
-product => product.id === id
-);
-
-if(index !== -1){
-
-products.splice(index,1);
-
-localStorage.setItem(
-"products",
-JSON.stringify(products)
-);
-
-displayProducts();
-
-alert("Produit supprimé");
-
+function openAdmin() {
+    const password = prompt("Mot de passe Admin");
+    if (password === "45886736") {
+        document.getElementById("admin-panel").style.display = "block";
+        updateAdminStats();
+        displayOrders();
+    } else if (password !== null) {
+        alert("Accès refusé");
+    }
 }
 
+function updateAdminStats() {
+    const productsCount = products.length;
+    const salesCount = products.reduce((sum, p) => sum + (p.sales || 0), 0);
+    const revenue = products.reduce((sum, p) => sum + ((p.sales || 0) * p.price), 0);
+    const outStock = products.filter(p => p.stock <= 0).length;
+
+    document.getElementById("admin-products-count").textContent = productsCount;
+    document.getElementById("admin-sales-count").textContent = salesCount;
+    document.getElementById("admin-revenue").textContent = revenue.toLocaleString();
+    document.getElementById("admin-out-stock").textContent = outStock;
 }
 
-function editProduct(id){
+function displayOrders() {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const container = document.getElementById("admin-orders");
+    if (!container) return;
 
-const product =
-products.find(p => p.id === id);
+    if (orders.length === 0) {
+        container.innerHTML = "Aucune commande";
+        return;
+    }
 
-const newPrice = prompt(
-"Nouveau prix",
-product.price
-);
-
-if(newPrice === null) return;
-
-product.price = Number(newPrice);
-
-localStorage.setItem(
-"products",
-JSON.stringify(products)
-);
-
-displayProducts();
-
-showProduct(id);
-
-alert("Produit modifié");
-
+    let html = "";
+    orders.forEach(order => {
+        html += `
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;margin-bottom:8px;border-left:4px solid #f97316;">
+                <p>🆔 ${order.id}</p>
+                <p>📅 ${order.date}</p>
+                <p>💰 ${order.total?.toLocaleString() || 0} FCFA</p>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
 }
 
-function openAdmin(){
-
-const password =
-prompt("Mot de passe Admin");
-
-if(password === "45886736"){
-
-document.getElementById(
-"admin-panel"
-).style.display = "block";
-
-}else{
-
-alert("Accès refusé");
-
+// ===== ACHAT RAPIDE =====
+function buyNow(id) {
+    addToCart(id);
+    // Scroller vers le panier
+    const cartBox = document.querySelector(".cart-box");
+    if (cartBox) {
+        cartBox.scrollIntoView({ behavior: "smooth" });
+    }
 }
 
+// ===== AUTHENTIFICATION =====
+function registerUser() {
+    const email = document.getElementById("login-email")?.value;
+    const password = document.getElementById("login-password")?.value;
+
+    if (!email || !password) {
+        alert("Remplissez tous les champs");
+        return;
+    }
+
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+    localStorage.setItem("user", JSON.stringify({ email, password }));
+    alert("✅ Compte créé avec succès");
+    updateAccountUI();
 }
 
-function updateAdminStats(){
+function loginUser() {
+    const email = document.getElementById("login-email")?.value;
+    const password = document.getElementById("login-password")?.value;
+    const savedEmail = localStorage.getItem("userEmail");
+    const savedPassword = localStorage.getItem("userPassword");
 
-const productsCount =
-products.length;
-
-const salesCount =
-products.reduce(
-(sum,p)=>sum+p.sales,
-0
-);
-
-const revenue =
-products.reduce(
-(sum,p)=>sum+(p.sales*p.price),
-0
-);
-
-const outStock =
-products.filter(
-p => p.stock <= 0
-).length;
-
-document.getElementById(
-"admin-products-count"
-).textContent = productsCount;
-
-document.getElementById(
-"admin-sales-count"
-).textContent = salesCount;
-
-document.getElementById(
-"admin-revenue"
-).textContent = revenue.toLocaleString();
-
-document.getElementById(
-"admin-out-stock"
-).textContent = outStock;
-
+    if (email === savedEmail && password === savedPassword) {
+        localStorage.setItem("currentUser", email);
+        localStorage.setItem("user", JSON.stringify({ email, password }));
+        const status = document.getElementById("login-status");
+        if (status) status.textContent = "✅ Connecté : " + email;
+        alert("✅ Connexion réussie");
+        updateAccountUI();
+    } else {
+        alert("❌ Email ou mot de passe incorrect");
+    }
 }
 
-updateAdminStats();
-
-function displayOrders(){
-
-const orders =
-JSON.parse(
-localStorage.getItem("orders")
-) || [];
-
-const container =
-document.getElementById("admin-orders");
-
-if(!container) return;
-
-if(orders.length === 0){
-
-container.innerHTML =
-"Aucune commande";
-
-return;
-
-}
-
-let html = "";
-
-orders.forEach(order => {
-
-html += `
-<div class="order-card">
-
-<p>
-🆔 ${order.id}
-</p>
-
-<p>
-📅 ${order.date}
-</p>
-
-<p>
-💰 ${order.total} FCFA
-</p>
-
-</div>
-`;
-
-});
-
-container.innerHTML = html;
-
-}
-
-displayOrders();
-
-console.log("cart.js chargé");
-
-function buyNow(id){
-
-addToCart(id);
-
-document.querySelector(
-".cart-box"
-).scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-}
-
-function registerUser(){
-
-const email =
-document.getElementById("login-email").value;
-
-const password =
-document.getElementById("login-password").value;
-
-if(!email || !password){
-
-alert("Remplissez tous les champs");
-return;
-
-}
-
-localStorage.setItem(
-"userEmail",
-email
-);
-
-localStorage.setItem(
-"userPassword",
-password
-);
-
-alert("Compte créé avec succès");
-
-}
-
-function loginUser(){
-
-const email =
-document.getElementById("login-email").value;
-
-const password =
-document.getElementById("login-password").value;
-
-const savedEmail =
-localStorage.getItem("userEmail");
-
-const savedPassword =
-localStorage.getItem("userPassword");
-
-if(
-email === savedEmail &&
-password === savedPassword
-){
-
-localStorage.setItem(
-"currentUser",
-email
-);
-
-document.getElementById(
-"login-status"
-).textContent =
-"✅ Connecté : " + email;
-
-alert("Connexion réussie");
-
-}else{
-
-alert("Email ou mot de passe incorrect");
-
-}
-
+function logoutUser() {
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("user");
+    const status = document.getElementById("login-status");
+    if (status) status.textContent = "❌ Non connecté";
+    resetAccountUI();
+    showToast('🚪 Déconnexion réussie');
 }
 
 // ==========================================
 // NOUVELLES FONCTIONS POUR LE COMPTE
 // ==========================================
 
-/**
- * Met à jour l'interface du compte utilisateur
- * Affiche le nom, l'email, le crédit et le statut de connexion
- */
 function updateAccountUI() {
     const name = document.getElementById('account-name');
     const email = document.getElementById('account-email');
@@ -675,10 +392,8 @@ function updateAccountUI() {
     const status = document.getElementById('login-status');
     const authForm = document.getElementById('auth-form');
     const profileEmoji = document.getElementById('profile-emoji');
-    const loginStatus = document.getElementById('login-status');
     const authLabel = document.getElementById('auth-label');
 
-    // Récupérer l'utilisateur stocké dans localStorage
     const stored = localStorage.getItem('user');
     
     if (stored) {
@@ -688,15 +403,13 @@ function updateAccountUI() {
             
             if (name) name.textContent = displayName;
             if (email) email.textContent = user.email || 'Connecté';
-            if (credit) credit.textContent = '10 000 FCFA'; // Valeur simulée
+            if (credit) credit.textContent = '10 000 FCFA';
             if (profileEmoji) profileEmoji.textContent = '😎';
-            if (loginStatus) loginStatus.textContent = '✅ Connecté avec succès';
+            if (status) status.textContent = '✅ Connecté avec succès';
             if (authForm) authForm.style.display = 'none';
             if (authLabel) authLabel.textContent = 'Se déconnecter';
             
-            // Stocker le nom pour l'utiliser ailleurs
             localStorage.setItem('userName', displayName);
-            
         } catch (e) {
             console.warn('Erreur de lecture du profil:', e);
             resetAccountUI();
@@ -706,15 +419,12 @@ function updateAccountUI() {
     }
 }
 
-/**
- * Réinitialise l'UI du compte quand l'utilisateur est déconnecté
- */
 function resetAccountUI() {
     const name = document.getElementById('account-name');
     const email = document.getElementById('account-email');
     const credit = document.getElementById('account-credit');
     const profileEmoji = document.getElementById('profile-emoji');
-    const loginStatus = document.getElementById('login-status');
+    const status = document.getElementById('login-status');
     const authForm = document.getElementById('auth-form');
     const authLabel = document.getElementById('auth-label');
 
@@ -722,15 +432,11 @@ function resetAccountUI() {
     if (email) email.textContent = 'Non connecté';
     if (credit) credit.textContent = '0 FCFA';
     if (profileEmoji) profileEmoji.textContent = '👤';
-    if (loginStatus) loginStatus.textContent = '❌ Non connecté';
+    if (status) status.textContent = '❌ Non connecté';
     if (authForm) authForm.style.display = 'block';
     if (authLabel) authLabel.textContent = 'Se connecter';
 }
 
-/**
- * Navigation vers une section (menu du compte)
- * @param {string} section - Nom de la section à afficher
- */
 function navigateTo(section) {
     const messages = {
         'help': '🆘 Aide & Assistance - Contactez-nous par WhatsApp !',
@@ -747,18 +453,10 @@ function navigateTo(section) {
         'notifications': '🔔 Préférences de notification - Gérez vos alertes',
         'privacy': '🔒 Politique de Confidentialité - Comment nous protégeons vos données'
     };
-
-    const message = messages[section] || `📍 Page "${section}" - Fonctionnalité à venir !`;
-    
-    // Afficher une notification visuelle au lieu d'une alerte (plus propre)
-    showToast(message);
+    showToast(messages[section] || `📍 Page "${section}" - Fonctionnalité à venir !`);
 }
 
-/**
- * Ouvre le chat en direct (version améliorée)
- */
 function openChat() {
-    // Vérifier si l'utilisateur est connecté
     const user = localStorage.getItem('user');
     if (!user) {
         showToast('💬 Connectez-vous pour accéder au chat !');
@@ -767,32 +465,21 @@ function openChat() {
     showToast('💬 Chat en direct - Un conseiller va vous répondre !');
 }
 
-/**
- * Ouvre WhatsApp avec un message pré-rempli
- */
 function openWhatsApp() {
     const user = localStorage.getItem('user');
     let name = 'Client';
-    
     if (user) {
         try {
             const parsed = JSON.parse(user);
             name = parsed.email?.split('@')[0] || 'Client';
         } catch (e) {}
     }
-    
     const message = `Bonjour WebProfit AI ! Je suis ${name} et je souhaite passer une commande.`;
-    const phone = '22500000000'; // Remplace par ton numéro WhatsApp
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
+    const phone = '2250719949973';
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
 
-/**
- * Affiche une notification temporaire (toast)
- * @param {string} message - Message à afficher
- */
 function showToast(message) {
-    // Vérifier si un toast existe déjà
     let toast = document.getElementById('toast-notification');
     if (!toast) {
         toast = document.createElement('div');
@@ -801,7 +488,7 @@ function showToast(message) {
             position: fixed;
             bottom: 100px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(20px);
             background: #1a1a2e;
             color: white;
             padding: 14px 24px;
@@ -812,89 +499,39 @@ function showToast(message) {
             z-index: 9999;
             max-width: 90%;
             text-align: center;
-            transition: opacity 0.3s, transform 0.3s;
             opacity: 0;
-            transform: translateX(-50%) translateY(20px);
+            transition: all 0.3s ease;
             pointer-events: none;
             border: 1px solid rgba(255,255,255,0.1);
         `;
         document.body.appendChild(toast);
     }
     
-    // Mettre à jour le message
     toast.textContent = message;
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.pointerEvents = 'auto';
     
-    // Cacher après 3 secondes
     clearTimeout(toast._timeout);
     toast._timeout = setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(-50%) translateY(20px)';
+        toast.style.pointerEvents = 'none';
     }, 3000);
 }
 
-/**
- * Surcharge de la fonction logoutUser pour mettre à jour l'UI
- * (Garde l'ancienne fonction, on l'améliore)
- */
-const originalLogout = window.logoutUser;
-window.logoutUser = function() {
-    if (typeof originalLogout === 'function') {
-        originalLogout();
-    }
-    // Mettre à jour l'UI du compte
-    setTimeout(resetAccountUI, 100);
-    showToast('🚪 Déconnexion réussie');
-};
-
-/**
- * Surcharge de loginUser pour mettre à jour l'UI
- */
-const originalLogin = window.loginUser;
-window.loginUser = function() {
-    if (typeof originalLogin === 'function') {
-        originalLogin();
-    }
-    // Mettre à jour l'UI du compte après connexion
-    setTimeout(updateAccountUI, 300);
-};
-
-/**
- * Surcharge de registerUser pour mettre à jour l'UI
- */
-const originalRegister = window.registerUser;
-window.registerUser = function() {
-    if (typeof originalRegister === 'function') {
-        originalRegister();
-    }
-    // Mettre à jour l'UI du compte après inscription
-    setTimeout(updateAccountUI, 300);
-};
-
 // ==========================================
-// INITIALISATION AUTOMATIQUE
+// INITIALISATION
 // ==========================================
 
-// Mettre à jour l'UI du compte au chargement de la page
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(updateAccountUI, 500);
+    displayProducts();
+    updateStats();
+    updateFavoritesCount();
+    updateAdminStats();
+    displayOrders();
+    updateAccountUI();
+    console.log('✅ app.js chargé avec succès');
 });
 
-// Mettre à jour le badge du panier depuis le compte
-setInterval(function() {
-    const cartCount = document.getElementById('cart-count');
-    const badge = document.getElementById('cart-badge');
-    const headerBadge = document.getElementById('header-cart-badge');
-    
-    if (cartCount && badge) {
-        const count = cartCount.textContent || '0';
-        badge.textContent = count;
-        badge.style.display = count > 0 ? 'flex' : 'none';
-    }
-    if (cartCount && headerBadge) {
-        const count = cartCount.textContent || '0';
-        headerBadge.textContent = count;
-        headerBadge.style.display = count > 0 ? 'flex' : 'none';
-    }
-}, 500);
+console.log('📱 app.js chargé');
