@@ -832,3 +832,211 @@ body {
         font-size: 1.2rem;
     }
 }
+
+/* ===== COMPTE - VERSION JUMIA KILLER ===== */
+.account-container {
+    padding: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Profil */
+.account-profile {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    padding: 24px 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+    color: white;
+}
+
+.profile-avatar {
+    position: relative;
+    font-size: 3.2rem;
+    background: rgba(255,255,255,0.2);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 0.9rem;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.profile-info p {
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.profile-credit {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 6px;
+    font-size: 0.8rem;
+}
+
+.credit-amount {
+    font-weight: 700;
+}
+
+/* Actions rapides */
+.quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.quick-action {
+    background: white;
+    padding: 14px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.quick-action:active {
+    transform: scale(0.94);
+}
+
+.quick-action span:first-child {
+    display: block;
+    font-size: 1.8rem;
+}
+
+/* Menu section */
+.menu-section {
+    background: white;
+    border-radius: 16px;
+    padding: 16px 0;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.menu-section h4 {
+    padding: 0 16px 12px;
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: 0.15s;
+    border-bottom: 1px solid #f8f8f8;
+    font-size: 0.95rem;
+}
+
+.menu-item:active {
+    background: #f5f5f5;
+}
+
+.menu-item .menu-arrow {
+    margin-left: auto;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.menu-item span:first-child {
+    font-size: 1.2rem;
+}
+
+/* Déconnexion */
+.logout-btn-full {
+    width: 100%;
+    padding: 14px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
+}
+
+.logout-btn-full:active {
+    transform: scale(0.96);
+}
+
+/* Formulaire d'authentification */
+.auth-form-full {
+    margin-top: 16px;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.auth-form-full input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.login-btn-full {
+    width: 100%;
+    padding: 14px;
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.register-btn-full {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: #f97316;
+    border: 2px solid #f97316;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.auth-status {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #22c55e;
+}
