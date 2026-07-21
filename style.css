@@ -788,4 +788,47 @@ body {
     background: #ef4444;
     color: white;
     font-size: 0.6rem;
-    font-weight
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 20px;
+    min-width: 18px;
+    text-align: center;
+    display: none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        max-width: 480px;
+        margin: 0 auto;
+        background: #e8e8e8;
+    }
+    .bottom-nav {
+        max-width: 480px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px 20px 0 0;
+    }
+    .admin-fab {
+        right: calc(50% - 240px + 16px);
+    }
+}
+
+@media (max-width: 420px) {
+    .product-card img {
+        height: 130px;
+    }
+    .timer-block {
+        min-width: 36px;
+        padding: 4px 8px;
+    }
+    .timer-block span {
+        font-size: 1.2rem;
+    }
+}
