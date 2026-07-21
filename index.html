@@ -115,26 +115,103 @@
         </div>
     </div>
 
-    <!-- ===== PANIER (caché) ===== -->
-    <div id="cart-section" style="display:none;" class="page-section">
-        <div class="cart-container">
-            <h2>🛒 Mon Panier</h2>
-            <div id="cart-items"></div>
-            <div class="cart-summary">
-                <div class="cart-total-row">
-                    <span>Total</span>
-                    <span id="cart-total">0</span>
-                    <span>FCFA</span>
+    <!-- ==========================================
+     PANIER ULTIME - VERSION 2.0
+     ========================================== -->
+
+<div id="cart-section" style="display:none;" class="page-section">
+    <div class="cart-container">
+        
+        <!-- ===== EN-TÊTE ===== -->
+        <div class="cart-header">
+            <div class="cart-header-left">
+                <button class="back-btn" onclick="showSection('home')">←</button>
+                <h2>Mon Panier</h2>
+            </div>
+            <span class="cart-items-count" id="cart-items-count-header">0 article</span>
+        </div>
+
+        <!-- ===== RÉSUMÉ ===== -->
+        <div class="cart-summary-card">
+            <div class="summary-row">
+                <span>Sous-total</span>
+                <span id="cart-subtotal">0 FCFA</span>
+            </div>
+            <div class="summary-row discount-row" id="discount-row" style="display:none;">
+                <span>Réduction</span>
+                <span id="cart-discount" style="color:#22c55e;">-0 FCFA</span>
+            </div>
+            <div class="summary-row">
+                <span>Livraison</span>
+                <span id="cart-shipping">Gratuite</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="cart-total">0 FCFA</span>
+            </div>
+
+            <!-- Barre livraison gratuite -->
+            <div class="free-shipping-progress">
+                <div class="progress-track">
+                    <div class="progress-fill" id="shipping-progress" style="width: 0%;"></div>
                 </div>
-                <div class="promo-row">
-                    <input id="promo-code" placeholder="Code promo" />
-                    <button onclick="applyPromo()">Appliquer</button>
+                <div class="progress-label" id="shipping-message">
+                    🚚 Ajoutez <strong id="remaining-amount">6 555 FCFA</strong> pour la livraison gratuite
                 </div>
-                <p id="promo-message" class="promo-msg"></p>
-                <button class="checkout-btn" onclick="openCheckout()">📦 Passer la commande</button>
+            </div>
+
+            <!-- Bouton Commander -->
+            <button class="checkout-btn" onclick="openCheckout()">
+                <span>📦 Commander</span>
+                <span id="cart-total-btn">0 FCFA</span>
+            </button>
+        </div>
+
+        <!-- ===== LISTE DES PRODUITS ===== -->
+        <div class="cart-items-section">
+            <div class="section-header">
+                <h3>🛒 Panier (<span id="cart-items-count">0</span>)</h3>
+                <span class="clear-cart" onclick="clearCart()">Tout supprimer</span>
+            </div>
+            <div id="cart-items" class="cart-items-list">
+                <!-- Rempli par JavaScript -->
             </div>
         </div>
+
+        <!-- ===== PRODUITS ENREGISTRÉS ===== -->
+        <div class="saved-products">
+            <div class="section-header">
+                <h3>⭐ Mes produits enregistrés (<span id="saved-count">0</span>)</h3>
+                <span class="see-all" onclick="showAllSaved()">VOIR TOUS →</span>
+            </div>
+            <div id="saved-products-grid" class="saved-grid">
+                <!-- Rempli par JavaScript -->
+            </div>
+        </div>
+
+        <!-- ===== VUS RÉCEMMENT ===== -->
+        <div class="recent-products">
+            <div class="section-header">
+                <h3>🕐 Vus récemment</h3>
+                <span class="see-all" onclick="showAllRecent()">VOIR TOUS →</span>
+            </div>
+            <div id="recent-products-grid" class="recent-grid">
+                <!-- Rempli par JavaScript -->
+            </div>
+        </div>
+
+        <!-- ===== SUGGESTIONS ===== -->
+        <div class="suggestions">
+            <div class="section-header">
+                <h3>👥 Les clients ont aussi consulté</h3>
+            </div>
+            <div id="suggestions-grid" class="suggestions-grid">
+                <!-- Rempli par JavaScript -->
+            </div>
+        </div>
+
     </div>
+</div>
 
     <!-- ===== CHECKOUT (caché) ===== -->
     <div id="checkout-section" style="display:none;" class="page-section">
