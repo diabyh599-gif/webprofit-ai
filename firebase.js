@@ -1,21 +1,24 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// ==========================================
+// FIREBASE.JS - Version CDN (pour GitHub Pages)
+// ==========================================
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Configuration Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyARFxPYVnUpFvUdmCMMgOspOMGSX_Y26Pg",
-  authDomain: "webprofitai.firebaseapp.com",
-  projectId: "webprofitai",
-  storageBucket: "webprofitai.firebasestorage.app",
-  messagingSenderId: "29810089088",
-  appId: "1:29810089088:web:ca3923e23a62779d1d1a65",
-  measurementId: "G-E6SHYTKE8F"
+    apiKey: "AIzaSyARFxPYVnUpFvUdmCMMgOspOMGSX_Y26Pg",
+    authDomain: "webprofitai.firebaseapp.com",
+    projectId: "webprofitai",
+    storageBucket: "webprofitai.firebasestorage.app",
+    messagingSenderId: "29810089088",
+    appId: "1:29810089088:web:ca3923e23a62779d1d1a65",
+    measurementId: "G-E6SHYTKE8F"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Initialiser Firebase (avec la version compat)
+firebase.initializeApp(firebaseConfig);
+
+// Services disponibles
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+console.log('🔥 Firebase connecté avec succès !');
