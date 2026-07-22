@@ -1514,3 +1514,97 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* ==========================================
+   PAGE PRODUIT AMÉLIORÉE
+   ========================================== */
+
+/* Animation d'ouverture */
+.modal-content {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Miniatures */
+.gallery-thumb {
+    transition: all 0.2s;
+}
+
+.gallery-thumb:hover {
+    transform: scale(1.05);
+    border-color: #f97316 !important;
+}
+
+/* Image principale */
+#main-product-image {
+    transition: opacity 0.2s;
+}
+
+/* Badge de réduction */
+.discount-flash {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Boutons d'achat */
+button[onclick*="addToCart"]:active,
+button[onclick*="buyNow"]:active {
+    transform: scale(0.96);
+}
+
+/* Détails du produit */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.detail-item {
+    background: #f8fafc;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+.detail-item .label {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.detail-item .value {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Avis */
+.review-item {
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border-left: 4px solid #f97316;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .modal-content {
+        padding: 16px;
+    }
+    
+    #main-product-image {
+        height: 200px;
+    }
+    
+    .gallery-thumb {
+        width: 50px;
+        height: 50px;
+    }
+}
