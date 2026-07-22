@@ -497,26 +497,6 @@ function showSection(section) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ===== DONNÉES SIMULÉES POUR LE PANIER =====
-
-const savedProducts = [
-    { id: 's1', name: 'Montres Pour Femmes', price: 994, oldPrice: 4739, discount: '-79%', image: 'https://via.placeholder.com/200' },
-    { id: 's2', name: 'Gandour Eau De Parf...', price: 3000, oldPrice: null, image: 'https://via.placeholder.com/200' },
-    { id: 's3', name: 'HUAHU', price: 1950, oldPrice: 5850, discount: '-67%', image: 'https://via.placeholder.com/200' },
-    { id: 's4', name: 'Sac à Dos', price: 3703, oldPrice: 10003, discount: '-63%', image: 'https://via.placeholder.com/200' },
-    { id: 's5', name: 'VIC 20000mAh', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
-];
-
-const recentProducts = [
-    { id: 'r1', name: 'Aspirateur portable 3...', price: 13000, oldPrice: 25000, discount: '-48%', image: 'https://via.placeholder.com/200' },
-    { id: 'r2', name: 'VIC 20000mAh Banq...', price: 3211, oldPrice: 18850, discount: '-83%', image: 'https://via.placeholder.com/200' }
-];
-
-const suggestions = [
-    { id: 'g1', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
-    { id: 'g2', name: 'Guixia Air31 Éco...', price: 945, oldPrice: 3439, discount: '-73%', image: 'https://via.placeholder.com/200' },
-    { id: 'g3', name: 'JNKACL', price: 1248, oldPrice: 3835, discount: '-67%', image: 'https://via.placeholder.com/200' }
-];
 
 /**
  * Affiche les produits enregistrés
