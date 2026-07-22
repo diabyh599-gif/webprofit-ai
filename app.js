@@ -125,6 +125,9 @@ function updateStats() {
 }
 
 // ===== MODALE PRODUIT =====
+/**
+ * Affiche la page produit améliorée (version Pro)
+ */
 function showProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product) {
@@ -136,47 +139,226 @@ function showProduct(id) {
     const body = document.getElementById("modal-body");
     if (!modal || !body) return;
 
-    // Galerie
-    let gallery = "";
-    if (product.images && product.images.length > 0) {
-        product.images.forEach(img => {
-            gallery += `<img src="${img}" class="gallery-image" onerror="this.src='https://via.placeholder.com/200'" style="width:120px;height:120px;object-fit:cover;border-radius:10px;flex-shrink:0;">`;
-        });
+    // Images par défaut
+    const images = product.images && product.images.length > 0 ? product.images : ['https://via.placeholder.com/400'];
+    
+    // Calcul de la réduction
+    let discountPercent = 0;
+    if (product.oldPrice && product.oldPrice > product.price) {
+        discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
     }
 
-    // Commentaires
-    let comments = "";
+    // Barre de stock
+    const stockPercent = Math.min((product.stock / 10) * 100, 100);
+    const stockColor = product.stock > 5 ? '#22c55e' : product.stock > 2 ? '#f59e0b' : '#ef4444';
+    const stockLabel = product.stock > 5 ? '✅ En stock' : product.stock > 2 ? '⚠️ Plus que ' + product.stock : '⚠️ Rupture imminente';
+
+    // Galerie images avec miniatures
+    let galleryThumbs = images.map((img, i) => `
+        <img src="${img}" onclick="changeProductImage(${i})" 
+             class="gallery-thumb" 
+             style="width:60px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i === 0 ? '#f97316' : 'transparent'};"
+             onerror="this.src='https://via.placeholder.com/60'">
+    `).join('');
+
+    // Avis
+    let reviewsHtml = '';
     if (product.comments && product.comments.length > 0) {
-        product.comments.forEach(comment => {
-            comments += `<p class="review" style="background:#f8fafc;padding:10px;border-radius:10px;margin-bottom:8px;border-left:4px solid #f97316;">${comment}</p>`;
-        });
+        reviewsHtml = product.comments.map(c => `
+            <div style="background:#f8fafc;padding:12px;border-radius:10px;margin-bottom:8px;border-left:4px solid #f97316;">
+                <span style="font-size:0.85rem;">${c}</span>
+            </div>
+        `).join('');
+    } else {
+        reviewsHtml = `<p style="color:#888;font-size:0.9rem;">Soyez le premier à donner votre avis !</p>`;
     }
 
     body.innerHTML = `
-        <div class="gallery" style="display:flex;gap:10px;overflow-x:auto;margin-bottom:15px;padding-bottom:5px;">
-            ${gallery}
+    <div style="position:relative;">
+        <!-- En-tête avec badge de réduction -->
+        ${discountPercent > 0 ? `
+            <div style="position:absolute;top:0;right:0;background:#ef4444;color:white;padding:8px 16px;border-radius:0 0 0 16px;font-weight:700;font-size:1.1rem;z-index:5;">
+                -${discountPercent}%
+            </div>
+        ` : ''}
+        
+        <!-- Galerie principale -->
+        <div style="border-radius:16px;overflow:hidden;background:#f5f5f5;margin-bottom:12px;">
+            <img id="main-product-image" src="${images[0]}" 
+                 style="width:100%;height:280px;object-fit:contain;background:#f5f5f5;transition:0.3s;"
+                 onerror="this.src='https://via.placeholder.com/400'">
         </div>
-        <h2 style="margin-bottom:6px;">${product.name}</h2>
-        <p style="margin:4px 0;">⭐ ${product.rating || 5} (${product.reviews || 0} avis)</p>
-        <p style="margin:4px 0;">📦 Stock : ${product.stock}</p>
-        <div class="delivery" style="background:#dcfce7;color:#166534;padding:4px 12px;border-radius:20px;display:inline-block;font-weight:bold;margin:4px 0;">
-            ${product.delivery || '🚚 Livraison 2-3 jours'}
+        
+        <!-- Miniatures -->
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;">
+            ${galleryThumbs}
         </div>
-        <p style="margin:4px 0;color:#888;">${product.category}</p>
-        <h3 style="color:#f97316;font-size:1.4rem;margin:8px 0;">
-            ${product.price.toLocaleString()} FCFA
-        </h3>
-        ${product.oldPrice ? `<p style="text-decoration:line-through;color:#aaa;margin:4px 0;">${product.oldPrice.toLocaleString()} FCFA</p>` : ''}
-        <button onclick="addToCart(${product.id})" style="width:100%;padding:12px;background:#f97316;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
-            🛒 Ajouter au panier
+
+        <!-- Nom et marque -->
+        <div style="margin-bottom:12px;">
+            <h2 style="font-size:1.3rem;font-weight:700;margin:0 0 4px 0;">${product.name}</h2>
+            <p style="color:#888;font-size:0.85rem;margin:0;">
+                📦 Catégorie : ${product.category || 'Générique'} 
+                <span style="margin-left:12px;">⭐ ${product.rating || 4.5} (${product.reviews || 0} avis)</span>
+            </p>
+        </div>
+
+        <!-- PRIX -->
+        <div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border-radius:12px;padding:16px;margin-bottom:16px;">
+            <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+                <span style="font-size:1.8rem;font-weight:800;color:#f97316;">
+                    ${product.price.toLocaleString()} FCFA
+                </span>
+                ${product.oldPrice ? `
+                    <span style="font-size:1rem;color:#aaa;text-decoration:line-through;">
+                        ${product.oldPrice.toLocaleString()} FCFA
+                    </span>
+                ` : ''}
+                ${discountPercent > 0 ? `
+                    <span style="background:#ef4444;color:white;padding:4px 12px;border-radius:20px;font-weight:700;font-size:0.8rem;">
+                        Économisez ${Math.round((product.oldPrice - product.price)).toLocaleString()} FCFA
+                    </span>
+                ` : ''}
+            </div>
+            <p style="margin:4px 0 0 0;font-size:0.85rem;color:#888;">
+                ${product.delivery || '🚚 Livraison 2 à 3 jours'}
+            </p>
+        </div>
+
+        <!-- Stock avec barre -->
+        <div style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+                <span style="font-weight:600;color:${stockColor};">${stockLabel}</span>
+                <span style="color:#888;">${product.stock} restant${product.stock > 1 ? 's' : ''}</span>
+            </div>
+            <div style="width:100%;height:6px;background:#f0f0f0;border-radius:10px;overflow:hidden;">
+                <div style="width:${stockPercent}%;height:100%;background:${stockColor};border-radius:10px;transition:width 0.5s;"></div>
+            </div>
+        </div>
+
+        <!-- Boutons d'achat -->
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+            <button onclick="addToCart(${product.id})" 
+                    style="width:100%;padding:16px;background:#f97316;color:white;border:none;border-radius:12px;font-weight:700;font-size:1.1rem;cursor:pointer;transition:0.2s;display:flex;justify-content:center;align-items:center;gap:8px;">
+                🛒 Ajouter au panier
+            </button>
+            <button onclick="buyNow(${product.id})" 
+                    style="width:100%;padding:16px;background:#22c55e;color:white;border:none;border-radius:12px;font-weight:700;font-size:1.1rem;cursor:pointer;transition:0.2s;display:flex;justify-content:center;align-items:center;gap:8px;">
+                ⚡ Acheter maintenant
+            </button>
+        </div>
+
+        <!-- Infos livraison -->
+        <div style="background:#f8fafc;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
+                    📍 Livraison à domicile
+                </span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
+                    📦 Retour 10 jours
+                </span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
+                    🔒 Paiement sécurisé
+                </span>
+            </div>
+        </div>
+
+        <!-- Détails du produit -->
+        <div style="margin-bottom:16px;">
+            <h3 style="font-size:1rem;margin-bottom:8px;">📋 Détails du produit</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">
+                    <div style="font-size:0.75rem;color:#888;">Catégorie</div>
+                    <div style="font-weight:600;font-size:0.95rem;">${product.category}</div>
+                </div>
+                <div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">
+                    <div style="font-size:0.75rem;color:#888;">Stock</div>
+                    <div style="font-weight:600;font-size:0.95rem;">${product.stock} unités</div>
+                </div>
+                <div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">
+                    <div style="font-size:0.75rem;color:#888;">Note</div>
+                    <div style="font-weight:600;font-size:0.95rem;">⭐ ${product.rating || 4.5}/5</div>
+                </div>
+                <div style="background:#f8fafc;padding:10px 12px;border-radius:10px;">
+                    <div style="font-size:0.75rem;color:#888;">Ventes</div>
+                    <div style="font-weight:600;font-size:0.95rem;">${product.sales || 0}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avis -->
+        <div style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <h3 style="font-size:1rem;margin:0;">⭐ Avis clients</h3>
+                <span style="font-size:0.85rem;color:#f97316;font-weight:600;">${product.reviews || 0} avis</span>
+            </div>
+            <div style="max-height:200px;overflow-y:auto;padding-right:4px;">
+                ${reviewsHtml}
+            </div>
+        </div>
+
+        <!-- Supprimer (admin) -->
+        <button onclick="deleteProduct(${product.id})" 
+                style="width:100%;padding:12px;background:#ef4444;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
+            🗑️ Supprimer le produit
         </button>
-        <button onclick="deleteProduct(${product.id})" style="width:100%;padding:12px;background:#ef4444;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
-            🗑️ Supprimer
+
+        <!-- Bouton signaler -->
+        <button onclick="reportProduct(${product.id})" 
+                style="background:none;border:none;color:#888;font-size:0.8rem;cursor:pointer;padding:8px;text-decoration:underline;width:100%;">
+            🚨 Signaler un problème
         </button>
-        ${comments}
+    </div>
     `;
 
     modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+/**
+ * Change l'image principale au clic sur une miniature
+ */
+function changeProductImage(index) {
+    const mainImg = document.getElementById('main-product-image');
+    if (!mainImg) return;
+    
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+    if (!thumbs || thumbs.length === 0) return;
+    
+    const newSrc = thumbs[index]?.src;
+    if (newSrc) {
+        mainImg.src = newSrc;
+        mainImg.style.opacity = '0.5';
+        setTimeout(() => { mainImg.style.opacity = '1'; }, 150);
+    }
+    
+    thumbs.forEach((thumb, i) => {
+        thumb.style.border = i === index ? '2px solid #f97316' : '2px solid transparent';
+    });
+}
+
+/**
+ * Signaler un produit
+ */
+function reportProduct(id) {
+    const reason = prompt('🚨 Signaler un problème avec ce produit :\n\n1 - Produit contrefait\n2 - Prix incorrect\n3 - Image trompeuse\n4 - Description erronée\n5 - Autre');
+    if (reason) {
+        showToast('✅ Signalement envoyé ! Nous allons vérifier.');
+        const reports = JSON.parse(localStorage.getItem('reports') || '[]');
+        reports.push({ productId: id, reason, date: new Date().toISOString() });
+        localStorage.setItem('reports', JSON.stringify(reports));
+    }
+}
+
+/**
+ * Ferme la modale
+ */
+function closeModal() {
+    const modal = document.getElementById("product-modal");
+    if (modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
 }
 
 function closeModal() {
