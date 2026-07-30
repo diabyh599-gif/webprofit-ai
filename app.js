@@ -828,4 +828,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateAdminStats();
     displayOrders();
     updateAccountUI();
-    console.log('✅ app.js chargé avec succ
+    console.log('✅ app.js chargé avec succès');
+});
+
+console.log('📱 app.js chargé');
