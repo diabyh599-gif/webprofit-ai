@@ -1,8 +1,11 @@
 // ==========================================
-// APP.JS - VERSION CORRIGÉE
+// APP.JS - VERSION FIREBASE (PRO)
 // ==========================================
 
-// ===== FAVORIS =====
+// ==========================================
+// FAVORIS
+// ==========================================
+
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 function toggleFavorite(id) {
@@ -23,12 +26,14 @@ function updateFavoritesCount() {
     }
 }
 
-// ===== AFFICHAGE DES PRODUITS =====
+// ==========================================
+// AFFICHAGE DES PRODUITS
+// ==========================================
+
 function displayProducts(list = products) {
     const container = document.getElementById("product-grid");
     if (!container) return;
 
-    // Trier par popularité
     list = [...list].sort((a, b) => (b.sales || 0) - (a.sales || 0));
 
     let html = "";
@@ -36,13 +41,11 @@ function displayProducts(list = products) {
         const favorite = favorites.includes(product.id);
         const imageUrl = product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/200';
         
-        // Badges
         let badges = '';
         if (product.sales >= 3) badges += '<span class="badge-top">🏆 Top Vente</span> ';
         if (product.isNew) badges += '<span class="badge-new">🆕 Nouveau</span> ';
         if (product.isBestSeller) badges += '<span class="badge-best">🔥 Best Seller</span> ';
         
-        // Réduction
         let discount = '';
         if (product.oldPrice && product.oldPrice > product.price) {
             const percent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
@@ -89,7 +92,10 @@ function displayProducts(list = products) {
     container.innerHTML = html;
 }
 
-// ===== RECHERCHE =====
+// ==========================================
+// RECHERCHE ET FILTRES
+// ==========================================
+
 function searchProducts() {
     const search = document.getElementById("search-input");
     if (!search) return;
@@ -107,7 +113,6 @@ function searchProducts() {
     displayProducts(filtered);
 }
 
-// ===== FILTRES =====
 function filterProducts(category) {
     if (category === "all") {
         displayProducts(products);
@@ -117,17 +122,20 @@ function filterProducts(category) {
     displayProducts(filtered);
 }
 
-// ===== STATISTIQUES =====
+// ==========================================
+// STATISTIQUES
+// ==========================================
+
 function updateStats() {
     const totalSales = products.reduce((sum, p) => sum + (p.sales || 0), 0);
     const stats = document.getElementById("sales-count");
     if (stats) stats.textContent = totalSales;
 }
 
-// ===== MODALE PRODUIT =====
-/**
- * Affiche la page produit améliorée (version Pro)
- */
+// ==========================================
+// MODALE PRODUIT
+// ==========================================
+
 function showProduct(id) {
     const product = products.find(p => p.id === id);
     if (!product) {
@@ -139,21 +147,17 @@ function showProduct(id) {
     const body = document.getElementById("modal-body");
     if (!modal || !body) return;
 
-    // Images par défaut
     const images = product.images && product.images.length > 0 ? product.images : ['https://via.placeholder.com/400'];
     
-    // Calcul de la réduction
     let discountPercent = 0;
     if (product.oldPrice && product.oldPrice > product.price) {
         discountPercent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
     }
 
-    // Barre de stock
     const stockPercent = Math.min((product.stock / 10) * 100, 100);
     const stockColor = product.stock > 5 ? '#22c55e' : product.stock > 2 ? '#f59e0b' : '#ef4444';
     const stockLabel = product.stock > 5 ? '✅ En stock' : product.stock > 2 ? '⚠️ Plus que ' + product.stock : '⚠️ Rupture imminente';
 
-    // Galerie images avec miniatures
     let galleryThumbs = images.map((img, i) => `
         <img src="${img}" onclick="changeProductImage(${i})" 
              class="gallery-thumb" 
@@ -161,7 +165,6 @@ function showProduct(id) {
              onerror="this.src='https://via.placeholder.com/60'">
     `).join('');
 
-    // Avis
     let reviewsHtml = '';
     if (product.comments && product.comments.length > 0) {
         reviewsHtml = product.comments.map(c => `
@@ -175,26 +178,22 @@ function showProduct(id) {
 
     body.innerHTML = `
     <div style="position:relative;">
-        <!-- En-tête avec badge de réduction -->
         ${discountPercent > 0 ? `
             <div style="position:absolute;top:0;right:0;background:#ef4444;color:white;padding:8px 16px;border-radius:0 0 0 16px;font-weight:700;font-size:1.1rem;z-index:5;">
                 -${discountPercent}%
             </div>
         ` : ''}
         
-        <!-- Galerie principale -->
         <div style="border-radius:16px;overflow:hidden;background:#f5f5f5;margin-bottom:12px;">
             <img id="main-product-image" src="${images[0]}" 
                  style="width:100%;height:280px;object-fit:contain;background:#f5f5f5;transition:0.3s;"
                  onerror="this.src='https://via.placeholder.com/400'">
         </div>
         
-        <!-- Miniatures -->
         <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;">
             ${galleryThumbs}
         </div>
 
-        <!-- Nom et marque -->
         <div style="margin-bottom:12px;">
             <h2 style="font-size:1.3rem;font-weight:700;margin:0 0 4px 0;">${product.name}</h2>
             <p style="color:#888;font-size:0.85rem;margin:0;">
@@ -203,7 +202,6 @@ function showProduct(id) {
             </p>
         </div>
 
-        <!-- PRIX -->
         <div style="background:linear-gradient(135deg,#fff7ed,#ffedd5);border-radius:12px;padding:16px;margin-bottom:16px;">
             <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
                 <span style="font-size:1.8rem;font-weight:800;color:#f97316;">
@@ -225,7 +223,6 @@ function showProduct(id) {
             </p>
         </div>
 
-        <!-- Stock avec barre -->
         <div style="margin-bottom:16px;">
             <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
                 <span style="font-weight:600;color:${stockColor};">${stockLabel}</span>
@@ -236,7 +233,6 @@ function showProduct(id) {
             </div>
         </div>
 
-        <!-- Boutons d'achat -->
         <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
             <button onclick="addToCart(${product.id})" 
                     style="width:100%;padding:16px;background:#f97316;color:white;border:none;border-radius:12px;font-weight:700;font-size:1.1rem;cursor:pointer;transition:0.2s;display:flex;justify-content:center;align-items:center;gap:8px;">
@@ -248,22 +244,14 @@ function showProduct(id) {
             </button>
         </div>
 
-        <!-- Infos livraison -->
         <div style="background:#f8fafc;border-radius:12px;padding:14px 16px;margin-bottom:16px;">
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
-                    📍 Livraison à domicile
-                </span>
-                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
-                    📦 Retour 10 jours
-                </span>
-                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">
-                    🔒 Paiement sécurisé
-                </span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">📍 Livraison à domicile</span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">📦 Retour 10 jours</span>
+                <span style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:#555;">🔒 Paiement sécurisé</span>
             </div>
         </div>
 
-        <!-- Détails du produit -->
         <div style="margin-bottom:16px;">
             <h3 style="font-size:1rem;margin-bottom:8px;">📋 Détails du produit</h3>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
@@ -286,7 +274,6 @@ function showProduct(id) {
             </div>
         </div>
 
-        <!-- Avis -->
         <div style="margin-bottom:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                 <h3 style="font-size:1rem;margin:0;">⭐ Avis clients</h3>
@@ -297,13 +284,11 @@ function showProduct(id) {
             </div>
         </div>
 
-        <!-- Supprimer (admin) -->
         <button onclick="deleteProduct(${product.id})" 
                 style="width:100%;padding:12px;background:#ef4444;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin:4px 0;">
             🗑️ Supprimer le produit
         </button>
 
-        <!-- Bouton signaler -->
         <button onclick="reportProduct(${product.id})" 
                 style="background:none;border:none;color:#888;font-size:0.8rem;cursor:pointer;padding:8px;text-decoration:underline;width:100%;">
             🚨 Signaler un problème
@@ -315,9 +300,6 @@ function showProduct(id) {
     document.body.style.overflow = "hidden";
 }
 
-/**
- * Change l'image principale au clic sur une miniature
- */
 function changeProductImage(index) {
     const mainImg = document.getElementById('main-product-image');
     if (!mainImg) return;
@@ -337,9 +319,6 @@ function changeProductImage(index) {
     });
 }
 
-/**
- * Signaler un produit
- */
 function reportProduct(id) {
     const reason = prompt('🚨 Signaler un problème avec ce produit :\n\n1 - Produit contrefait\n2 - Prix incorrect\n3 - Image trompeuse\n4 - Description erronée\n5 - Autre');
     if (reason) {
@@ -350,9 +329,6 @@ function reportProduct(id) {
     }
 }
 
-/**
- * Ferme la modale
- */
 function closeModal() {
     const modal = document.getElementById("product-modal");
     if (modal) {
@@ -361,12 +337,10 @@ function closeModal() {
     }
 }
 
-function closeModal() {
-    const modal = document.getElementById("product-modal");
-    if (modal) modal.style.display = "none";
-}
+// ==========================================
+// SIMULATION VISITEURS
+// ==========================================
 
-// ===== SIMULATION VISITEURS =====
 function simulateVisitors() {
     const visitors = document.getElementById("visitor-count");
     if (!visitors) return;
@@ -378,7 +352,10 @@ function simulateVisitors() {
 }
 simulateVisitors();
 
-// ===== COUNTDOWN =====
+// ==========================================
+// COUNTDOWN
+// ==========================================
+
 function startCountdown() {
     let totalSeconds = 24 * 60 * 60;
     const countdown = document.getElementById("countdown");
@@ -398,7 +375,10 @@ function startCountdown() {
 }
 startCountdown();
 
-// ===== ADMIN =====
+// ==========================================
+// ADMIN
+// ==========================================
+
 function addProduct() {
     const name = document.getElementById("admin-name")?.value;
     const price = Number(document.getElementById("admin-price")?.value);
@@ -509,115 +489,249 @@ function displayOrders() {
     container.innerHTML = html;
 }
 
-// ===== ACHAT RAPIDE =====
+// ==========================================
+// ACHAT RAPIDE
+// ==========================================
+
 function buyNow(id) {
     addToCart(id);
-    // Scroller vers le panier
     const cartBox = document.querySelector(".cart-box");
     if (cartBox) {
         cartBox.scrollIntoView({ behavior: "smooth" });
     }
 }
 
-// ===== AUTHENTIFICATION =====
-function registerUser() {
-    const email = document.getElementById("login-email")?.value;
-    const password = document.getElementById("login-password")?.value;
+// ==========================================
+// AUTHENTIFICATION FIREBASE (PRO)
+// ==========================================
+
+// Surveille l'état de connexion en temps réel
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        // ✅ Utilisateur connecté
+        console.log('👤 Connecté:', user.displayName || user.email);
+        
+        if (user.emailVerified || user.providerData[0]?.providerId === 'google.com') {
+            updateUIForLoggedInUser(user);
+        } else {
+            showToast('📧 Veuillez confirmer votre email');
+            firebase.auth().signOut();
+        }
+    } else {
+        // ❌ Utilisateur déconnecté
+        console.log('👤 Déconnecté');
+        updateUIForLoggedOutUser();
+    }
+});
+
+/**
+ * Connexion avec Google
+ */
+function loginWithGoogle() {
+    showToast('🔄 Connexion en cours...');
+    
+    firebase.auth().signInWithPopup(provider)
+        .then(result => {
+            const user = result.user;
+            console.log('✅ Google connecté:', user.displayName);
+            showToast('✅ Connecté avec Google !');
+            saveUserToFirestore(user);
+        })
+        .catch(error => {
+            console.error('❌ Erreur Google:', error);
+            if (error.code === 'auth/popup-blocked') {
+                showToast('⚠️ Autorisez les popups pour ce site');
+            } else if (error.code === 'auth/cancelled-popup-request') {
+                showToast('⏹️ Connexion annulée');
+            } else {
+                showToast('❌ Erreur: ' + error.message);
+            }
+        });
+}
+
+/**
+ * Connexion avec Email/Mot de passe (REMPLACE l'ancienne)
+ */
+function loginUser() {
+    const email = document.getElementById('login-email')?.value;
+    const password = document.getElementById('login-password')?.value;
 
     if (!email || !password) {
-        alert("Remplissez tous les champs");
+        showToast('⚠️ Remplissez tous les champs');
         return;
     }
 
-    localStorage.setItem("userEmail", email);
-    localStorage.setItem("userPassword", password);
-    localStorage.setItem("user", JSON.stringify({ email, password }));
-    alert("✅ Compte créé avec succès");
-    updateAccountUI();
+    showToast('🔄 Connexion en cours...');
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            const user = userCredential.user;
+            
+            if (!user.emailVerified) {
+                showToast('📧 Confirmez votre email avant de vous connecter');
+                firebase.auth().signOut();
+                return;
+            }
+            
+            showToast('✅ Connecté avec succès !');
+            saveUserToFirestore(user);
+        })
+        .catch(error => {
+            console.error('❌ Erreur connexion:', error);
+            let message = '❌ ' + error.message;
+            if (error.code === 'auth/user-not-found') {
+                message = '❌ Aucun compte avec cet email';
+            } else if (error.code === 'auth/wrong-password') {
+                message = '❌ Mot de passe incorrect';
+            }
+            showToast(message);
+        });
 }
 
-function loginUser() {
-    const email = document.getElementById("login-email")?.value;
-    const password = document.getElementById("login-password")?.value;
-    const savedEmail = localStorage.getItem("userEmail");
-    const savedPassword = localStorage.getItem("userPassword");
+/**
+ * Inscription (REMPLACE l'ancienne)
+ */
+function registerUser() {
+    const email = document.getElementById('login-email')?.value;
+    const password = document.getElementById('login-password')?.value;
 
-    if (email === savedEmail && password === savedPassword) {
-        localStorage.setItem("currentUser", email);
-        localStorage.setItem("user", JSON.stringify({ email, password }));
-        const status = document.getElementById("login-status");
-        if (status) status.textContent = "✅ Connecté : " + email;
-        alert("✅ Connexion réussie");
-        updateAccountUI();
-    } else {
-        alert("❌ Email ou mot de passe incorrect");
+    if (!email || !password) {
+        showToast('⚠️ Remplissez tous les champs');
+        return;
     }
+
+    if (password.length < 6) {
+        showToast('⚠️ Mot de passe (min 6 caractères)');
+        return;
+    }
+
+    showToast('🔄 Création du compte...');
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            const user = userCredential.user;
+            
+            user.sendEmailVerification()
+                .then(() => {
+                    showToast('📧 Email de confirmation envoyé !');
+                })
+                .catch(error => {
+                    console.error('❌ Erreur envoi email:', error);
+                });
+
+            saveUserToFirestore(user);
+            firebase.auth().signOut();
+            showToast('📧 Confirmez votre email pour vous connecter');
+        })
+        .catch(error => {
+            console.error('❌ Erreur inscription:', error);
+            let message = '❌ ' + error.message;
+            if (error.code === 'auth/email-already-in-use') {
+                message = '❌ Cet email est déjà utilisé';
+            }
+            showToast(message);
+        });
 }
 
+/**
+ * Déconnexion (REMPLACE l'ancienne)
+ */
 function logoutUser() {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("user");
-    const status = document.getElementById("login-status");
-    if (status) status.textContent = "❌ Non connecté";
-    resetAccountUI();
-    showToast('🚪 Déconnexion réussie');
+    firebase.auth().signOut()
+        .then(() => {
+            showToast('🚪 Déconnecté');
+        })
+        .catch(error => {
+            showToast('❌ Erreur: ' + error.message);
+        });
 }
 
-// ==========================================
-// NOUVELLES FONCTIONS POUR LE COMPTE
-// ==========================================
-
-function updateAccountUI() {
-    const name = document.getElementById('account-name');
-    const email = document.getElementById('account-email');
-    const credit = document.getElementById('account-credit');
-    const status = document.getElementById('login-status');
-    const authForm = document.getElementById('auth-form');
-    const profileEmoji = document.getElementById('profile-emoji');
-    const authLabel = document.getElementById('auth-label');
-
-    const stored = localStorage.getItem('user');
+/**
+ * Sauvegarde l'utilisateur dans Firestore
+ */
+function saveUserToFirestore(user) {
+    if (typeof db === 'undefined') return;
     
-    if (stored) {
-        try {
-            const user = JSON.parse(stored);
-            const displayName = user.email?.split('@')[0] || 'Utilisateur';
-            
-            if (name) name.textContent = displayName;
-            if (email) email.textContent = user.email || 'Connecté';
-            if (credit) credit.textContent = '10 000 FCFA';
-            if (profileEmoji) profileEmoji.textContent = '😎';
-            if (status) status.textContent = '✅ Connecté avec succès';
-            if (authForm) authForm.style.display = 'none';
-            if (authLabel) authLabel.textContent = 'Se déconnecter';
-            
-            localStorage.setItem('userName', displayName);
-        } catch (e) {
-            console.warn('Erreur de lecture du profil:', e);
-            resetAccountUI();
-        }
+    const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || user.email?.split('@')[0] || 'Utilisateur',
+        photoURL: user.photoURL || null,
+        provider: user.providerData[0]?.providerId || 'email',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+        role: 'user',
+        credit: 10000
+    };
+
+    db.collection('users').doc(user.uid).set(userData, { merge: true })
+        .then(() => console.log('✅ Utilisateur sauvegardé'))
+        .catch(error => console.error('❌ Erreur sauvegarde:', error));
+}
+
+/**
+ * Met à jour l'UI pour utilisateur connecté
+ */
+function updateUIForLoggedInUser(user) {
+    const name = user.displayName || user.email?.split('@')[0] || 'Utilisateur';
+    
+    const nameEl = document.getElementById('account-name');
+    const emailEl = document.getElementById('account-email');
+    const creditEl = document.getElementById('account-credit');
+    const emojiEl = document.getElementById('profile-emoji');
+    const statusEl = document.getElementById('login-status');
+    const authForm = document.getElementById('auth-form');
+
+    if (nameEl) nameEl.textContent = name;
+    if (emailEl) emailEl.textContent = user.email;
+    if (creditEl) creditEl.textContent = '10 000 FCFA';
+    if (emojiEl) emojiEl.textContent = user.photoURL ? '📸' : '😎';
+    if (statusEl) {
+        statusEl.textContent = '✅ Connecté avec succès';
+        statusEl.style.color = '#22c55e';
+    }
+    if (authForm) authForm.style.display = 'none';
+}
+
+/**
+ * Met à jour l'UI pour utilisateur déconnecté
+ */
+function updateUIForLoggedOutUser() {
+    const nameEl = document.getElementById('account-name');
+    const emailEl = document.getElementById('account-email');
+    const creditEl = document.getElementById('account-credit');
+    const emojiEl = document.getElementById('profile-emoji');
+    const statusEl = document.getElementById('login-status');
+    const authForm = document.getElementById('auth-form');
+
+    if (nameEl) nameEl.textContent = 'Invité';
+    if (emailEl) emailEl.textContent = 'Non connecté';
+    if (creditEl) creditEl.textContent = '0 FCFA';
+    if (emojiEl) emojiEl.textContent = '👤';
+    if (statusEl) {
+        statusEl.textContent = '❌ Non connecté';
+        statusEl.style.color = '#ef4444';
+    }
+    if (authForm) authForm.style.display = 'block';
+}
+
+// Garder les anciennes fonctions pour compatibilité
+function updateAccountUI() {
+    const user = firebase.auth().currentUser;
+    if (user && user.emailVerified) {
+        updateUIForLoggedInUser(user);
     } else {
-        resetAccountUI();
+        updateUIForLoggedOutUser();
     }
 }
 
 function resetAccountUI() {
-    const name = document.getElementById('account-name');
-    const email = document.getElementById('account-email');
-    const credit = document.getElementById('account-credit');
-    const profileEmoji = document.getElementById('profile-emoji');
-    const status = document.getElementById('login-status');
-    const authForm = document.getElementById('auth-form');
-    const authLabel = document.getElementById('auth-label');
-
-    if (name) name.textContent = 'Invité';
-    if (email) email.textContent = 'Non connecté';
-    if (credit) credit.textContent = '0 FCFA';
-    if (profileEmoji) profileEmoji.textContent = '👤';
-    if (status) status.textContent = '❌ Non connecté';
-    if (authForm) authForm.style.display = 'block';
-    if (authLabel) authLabel.textContent = 'Se connecter';
+    updateUIForLoggedOutUser();
 }
+
+// ==========================================
+// NAVIGATION
+// ==========================================
 
 function navigateTo(section) {
     const messages = {
@@ -639,7 +753,7 @@ function navigateTo(section) {
 }
 
 function openChat() {
-    const user = localStorage.getItem('user');
+    const user = firebase.auth().currentUser;
     if (!user) {
         showToast('💬 Connectez-vous pour accéder au chat !');
         return;
@@ -648,18 +762,19 @@ function openChat() {
 }
 
 function openWhatsApp() {
-    const user = localStorage.getItem('user');
+    const user = firebase.auth().currentUser;
     let name = 'Client';
     if (user) {
-        try {
-            const parsed = JSON.parse(user);
-            name = parsed.email?.split('@')[0] || 'Client';
-        } catch (e) {}
+        name = user.displayName || user.email?.split('@')[0] || 'Client';
     }
     const message = `Bonjour WebProfit AI ! Je suis ${name} et je souhaite passer une commande.`;
     const phone = '2250719949973';
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 }
+
+// ==========================================
+// TOAST
+// ==========================================
 
 function showToast(message) {
     let toast = document.getElementById('toast-notification');
@@ -713,7 +828,4 @@ document.addEventListener('DOMContentLoaded', function() {
     updateAdminStats();
     displayOrders();
     updateAccountUI();
-    console.log('✅ app.js chargé avec succès');
-});
-
-console.log('📱 app.js chargé');
+    console.log('✅ app.js chargé avec succ
