@@ -114,7 +114,7 @@
     </div>
 
     <!-- ==========================================
-     PANIER ULTIME - VERSION 2.0
+     PANIER
      ========================================== -->
     <div id="cart-section" style="display:none;" class="page-section">
         <div class="cart-container">
@@ -376,7 +376,27 @@
         </div>
     </nav>
 
-    <script> 
+    <!-- ==========================================
+    SCRIPTS - ORDRE IMPORTANT
+    ========================================== -->
+    
+    <!-- 1️⃣ FIREBASE SDK (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- 2️⃣ CONFIGURATION FIREBASE -->
+    <script src="firebase.js"></script>
+
+    <!-- 3️⃣ FONCTIONS DU SITE -->
+    <script src="products.js"></script>
+    <script src="cart.js"></script>
+    <script src="ai.js"></script>
+    <script src="app.js"></script>
+
+    <!-- 4️⃣ CODE INTERNE -->
+    <script>
         // Timer Ventes Flash
         function startFlashTimer() {
             let totalSeconds = 86400;
@@ -506,13 +526,11 @@
             const badge = document.getElementById('cart-badge');
             const headerBadge = document.getElementById('header-cart-badge');
             
-            // Récupérer le compteur depuis le localStorage ou l'élément cart-count
             let count = 0;
             const cartCountEl = document.getElementById('cart-count');
             if (cartCountEl) {
                 count = parseInt(cartCountEl.textContent) || 0;
             } else {
-                // Essayer de récupérer depuis le localStorage
                 try {
                     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                     count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
@@ -529,7 +547,6 @@
             }
         }
         
-        // Mettre à jour le badge régulièrement
         setInterval(updateCartBadge, 500);
         setTimeout(updateCartBadge, 1000);
 
@@ -542,27 +559,6 @@
 
         console.log('✅ WebProfit AI chargé avec succès !');
         console.log('📱 Version 2.0 - Jumia Killer');
-    </script>
-    
-    <!-- ===== SCRIPTS ===== -->
-    
-    <!-- 1️⃣ FIREBASE SDK (CDN) - À ajouter EN PREMIER -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
-    <!-- 2️⃣ TES FICHIERS (dans l'ordre) -->
-    <script src="firebase.js"></script>   <!-- ← Ta configuration -->
-    <script src="products.js"></script>
-    <script src="cart.js"></script>
-    <script src="ai.js"></script>
-    <script src="app.js"></script>
-
-    <!-- 3️⃣ TON CODE INTERNE -->
-    <script>
-        // Timer Ventes Flash
-        // ... etc
     </script>
     
 </body>
