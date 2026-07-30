@@ -376,190 +376,33 @@
         </div>
     </nav>
 
-    <!-- ==========================================
-    SCRIPTS - ORDRE IMPORTANT
-    ========================================== -->
+   <!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+<!-- Configuration -->
+<script src="firebase.js"></script>
+
+<!-- Application -->
+<script src="products.js"></script>
+<script src="cart.js"></script>
+<script src="ai.js"></script>
+<script src="app.js"></script>
+
+<!-- Scripts spécifiques à la page -->
+<script>
+    startFlashTimer();
+    updateCartBadge();
+
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => console.log("✅ Service Worker installé"))
+            .catch(err => console.warn(err));
+    }
+</script>
     
-    <!-- 1️⃣ FIREBASE SDK (CDN) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
-    <!-- 2️⃣ CONFIGURATION FIREBASE -->
-    <script src="firebase.js"></script>
-
-    <!-- 3️⃣ FONCTIONS DU SITE -->
-    <script src="products.js"></script>
-    <script src="cart.js"></script>
-    <script src="ai.js"></script>
-    <script src="app.js"></script>
-
-    <!-- 4️⃣ CODE INTERNE -->
-    <script>
-        // Timer Ventes Flash
-        function startFlashTimer() {
-            let totalSeconds = 86400;
-            const hoursEl = document.getElementById('hours');
-            const minutesEl = document.getElementById('minutes');
-            const secondsEl = document.getElementById('seconds');
-
-            setInterval(() => {
-                totalSeconds--;
-                if (totalSeconds < 0) totalSeconds = 86400;
-                const h = Math.floor(totalSeconds / 3600);
-                const m = Math.floor((totalSeconds % 3600) / 60);
-                const s = totalSeconds % 60;
-                hoursEl.textContent = String(h).padStart(2, '0');
-                minutesEl.textContent = String(m).padStart(2, '0');
-                secondsEl.textContent = String(s).padStart(2, '0');
-            }, 1000);
-        }
-        startFlashTimer();
-
-        // Navigation
-        function showSection(section) {
-            // Cacher toutes les sections
-            document.querySelectorAll('.page-section, #cart-section, #checkout-section, #account-section')
-                .forEach(el => {
-                    if (el) el.style.display = 'none';
-                });
-
-            // Afficher les sections par défaut
-            const flash = document.querySelector('.flash-banner');
-            const categories = document.querySelector('.categories-section');
-            const featured = document.querySelector('.featured-section');
-            const ai = document.querySelector('.ai-section');
-            
-            if (flash) flash.style.display = 'block';
-            if (categories) categories.style.display = 'block';
-            if (featured) featured.style.display = 'block';
-            if (ai) ai.style.display = 'block';
-
-            // Gérer les sections spéciales
-            if (section === 'cart') {
-                if (flash) flash.style.display = 'none';
-                if (categories) categories.style.display = 'none';
-                if (featured) featured.style.display = 'none';
-                if (ai) ai.style.display = 'none';
-                const cartSection = document.getElementById('cart-section');
-                if (cartSection) cartSection.style.display = 'block';
-                if (typeof renderCart === 'function') renderCart();
-            } else if (section === 'checkout') {
-                if (flash) flash.style.display = 'none';
-                if (categories) categories.style.display = 'none';
-                if (featured) featured.style.display = 'none';
-                if (ai) ai.style.display = 'none';
-                const checkout = document.getElementById('checkout-section');
-                if (checkout) checkout.style.display = 'block';
-            } else if (section === 'account') {
-                if (flash) flash.style.display = 'none';
-                if (categories) categories.style.display = 'none';
-                if (featured) featured.style.display = 'none';
-                if (ai) ai.style.display = 'none';
-                const account = document.getElementById('account-section');
-                if (account) account.style.display = 'block';
-                if (typeof updateAccountUI === 'function') updateAccountUI();
-            } else if (section === 'favorites') {
-                if (typeof showToast === 'function') {
-                    showToast('❤️ Tes favoris arrivent bientôt !');
-                } else {
-                    alert('❤️ Tes favoris arrivent bientôt !');
-                }
-                return;
-            }
-
-            // Mettre à jour la navigation active
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            const navMap = { 'home': 0, 'categories': 1, 'cart': 2, 'favorites': 3, 'account': 4 };
-            const idx = navMap[section] || 0;
-            const navItems = document.querySelectorAll('.nav-item');
-            if (navItems[idx]) navItems[idx].classList.add('active');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function openCheckout() {
-            showSection('checkout');
-        }
-
-        function toggleAuth() {
-            const form = document.getElementById('auth-form');
-            if (form) {
-                form.style.display = form.style.display === 'none' ? 'block' : 'none';
-            }
-        }
-
-        function updateAccountUI() {
-            const name = document.getElementById('account-name');
-            const email = document.getElementById('account-email');
-            const credit = document.getElementById('account-credit');
-            const status = document.getElementById('login-status');
-            const profileEmoji = document.getElementById('profile-emoji');
-            const authForm = document.getElementById('auth-form');
-
-            const stored = localStorage.getItem('user');
-            if (stored) {
-                try {
-                    const user = JSON.parse(stored);
-                    const displayName = user.email?.split('@')[0] || 'Utilisateur';
-                    if (name) name.textContent = displayName;
-                    if (email) email.textContent = user.email || 'Connecté';
-                    if (credit) credit.textContent = '10 000 FCFA';
-                    if (profileEmoji) profileEmoji.textContent = '😎';
-                    if (status) status.textContent = '✅ Connecté avec succès';
-                    if (authForm) authForm.style.display = 'none';
-                } catch (e) {
-                    console.warn('Erreur de lecture du profil:', e);
-                }
-            } else {
-                if (name) name.textContent = 'Invité';
-                if (email) email.textContent = 'Non connecté';
-                if (credit) credit.textContent = '0 FCFA';
-                if (profileEmoji) profileEmoji.textContent = '👤';
-                if (status) status.textContent = '❌ Non connecté';
-                if (authForm) authForm.style.display = 'block';
-            }
-        }
-
-        function updateCartBadge() {
-            const badge = document.getElementById('cart-badge');
-            const headerBadge = document.getElementById('header-cart-badge');
-            
-            let count = 0;
-            const cartCountEl = document.getElementById('cart-count');
-            if (cartCountEl) {
-                count = parseInt(cartCountEl.textContent) || 0;
-            } else {
-                try {
-                    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                    count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-                } catch (e) {}
-            }
-            
-            if (badge) {
-                badge.textContent = count;
-                badge.style.display = count > 0 ? 'flex' : 'none';
-            }
-            if (headerBadge) {
-                headerBadge.textContent = count;
-                headerBadge.style.display = count > 0 ? 'flex' : 'none';
-            }
-        }
-        
-        setInterval(updateCartBadge, 500);
-        setTimeout(updateCartBadge, 1000);
-
-        // Service Worker
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("./service-worker.js")
-                .then(() => console.log("✅ Service Worker installé"))
-                .catch(err => console.warn("⚠️ Service Worker:", err));
-        }
-
-        console.log('✅ WebProfit AI chargé avec succès !');
-        console.log('📱 Version 2.0 - Jumia Killer');
-    </script>
     
 </body>
 </html>
