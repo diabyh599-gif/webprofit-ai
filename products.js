@@ -1,8 +1,9 @@
 // ==========================================
-// PRODUCTS.JS - VERSION CORRIGÉE
+// PRODUCTS.JS - VERSION FIREBASE (PRO)
 // ==========================================
 
-// Récupérer les produits depuis localStorage ou utiliser les produits par défaut
+// ===== PRODUITS PAR DÉFAUT =====
+
 const defaultProducts = [
     {
         id: 1,
@@ -17,6 +18,7 @@ const defaultProducts = [
         reviews: 124,
         isNew: true,
         isBestSeller: true,
+        description: "👔 Ensemble chic et confortable pour toutes vos occasions spéciales. Idéal pour les fêtes et sorties entre amis. Tissu de haute qualité, coupe moderne.",
         comments: [
             "⭐⭐⭐⭐⭐ Très bonne qualité",
             "⭐⭐⭐⭐ Élégant et confortable",
@@ -42,6 +44,7 @@ const defaultProducts = [
         reviews: 89,
         isNew: false,
         isBestSeller: true,
+        description: "👟 La classique Nike Air Force One, blanche et intemporelle. Confortable et stylée pour toutes vos sorties.",
         comments: [
             "⭐⭐⭐⭐⭐ Très bonne qualité",
             "⭐⭐⭐⭐ Élégant et confortable",
@@ -67,6 +70,7 @@ const defaultProducts = [
         reviews: 256,
         isNew: true,
         isBestSeller: false,
+        description: "🎧 Écouteurs sans fil Samsung Galaxy Buds 3 Pro. Son immersif, réduction de bruit active, parfaits pour le quotidien.",
         comments: [
             "⭐⭐⭐⭐⭐ Très confortable",
             "⭐⭐⭐⭐ Livraison rapide",
@@ -92,6 +96,7 @@ const defaultProducts = [
         reviews: 178,
         isNew: false,
         isBestSeller: true,
+        description: "⌚ Montre élégante POEDAGAR 885. Design classique, parfaite pour toutes les occasions. Livraison express.",
         comments: [
             "⭐⭐⭐⭐⭐ Très confortable",
             "⭐⭐⭐⭐ Livraison rapide",
@@ -117,6 +122,7 @@ const defaultProducts = [
         reviews: 92,
         isNew: true,
         isBestSeller: false,
+        description: "👜 Sac élégant pour femme, spacieux et moderne. Idéal pour le travail ou les sorties.",
         comments: [
             "⭐⭐⭐⭐⭐ Très bonne qualité",
             "⭐⭐⭐⭐ Élégant et confortable",
@@ -131,7 +137,8 @@ const defaultProducts = [
     }
 ];
 
-// Charger les produits depuis localStorage ou utiliser les produits par défaut
+// ===== CHARGEMENT DES PRODUITS =====
+
 let products = [];
 
 try {
@@ -157,7 +164,9 @@ try {
     localStorage.setItem('products', JSON.stringify(products));
 }
 
-// ===== FONCTIONS =====
+// ==========================================
+// FONCTIONS
+// ==========================================
 
 /**
  * Sauvegarde les produits dans localStorage
@@ -177,6 +186,10 @@ function saveProducts() {
 function getProductById(id) {
     return products.find(p => p.id == id);
 }
+
+// ==========================================
+// AFFICHAGE DES PRODUITS
+// ==========================================
 
 /**
  * Affiche les produits dans la grille
@@ -200,49 +213,49 @@ function displayProducts(filteredProducts) {
         return;
     }
 
-    grid.innerHTML = list.map((product, index) => {
-        // Déterminer le badge
-        let badge = '';
+    grid.innerHTML = list.map(product => {
+        // Badges
+        let badges = '';
         if (product.isNew && product.isBestSeller) {
-            badge = '<span class="badge" style="background:#22c55e;">🆕 Nouveau</span><span class="badge" style="background:#f97316;margin-left:4px;">🔥 Best Seller</span>';
+            badges = '<span class="badge" style="background:#22c55e;">🆕 Nouveau</span><span class="badge" style="background:#f97316;margin-left:4px;">🔥 Best Seller</span>';
         } else if (product.isNew) {
-            badge = '<span class="badge" style="background:#22c55e;">🆕 Nouveau</span>';
+            badges = '<span class="badge" style="background:#22c55e;">🆕 Nouveau</span>';
         } else if (product.isBestSeller) {
-            badge = '<span class="badge" style="background:#f97316;">🔥 Best Seller</span>';
+            badges = '<span class="badge" style="background:#f97316;">🔥 Best Seller</span>';
         }
 
-        // Calcul du pourcentage de réduction
-        let discountPercent = '';
+        // Réduction
+        let discount = '';
         if (product.oldPrice && product.oldPrice > product.price) {
             const percent = Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100);
-            discountPercent = `<span class="badge" style="background:#ef4444;">-${percent}%</span>`;
+            discount = `<span class="badge" style="background:#ef4444;">-${percent}%</span>`;
         }
 
         const imageUrl = product.images && product.images[0] ? product.images[0] : 'https://via.placeholder.com/200';
 
         return `
-            <div class="product-card" onclick="showProductDetail(${product.id})">
-                <div class="badge-wrap" style="position:relative;">
+            <div class="product-card" onclick="showProduct(${product.id})" style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;transition:0.25s;">
+                <div style="position:relative;">
                     <div style="position:absolute;top:8px;left:8px;display:flex;flex-wrap:wrap;gap:4px;z-index:2;">
-                        ${badge}
-                        ${discountPercent}
+                        ${badges}
+                        ${discount}
                     </div>
                     <img src="${imageUrl}" alt="${product.name}" 
                          onerror="this.src='https://via.placeholder.com/200'" 
-                         style="width:100%;height:180px;object-fit:cover;border-radius:12px 12px 0 0;background:#f0f0f0;" />
+                         style="width:100%;height:180px;object-fit:cover;background:#f0f0f0;">
                 </div>
-                <div class="product-info" style="padding:12px;">
-                    <div class="product-name" style="font-weight:600;font-size:0.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.6rem;">
+                <div style="padding:12px;">
+                    <div style="font-weight:600;font-size:0.95rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.6rem;">
                         ${product.name}
                     </div>
-                    <div class="product-category" style="font-size:0.75rem;color:#888;margin:4px 0 6px;">
+                    <div style="font-size:0.75rem;color:#888;margin:4px 0 6px;">
                         ${product.category}
                     </div>
-                    <div class="price-row" style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
-                        <span class="current-price" style="font-weight:700;color:#f97316;font-size:1.1rem;">
+                    <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;">
+                        <span style="font-weight:700;color:#f97316;font-size:1.1rem;">
                             ${product.price.toLocaleString()} FCFA
                         </span>
-                        ${product.oldPrice ? `<span class="old-price" style="font-size:0.8rem;color:#aaa;text-decoration:line-through;">${product.oldPrice.toLocaleString()} FCFA</span>` : ''}
+                        ${product.oldPrice ? `<span style="font-size:0.8rem;color:#aaa;text-decoration:line-through;">${product.oldPrice.toLocaleString()} FCFA</span>` : ''}
                     </div>
                     ${product.stock !== undefined ? `<div style="font-size:0.7rem;color:#22c55e;font-weight:600;margin-top:4px;">📦 Stock : ${product.stock}</div>` : ''}
                     <button onclick="event.stopPropagation(); addToCart(${product.id})" 
@@ -255,6 +268,10 @@ function displayProducts(filteredProducts) {
     }).join('');
 }
 
+// ==========================================
+// FILTRES ET RECHERCHE
+// ==========================================
+
 /**
  * Filtre les produits par catégorie
  */
@@ -266,10 +283,10 @@ function filterProducts(category) {
         displayProducts(filtered);
     }
     
-    // Mettre à jour les catégories actives
     document.querySelectorAll('.category-item').forEach(el => {
         el.classList.remove('active');
-        if (el.textContent.trim() === category || el.textContent.trim() === 'Tous') {
+        const text = el.textContent.trim();
+        if (text === category || text === 'Tous') {
             el.classList.add('active');
         }
     });
@@ -295,24 +312,31 @@ function searchProducts() {
     displayProducts(results);
 }
 
-/**
- * Met à jour les statistiques
- */
+// ==========================================
+# STATISTIQUES ADMIN
+# ==========================================
+
 function updateStats() {
     const totalProducts = products.length;
     const totalSales = products.reduce((sum, p) => sum + (p.sales || 0), 0);
     const outOfStock = products.filter(p => p.stock <= 0).length;
     const revenue = products.reduce((sum, p) => sum + (p.price * (p.sales || 0)), 0);
     
-    document.getElementById('admin-products-count').textContent = totalProducts;
-    document.getElementById('admin-sales-count').textContent = totalSales;
-    document.getElementById('admin-out-stock').textContent = outOfStock;
-    document.getElementById('admin-revenue').textContent = revenue.toLocaleString();
+    const countEl = document.getElementById('admin-products-count');
+    const salesEl = document.getElementById('admin-sales-count');
+    const stockEl = document.getElementById('admin-out-stock');
+    const revenueEl = document.getElementById('admin-revenue');
+    
+    if (countEl) countEl.textContent = totalProducts;
+    if (salesEl) salesEl.textContent = totalSales;
+    if (stockEl) stockEl.textContent = outOfStock;
+    if (revenueEl) revenueEl.textContent = revenue.toLocaleString();
 }
 
-// ===== INITIALISATION =====
+// ==========================================
+# INITIALISATION
+# ==========================================
 
-// Afficher les produits au chargement
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         displayProducts(products);
