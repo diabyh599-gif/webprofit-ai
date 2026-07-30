@@ -31,7 +31,6 @@ function askAI() {
     const budgetMatch = question.match(/\d+/g);
     let budget = null;
     if (budgetMatch) {
-        // Prendre le premier nombre trouvé
         budget = parseInt(budgetMatch[0]);
     }
 
@@ -65,7 +64,6 @@ function askAI() {
         "robe": "Vêtements",
         "chaussure": "Chaussures",
         "basket": "Chaussures",
-        "chaussure": "Chaussures",
         "accessoire": "Accessoires",
         "montre": "Accessoires",
         "sac": "Accessoires",
@@ -75,7 +73,9 @@ function askAI() {
         "apple": "Électronique",
         "écouteur": "Électronique",
         "casque": "Électronique",
-        "galaxy": "Électronique"
+        "galaxy": "Électronique",
+        "tv": "Électronique",
+        "téléviseur": "Électronique"
     };
 
     for (const [key, value] of Object.entries(categoryKeywords)) {
@@ -87,12 +87,26 @@ function askAI() {
 
     console.log('🔍 Analyse AI:', { question, budget, event, category });
 
-    // 5. Filtrer les produits
+    // 5. Vérifier que 'products' existe
+    if (typeof products === 'undefined' || !products || products.length === 0) {
+        result.innerHTML = `
+            <div style="padding:16px;background:#fef2f2;border-radius:12px;border-left:4px solid #ef4444;">
+                🤖 <strong>Aucun produit disponible</strong><br>
+                <span style="font-size:0.85rem;color:#888;">Veuillez ajouter des produits dans la boutique.</span>
+            </div>
+        `;
+        return;
+    }
+
+    // 6. Filtrer les produits
     let recommendations = products.filter(product => product.stock > 0);
 
     // Filtrer par catégorie si détectée
     if (category) {
-        recommendations = recommendations.filter(product => product.category === category);
+        const categoryFiltered = recommendations.filter(product => product.category === category);
+        if (categoryFiltered.length > 0) {
+            recommendations = categoryFiltered;
+        }
     }
 
     // Filtrer par événement si détecté
@@ -103,26 +117,31 @@ function askAI() {
         }
     }
 
-    // 6. Trier par popularité et note
+    // 7. Trier par popularité et note
     recommendations.sort((a, b) => {
-        // D'abord par popularité (ventes)
         if ((b.sales || 0) !== (a.sales || 0)) {
             return (b.sales || 0) - (a.sales || 0);
         }
-        // Puis par note
         return (b.rating || 0) - (a.rating || 0);
     });
 
-    // 7. Sélectionner les produits dans le budget
+    // 8. Sélectionner les produits dans le budget
     let selected = [];
     let total = 0;
 
     if (budget && budget > 0) {
-        // Avec budget : sélectionner les meilleurs produits dans le budget
         for (const product of recommendations) {
             if (total + product.price <= budget) {
                 selected.push(product);
                 total += product.price;
+            }
+        }
+        // Si aucun produit trouvé dans le budget, prendre le moins cher
+        if (selected.length === 0 && recommendations.length > 0) {
+            const cheapest = recommendations.reduce((a, b) => a.price < b.price ? a : b);
+            if (cheapest.price <= budget) {
+                selected.push(cheapest);
+                total = cheapest.price;
             }
         }
     } else {
@@ -131,15 +150,16 @@ function askAI() {
         total = selected.reduce((sum, p) => sum + p.price, 0);
     }
 
-    // 8. Afficher les résultats
+    // 9. Afficher les résultats
     if (selected.length === 0) {
         let suggestion = "🤖 Aucun produit trouvé pour votre demande.";
         
-        // Suggestions d'amélioration
         if (budget && budget < 1000) {
-            suggestion += " 💡 Essayez d'augmenter votre budget.";
+            suggestion += " 💡 Essayez d'augmenter votre budget (minimum 1 000 FCFA).";
         } else if (category) {
             suggestion += " 💡 Essayez une autre catégorie.";
+        } else if (event) {
+            suggestion += " 💡 Essayez une autre occasion.";
         } else {
             suggestion += " 💡 Décrivez plus précisément votre besoin.";
         }
@@ -152,7 +172,7 @@ function askAI() {
         return;
     }
 
-    // 9. Construire l'affichage des résultats
+    // 10. Construire l'affichage des résultats
     let html = `
         <div style="padding:16px;background:#f0fdf4;border-radius:12px;border-left:4px solid #22c55e;margin-bottom:12px;">
             <h3 style="margin:0 0 6px 0;">🤖 Conseil WebProfit AI</h3>
@@ -192,7 +212,7 @@ function askAI() {
 
     html += `
         </div>
-        <div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="margin-top:12px;padding:12px;background:#f8fafc;border-radius:10px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center;">
             <span style="font-weight:600;">💰 Total : ${total.toLocaleString()} FCFA</span>
             ${budget ? `<span style="color:${budget - total >= 0 ? '#22c55e' : '#ef4444'};font-weight:600;">
                 💵 Reste : ${(budget - total).toLocaleString()} FCFA
@@ -222,7 +242,6 @@ function addAllToCart() {
 
     let count = 0;
     selected.forEach(product => {
-        // Vérifier si le produit existe déjà dans le panier
         const cart = getCart();
         const existing = cart.find(item => item.id === product.id);
         if (!existing) {
