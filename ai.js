@@ -28,7 +28,7 @@ function askAI() {
     }
 
     // 2. Extraire le budget de la question
-    const budgetMatch = question.match(/\d+/g);
+    const budgetMatch = question.replace(/\s/g, "").match(/\d+/);
     let budget = null;
     if (budgetMatch) {
         budget = parseInt(budgetMatch[0]);
