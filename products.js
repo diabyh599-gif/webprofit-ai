@@ -313,8 +313,8 @@ function searchProducts() {
 }
 
 // ==========================================
-# STATISTIQUES ADMIN
-# ==========================================
+// STATISTIQUES ADMIN
+// ==========================================
 
 function updateStats() {
     const totalProducts = products.length;
@@ -334,8 +334,8 @@ function updateStats() {
 }
 
 // ==========================================
-# INITIALISATION
-# ==========================================
+// INITIALISATION
+// ==========================================
 
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
